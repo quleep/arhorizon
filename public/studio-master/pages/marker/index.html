@@ -330,7 +330,7 @@
         // TODO: replace alerts with HTML error messages.
         console.log("first");
         if (!window.markerImage) return alert("Please, select a marker image.");
-                if (!selectedImage) return alert("Please, select a animation.");
+        if (!selectedImage) return alert("Please, select a animation.");
 
         const imgElement = document.getElementById("markerImage");
         if (imgElement) {
@@ -351,7 +351,7 @@
             markerImage: window.markerImage,
             fullMarkerImage: window.fullMarkerImage,
           });
-
+          console.log(window.fullMarkerImage);
           const blob = new Blob([markerPattern], { type: "text/plain" });
           const file = new File([blob], "marker.patt", {
             type: "text/plain",
@@ -372,11 +372,16 @@
           const base64Content = await readAsDataURL(file);
 
           const uploadFormData = new FormData();
+          const uploadFormData1 = new FormData();
+
           uploadFormData.append(
             `markerPattern${now.getTime().toString()}`,
             base64Content
           );
-
+          uploadFormData1.append(
+            `markerImagw${now.getTime().toString()}`,
+            window.fullMarkerImage
+          );
           console.log("dcd", selectedImageGlb);
 
           const uploadResponse = await axios.post(
@@ -384,9 +389,19 @@
             uploadFormData
           );
           const uploadedFileUrl = uploadResponse.data.fileUrl;
+          const uploadImageResponse = await axios.post(
+            "https://gsrhol3xd0.execute-api.ap-south-1.amazonaws.com/prod/image-upload",
+            uploadFormData1
+          );
+          const uploadedImageUrl = uploadImageResponse.data.fileUrl;
           const newApplicant = {
             Id: now.getTime().toString(),
             TargetImagePattFile: uploadedFileUrl,
+            TargetImageFile: uploadedImageUrl,
+            AR_Link: `https://arhorizon.arnxt.com/ar/index.html?id=${now
+              .getTime()
+              .toString()}`,
+
             TargetGlbFile: selectedImageGlb,
           };
           const applicantResponse = await axios.post(
@@ -397,14 +412,13 @@
           console.log(applicantResponse.data.Item.Id);
 
           window.location.href = "#open-modal";
-          let website = `https://ar-horizon-wa2z-omanshuaman.vercel.app/ar/index.html?id=${applicantResponse.data.Item.Id}`;
+          let website = `https://arhorizon.arnxt.com/ar/index.html?id=${applicantResponse.data.Item.Id}`;
           if (website) {
+            // Access the div element by its ID
+            let divElement = document.getElementById("dynamicLinkContainer");
 
-  // Access the div element by its ID
-  let divElement = document.getElementById("dynamicLinkContainer");
-
-  // Set the HTML content of the div element
-  divElement.innerHTML = website;
+            // Set the HTML content of the div element
+            divElement.innerHTML = website;
             let qrcodeContainer = document.getElementById("qrcode");
             qrcodeContainer.innerHTML = "";
             new QRCode(qrcodeContainer, website);
@@ -418,6 +432,15 @@
           // Handle errors
         }
       };
+      function downloadURI(uri, name) {
+        var link = document.createElement("a");
+        link.download = name;
+        link.href = uri;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        delete link;
+      }
 
       const setDefaultMarker = () => {
         const c = document.createElement("canvas");
@@ -430,7 +453,7 @@
         const base64String = c.toDataURL();
         window.markerImage = base64String;
 
-        MarkerModule.getFullMarkerImage(base64String, 0.5, 512, "black").then(
+        MarkerModule.getFullMarkerImage(base64String, 0.9, 512, "black").then(
           (fullMarkerImage) => {
             window.fullMarkerImage = fullMarkerImage;
             img.remove();
@@ -476,12 +499,11 @@
     <div id="open-modal" class="modal-window">
       <div>
         <a href="#" title="Close" class="modal-close">Close</a>
-            <div>Scan QR Code On Mobile:</div>
-            <div id="qrcode-container">
-              <div id="qrcode" class="qrcode"></div>
-            </div>
-    <a id="dynamicLinkContainer" target="_blank"></a>
+        <div>Scan QR Code On Mobile:</div>
+        <div id="qrcode-container">
+          <div id="qrcode" class="qrcode"></div>
         </div>
+        <a id="dynamicLinkContainer" target="_blank"></a>
       </div>
     </div>
   </body>

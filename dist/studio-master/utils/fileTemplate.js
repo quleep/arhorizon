@@ -147,8 +147,11 @@ const previewImageTemplate = (fileURL, fileName, isMarker) => `
     <div class="imageFrame">
         <img id="img" src=${fileURL} alt="${fileName}">
     </div>
-    ${isMarker ? unloadMarkerTemplate(fileName, fileURL) : unloadFileTemplate(fileName, fileURL)}`;
-
+    ${
+      isMarker
+        ? unloadMarkerTemplate(fileName, fileURL)
+        : unloadFileTemplate(fileName, fileURL)
+    }`;
 
 const previewAudioTemplate = (fileURL, fileName) => `
     <style>
