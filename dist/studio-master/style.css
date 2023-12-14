@@ -314,3 +314,71 @@ input:focus {
     width: 100%;
   }
 }
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  outline: 0;
+  box-shadow: none;
+  border: 0 !important;
+  background: #5c6664;
+  background-image: none;
+  flex: 1;
+  padding: 0 0.5em;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1em;
+  font-family: "Open Sans", sans-serif;
+}
+select::-ms-expand {
+  display: none;
+}
+.select {
+  position: relative;
+  display: flex;
+  width: 20em;
+  height: 2.5em;
+  line-height: 3;
+  background: #5c6664;
+  overflow: hidden;
+  border-radius: 0.25em;
+}
+.select::after {
+  content: "\25BC";
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0 1em;
+  background: #2b2e2e;
+  cursor: pointer;
+  pointer-events: none;
+  transition: 0.25s all ease;
+}
+.select:hover::after {
+  color: #23b499;
+}
+.coupon-code-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* Adjust the gap according to your preference */
+}
+
+/* Style for the label */
+.coupon-code-container label {
+  font-size: 14px;
+  color: #333; /* Adjust the color according to your design */
+}
+
+/* Style for the input */
+.coupon-code-container input {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc; /* Adjust the border color according to your design */
+  border-radius: 4px;
+  width: 40%;
+}
+.hidden {
+  display: none;
+  gap: 5em;
+}

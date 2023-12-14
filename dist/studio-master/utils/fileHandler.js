@@ -22,7 +22,6 @@ function handleUnload(self, isMarker = false) {
 
 function handleMarkerUpload(self) {
   const file = self.files[0];
-  console.log(file);
 
   if (!isValidFile("image", file, "marker-error")) return;
 
@@ -31,6 +30,7 @@ function handleMarkerUpload(self) {
   reader.onloadend = function () {
     const base64Data = reader.result;
     window.markerImage = base64Data;
+
     MarkerModule.getFullMarkerImage(base64Data, 0.9, 512, "black").then(
       (fullMarkerImage) => {
         window.fullMarkerImage = fullMarkerImage;

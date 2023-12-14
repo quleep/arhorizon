@@ -117,7 +117,42 @@
       #footer {
         padding: 2em 12vw;
       }
+      .row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 2rem;
+      }
 
+      .button2 {
+        padding: 15px 20px;
+        font: 12px "Montserrat", sans-serif;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-decoration: none;
+        text-align: center;
+        margin: 1em;
+      }
+
+      .button2:hover {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.2);
+      }
+      .button2 {
+        color: black;
+        background-color: #10ffb4;
+        transition: 0.2s ease-in-out;
+        border-left: 3px transparent solid;
+        border-right: 3px transparent solid;
+      }
+
+      .button2:hover {
+        color: #10ffb4;
+        background-color: black;
+        border-left: #10ffb4 3px solid;
+        border-right: #10ffb4 3px solid;
+      }
       .lead {
         font-family: Chakra Petch;
         font-style: normal;
@@ -306,12 +341,70 @@
         display: flex;
         flex-direction: column;
       }
+      * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+      .modalDialog {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 99999;
+        opacity: 0;
+        -webkit-transition: opacity 100ms ease-in;
+        -moz-transition: opacity 100ms ease-in;
+        transition: opacity 100ms ease-in;
+        pointer-events: none;
+      }
+      .modalDialog:target {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .modalDialog > div {
+        max-width: 700px;
+        width: 90%;
+        position: relative;
+        margin: 10% auto;
+        padding: 20px;
+        border-radius: 3px;
+        background: #fff;
+      }
+      .close {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f26d7d;
+        color: #fff;
+        line-height: 25px;
+        position: absolute;
+        right: -12px;
+        text-align: center;
+        top: -10px;
+        width: 34px;
+        height: 34px;
+        text-decoration: none;
+        font-weight: bold;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        -moz-box-shadow: 1px 1px 3px #000;
+        -webkit-box-shadow: 1px 1px 3px #000;
+        box-shadow: 1px 1px 3px #000;
+        padding-top: 5px;
+      }
+      .close:hover {
+        background: #fa3f6f;
+      }
     </style>
     <script>
       const { MarkerModule, Package } = ARjsStudioBackend;
       let selectedImage = null;
       let selectedImageGlb = "";
       let websiteLink = "";
+      let couponCode = null;
+      let Discount = null;
 
       const now = new Date();
 
@@ -327,10 +420,11 @@
         console.log(selectedImageSrc);
       }
       const publish = async () => {
-        // TODO: replace alerts with HTML error messages.
         console.log("first");
         if (!window.markerImage) return alert("Please, select a marker image.");
-                if (!selectedImage) return alert("Please, select a animation.");
+        if (!selectedImage) return alert("Please, select a animation.");
+        if (!couponCode) return alert("Please, Add Coupon Code.");
+        if (!Discount) return alert("Please, add Discount.");
 
         const imgElement = document.getElementById("markerImage");
         if (imgElement) {
@@ -351,7 +445,7 @@
             markerImage: window.markerImage,
             fullMarkerImage: window.fullMarkerImage,
           });
-
+          console.log(window.fullMarkerImage);
           const blob = new Blob([markerPattern], { type: "text/plain" });
           const file = new File([blob], "marker.patt", {
             type: "text/plain",
@@ -372,11 +466,16 @@
           const base64Content = await readAsDataURL(file);
 
           const uploadFormData = new FormData();
+          const uploadFormData1 = new FormData();
+
           uploadFormData.append(
             `markerPattern${now.getTime().toString()}`,
             base64Content
           );
-
+          uploadFormData1.append(
+            `markerImagw${now.getTime().toString()}`,
+            window.fullMarkerImage
+          );
           console.log("dcd", selectedImageGlb);
 
           const uploadResponse = await axios.post(
@@ -384,10 +483,22 @@
             uploadFormData
           );
           const uploadedFileUrl = uploadResponse.data.fileUrl;
+          const uploadImageResponse = await axios.post(
+            "https://gsrhol3xd0.execute-api.ap-south-1.amazonaws.com/prod/image-upload",
+            uploadFormData1
+          );
+          const uploadedImageUrl = uploadImageResponse.data.fileUrl;
           const newApplicant = {
             Id: now.getTime().toString(),
             TargetImagePattFile: uploadedFileUrl,
+            TargetImageFile: uploadedImageUrl,
+            AR_Link: `https://arhorizon.arnxt.com/ar/index.html?id=${now
+              .getTime()
+              .toString()}`,
+
             TargetGlbFile: selectedImageGlb,
+            couponCode: couponCode,
+            discountPercentage: Discount,
           };
           const applicantResponse = await axios.post(
             "https://3ef9gn5kk2.execute-api.ap-south-1.amazonaws.com/arnxt_prod/ar-horizon/uploadtargetimage",
@@ -397,14 +508,18 @@
           console.log(applicantResponse.data.Item.Id);
 
           window.location.href = "#open-modal";
-          let website = `https://ar-horizon-wa2z-omanshuaman.vercel.app/ar/index.html?id=${applicantResponse.data.Item.Id}`;
+          let website = `https://arhorizon.arnxt.com/ar/index.html?id=${applicantResponse.data.Item.Id}`;
           if (website) {
+            let divElement = document.getElementById("dynamicLinkContainer");
+            // Create a new anchor element
+            let anchorElement = document.createElement("a");
 
-  // Access the div element by its ID
-  let divElement = document.getElementById("dynamicLinkContainer");
+            // Set the attributes for the anchor element
+            anchorElement.href = website;
+            anchorElement.target = "_blank"; // Open in a new tab
+            anchorElement.textContent = "Open Link"; // Set the link text
+            divElement.appendChild(anchorElement);
 
-  // Set the HTML content of the div element
-  divElement.innerHTML = website;
             let qrcodeContainer = document.getElementById("qrcode");
             qrcodeContainer.innerHTML = "";
             new QRCode(qrcodeContainer, website);
@@ -415,9 +530,17 @@
           }
         } catch (error) {
           console.error("An error occurred:", error);
-          // Handle errors
         }
       };
+      function downloadURI(uri, name) {
+        var link = document.createElement("a");
+        link.download = name;
+        link.href = uri;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        delete link;
+      }
 
       const setDefaultMarker = () => {
         const c = document.createElement("canvas");
@@ -437,6 +560,29 @@
           }
         );
       };
+      function submitForm() {
+        var selectedDiscount = document.getElementById("format").value;
+
+        var enteredCouponCode = document.getElementById("couponCode").value;
+
+        console.log("Selected Discount Percentage: ", selectedDiscount);
+        console.log("Entered Coupon Code: ", enteredCouponCode);
+        couponCode = enteredCouponCode;
+        Discount = selectedDiscount;
+
+        var selectedDiscountValue = document.getElementById(
+          "selectedDiscountValue"
+        );
+        var selectedCouponCodeValue = document.getElementById(
+          "selectedCouponCodeValue"
+        );
+        selectedDiscountValue.textContent = selectedDiscount;
+        selectedCouponCodeValue.textContent = enteredCouponCode;
+
+        var hiddenDiv = document.getElementById("selectedDiscountDiv");
+        hiddenDiv.classList.remove("hidden");
+        location.href = "#close";
+      }
     </script>
     <div class="pages-content">
       <div class="pages-content-container">
@@ -460,8 +606,52 @@
 
     <div>
       <div id="footer">
-        <p class="lead">3. Publish the project</p>
+        <div class="row">
+          <p class="lead">3. Publish the project</p>
+          <a href="#openModal-about" class="button2" rel="noopener"
+            >Add Coupon</a
+          >
+          <div id="selectedDiscountDiv" class="hidden">
+            Selected Discount: <span id="selectedDiscountValue"></span> Coupon
+            Code: <span id="selectedCouponCodeValue"></span>
+          </div>
+        </div>
+        <div id="openModal-about" class="modalDialog">
+          <div style="display: flex; flex-direction: column; gap: 2em">
+            <a href="#close" title="Close" class="close">X</a>
+            <p class="lead">Choose Coupon Code and Add Discount</p>
+            <div class="coupon-code-container">
+              <label for="couponCode">Coupon Code</label>
+              <input
+                type="text"
+                id="couponCode"
+                name="couponCode"
+                placeholder="Enter Coupon Code" />
+            </div>
+            <div class="coupon-code-container">
+              <label for="couponCode">Discount</label>
 
+              <div class="select">
+                <select name="format" id="format">
+                  <option value="5%">5%</option>
+                  <option value="10%">10%</option>
+                  <option value="15%">15%</option>
+                  <option value="20%">20%</option>
+                  <option value="25%">25%</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="submit-container">
+              <button
+                type="button"
+                class="primary-button publish-disabled"
+                onclick="submitForm()">
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
         <div class="buttons">
           <button
             id="github-publish"
@@ -476,12 +666,12 @@
     <div id="open-modal" class="modal-window">
       <div>
         <a href="#" title="Close" class="modal-close">Close</a>
-            <div>Scan QR Code On Mobile:</div>
-            <div id="qrcode-container">
-              <div id="qrcode" class="qrcode"></div>
-            </div>
-    <a id="dynamicLinkContainer" target="_blank"></a>
+        <div>Scan QR Code On Mobile:</div>
+        <div id="qrcode-container">
+          <div id="qrcode" class="qrcode"></div>
         </div>
+        <div style="text-align: center; font-size: 24px">OR</div>
+        <a id="dynamicLinkContainer" target="_blank"></a>
       </div>
     </div>
   </body>
