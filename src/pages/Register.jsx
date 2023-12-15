@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
 
@@ -60,6 +61,7 @@ const InputField = ({ label, type, id, name, value, onChange }) => {
 
 const LoginForm = () => {
   const [isloadinglogin, setIsLoadingLogin] = useState(false);
+  const navigate = useNavigate();
 
   const loginUrl =
     "https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/loginbrandarhorizon";
@@ -110,6 +112,8 @@ const LoginForm = () => {
         .then((res) => {
           setUserSession(res.data.user, res.data.token);
           setIsLoadingLogin(false);
+          console.log(res.data.user);
+          window.location.href = "/studio-master/pages/marker/index.html";
         })
         .catch((error) => {
           console.log(error);

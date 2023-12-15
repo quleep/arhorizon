@@ -10,7 +10,14 @@ import { projects } from "../constants";
 import { fadeIn, textVariant } from "../utils/motion";
 import { useNavigate } from "react-router-dom";
 
-const ProjectCard = ({ index, name, TargetImageFile, Id, AR_Link }) => {
+const ProjectCard = ({
+  index,
+  name,
+  TargetImageFile,
+  Id,
+  AR_Link,
+  campaignName,
+}) => {
   const navigate = useNavigate();
 
   const nextPage = (product_Id) => {
@@ -26,22 +33,10 @@ const ProjectCard = ({ index, name, TargetImageFile, Id, AR_Link }) => {
           alt="project_image"
           className="w-full h-full object-cover rounded-2xl"
         />
-
-        <div className="absolute inset-0 flex justify-end m-3 card-img_hover">
-          <div
-            // onClick={() => window.open(AR_Link, "_blank")}
-            className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer">
-            <img
-              src="https://mioamoreshop.com/cdn/shop/files/MIO_LOGO_WEB.jpg?v=1648621758&width=100"
-              alt="source code"
-              className="w-1/2 h-1/2 object-contain"
-            />
-          </div>
-        </div>
       </div>
 
       <div className="mt-5">
-        <h3 className="text-white font-bold text-[20px]">{Id}</h3>
+        <h3 className="text-white font-bold text-[20px]">{campaignName}</h3>
       </div>
     </div>
   );

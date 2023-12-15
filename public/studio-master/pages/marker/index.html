@@ -52,10 +52,49 @@
           </p>
         </div>
       </div>
-
       <div class="pages-content-container">
         <div class="pages-content-element">
-          <p class="lead">1. Use a premade marker or upload your own</p>
+          <p class="lead">1. Add Campaign Name</p>
+          <p class="paragraph">
+            Create a distinctive campaign name by clicking the button below.
+          </p>
+
+          <div class="coupon-code-container">
+            <a href="#openModal-campaign" class="button2" rel="noopener"
+              >Add Campaign Name</a
+            >
+            <div id="selectedCampaignDiv" class="hiddenCampaign">
+              Campaign Name: <span id="selectedCampaignValue"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="openModal-campaign" class="modalDialog">
+        <div style="display: flex; flex-direction: column; gap: 2em">
+          <a href="#close" title="Close" class="close">X</a>
+          <p class="lead">Add Campaign Name</p>
+          <div class="coupon-code-container">
+            <label for="couponCode">Campaign Name</label>
+            <input
+              type="text"
+              id="campaignName"
+              name="campaignName"
+              placeholder="Enter Campaign Name" />
+          </div>
+
+          <div class="submit-container">
+            <button
+              type="button"
+              class="primary-button publish-disabled"
+              onclick="submitCampaignForm()">
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="pages-content-container">
+        <div class="pages-content-element">
+          <p class="lead">2. Use a premade marker or upload your own</p>
           <p class="paragraph">
             Here is a sample marker for you. Feel free to use it as the marker
             for your project. Alternatively, click “Upload image” to use a
@@ -405,8 +444,19 @@
       let websiteLink = "";
       let couponCode = null;
       let Discount = null;
+      let campaignName = null;
+      let email = null;
 
       const now = new Date();
+      var user = sessionStorage.getItem("user");
+      console.log(user);
+
+      if (!user) {
+        window.location.href = "https://192.168.0.194:5173/register";
+      } else {
+        email = user;
+        console.log(user);
+      }
 
       function getImageSrc(img, imgLink) {
         if (selectedImage) {
@@ -425,6 +475,7 @@
         if (!selectedImage) return alert("Please, select a animation.");
         if (!couponCode) return alert("Please, Add Coupon Code.");
         if (!Discount) return alert("Please, add Discount.");
+        if (!campaignName) return alert("Please, add Campaign Name.");
 
         const imgElement = document.getElementById("markerImage");
         if (imgElement) {
@@ -499,6 +550,8 @@
             TargetGlbFile: selectedImageGlb,
             couponCode: couponCode,
             discountPercentage: Discount,
+            campaignName: campaignName,
+            email: email,
           };
           const applicantResponse = await axios.post(
             "https://3ef9gn5kk2.execute-api.ap-south-1.amazonaws.com/arnxt_prod/ar-horizon/uploadtargetimage",
@@ -553,13 +606,29 @@
         const base64String = c.toDataURL();
         window.markerImage = base64String;
 
-        MarkerModule.getFullMarkerImage(base64String, 0.9, 512, "black").then(
+        MarkerModule.getFullMarkerImage(base64String, 0.5, 512, "black").then(
           (fullMarkerImage) => {
             window.fullMarkerImage = fullMarkerImage;
             img.remove();
           }
         );
       };
+      function submitCampaignForm() {
+        var enteredcampaignName = document.getElementById("campaignName").value;
+
+        console.log("Selected Discount Percentage: ", enteredcampaignName);
+        campaignName = enteredcampaignName;
+
+        var selectedCampaignValue = document.getElementById(
+          "selectedCampaignValue"
+        );
+
+        selectedCampaignValue.textContent = enteredcampaignName;
+
+        var hiddenDiv = document.getElementById("selectedCampaignDiv");
+        hiddenDiv.classList.remove("hiddenCampaign");
+        location.href = "#close";
+      }
       function submitForm() {
         var selectedDiscount = document.getElementById("format").value;
 
@@ -587,7 +656,7 @@
     <div class="pages-content">
       <div class="pages-content-container">
         <div class="pages-content-element">
-          <p class="lead">2. Choose Animation</p>
+          <p class="lead">3. Choose Animation</p>
 
           <p id="marker-error" class="error"></p>
         </div>
@@ -607,7 +676,7 @@
     <div>
       <div id="footer">
         <div class="row">
-          <p class="lead">3. Publish the project</p>
+          <p class="lead">4. Publish the project</p>
           <a href="#openModal-about" class="button2" rel="noopener"
             >Add Coupon</a
           >

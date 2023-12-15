@@ -98,7 +98,12 @@ const Experience = () => {
                 <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                   <QRCode
                     size={256}
-                    style={{ height: "100%", maxWidth: "100%", width: "100%" }}
+                    style={{
+                      height: "100%",
+                      maxWidth: "100%",
+                      width: "100%",
+                      padding: "1rem",
+                    }}
                     value={data.AR_Link}
                     viewBox={`0 0 256 256`}
                   />
@@ -133,11 +138,11 @@ const Experience = () => {
                 </div>
               }>
               <div>
-                <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                <div class="aspect-h-1 aspect-w-1 w-full h-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                   <img
                     src={data.TargetImageFile}
                     alt={data.TargetImageFile}
-                    class="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                    class="h-full w-full object-contain object-center lg:h-full lg:w-full"
                   />
                 </div>
                 <p
