@@ -6,7 +6,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import CanvasLoader from "../Loader";
 
 const Computers = ({ isMobile }) => {
-  // const computer = useGLTF("./oculus_quest_vr_headset.glb");
+  // Move the useLoader hook call inside the Computers component
   const computer = useLoader(
     GLTFLoader,
     "https://jobpostingbucket.s3.ap-south-1.amazonaws.com/model/oculus_quest_vr_headset.glb"
@@ -33,7 +33,6 @@ const Computers = ({ isMobile }) => {
     </mesh>
   );
 };
-
 const ComputersCanvas = () => {
   const [isMobile, setIsMobile] = useState(false);
 

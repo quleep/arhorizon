@@ -12,6 +12,7 @@ import {
 } from "../service/Authservice";
 import Loader from "../components/Loader";
 import Alert from "../components/Alert";
+import Loading from "../components/Loading";
 
 const Register = () => {
   const [state, setState] = useState();
@@ -147,8 +148,7 @@ const LoginForm = () => {
           onChange={handleInputChange}
         />
         <button type="submit" onClick={handleloginsubmit}>
-          {" "}
-          {isloadinglogin ? <Loader /> : "Login"}{" "}
+          {isloadinglogin ? <Loading /> : "Login"}
         </button>
       </form>
     </div>
