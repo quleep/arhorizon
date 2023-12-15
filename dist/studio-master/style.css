@@ -382,3 +382,7 @@ select::-ms-expand {
   display: none;
   gap: 5em;
 }
+.hiddenCampaign {
+  display: none;
+  gap: 5em;
+}
