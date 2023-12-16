@@ -4,7 +4,7 @@ const verifyurl =
   "https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/verifytokenarhorizon";
 
 export function getUser() {
-  const user = sessionStorage.getItem("user");
+  const user = localStorage.getItem("user");
   if (user === undefined || !user) {
     return null;
   } else {
@@ -13,12 +13,12 @@ export function getUser() {
 }
 
 export function getToken() {
-  return sessionStorage.getItem("token");
+  return localStorage.getItem("token");
 }
 
 export function setUserSession(user, token) {
-  sessionStorage.setItem("user", user);
-  sessionStorage.setItem("token", token);
+  localStorage.setItem("user", user);
+  localStorage.setItem("token", token);
 }
 export async function verifyToken(email, token) {
   const body = {

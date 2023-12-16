@@ -27,8 +27,8 @@ import {
 
 export const navLinks = [
   {
-    id: "register",
-    title: "Register",
+    id: "login",
+    title: "Login",
   },
 ];
 

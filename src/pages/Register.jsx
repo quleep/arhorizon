@@ -17,6 +17,7 @@ import Loading from "../components/Loading";
 
 const Register = () => {
   const [state, setState] = useState();
+  const navigate = useNavigate();
 
   const [isLogin, setLogin] = useState(true);
 
@@ -113,7 +114,8 @@ const LoginForm = () => {
           setUserSession(res.data.user, res.data.token);
           setIsLoadingLogin(false);
           console.log(res.data.user);
-          window.location.href = "/studio-master/pages/marker/index.html";
+          navigate(`/editor`);
+          window.location.reload();
         })
         .catch((error) => {
           console.log(error);

@@ -448,11 +448,11 @@
       let email = null;
 
       const now = new Date();
-      var user = sessionStorage.getItem("user");
+      var user = localStorage.getItem("user");
       console.log(user);
 
       if (!user) {
-        window.location.href = "https://192.168.0.194:5173/register";
+        window.location.href = "https://arhorizon.arnxt.com/login";
       } else {
         email = user;
         console.log(user);
