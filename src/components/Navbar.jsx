@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { styles } from "../styles";
 import { navLinks } from "../constants";
@@ -11,6 +12,7 @@ const Navbar = () => {
   const [active, setActive] = useState("");
   const [toggle, setToggle] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,12 +32,20 @@ const Navbar = () => {
     localStorage.removeItem("user");
     window.location.reload();
   };
+  const editorPage = () => {
+    navigate(`/editor`);
+  };
+  const handleNavLinkClick = (id, title) => {
+    setActive(title);
+    navigate(`/${id}`);
+  };
+
   return (
     <nav
       className={`${
         styles.paddingX
       } w-full flex items-center py-5 fixed top-0 z-20 ${
-        scrolled ? "bg-primary" : "bg-primary"
+        scrolled ? "bg-primary" : "bg-primary shadow-2xl shadow-cyan-700"
       }`}>
       <div className="w-full flex justify-between items-center max-w-7xl mx-auto">
         <Link
@@ -54,7 +64,14 @@ const Navbar = () => {
 
         <ul className="list-none hidden sm:flex flex-row gap-10">
           {user ? (
-            <ul>
+            <>
+              <li
+                className={`${
+                  active === "Logout" ? "text-white" : "text-secondary"
+                } hover:text-white text-[18px] font-medium cursor-pointer`}
+                onClick={() => editorPage()}>
+                <a>Editor</a>
+              </li>
               <li
                 className={`${
                   active === "Logout" ? "text-white" : "text-secondary"
@@ -62,7 +79,7 @@ const Navbar = () => {
                 onClick={() => logout()}>
                 <a>Logout</a>
               </li>
-            </ul>
+            </>
           ) : (
             <ul>
               {navLinks.map((nav) => (
@@ -71,8 +88,8 @@ const Navbar = () => {
                   className={`${
                     active === nav.title ? "text-white" : "text-secondary"
                   } hover:text-white text-[18px] font-medium cursor-pointer`}
-                  onClick={() => setActive(nav.title)}>
-                  <a href={`${nav.id}`}>{nav.title}</a>
+                  onClick={() => handleNavLinkClick(nav.id, nav.title)}>
+                  <a>{nav.title}</a>
                 </li>
               ))}
             </ul>

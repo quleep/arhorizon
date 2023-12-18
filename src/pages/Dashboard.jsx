@@ -6,9 +6,11 @@ import { Route, Routes } from "react-router-dom";
 import NavBarDshboard from "../components/NavBarDshboard";
 import Sidebar from "../components/Sidebar";
 import { useStateContext } from "../contexts/ContextProvider";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const {
+    user,
     setCurrentColor,
     setCurrentMode,
     currentMode,
@@ -17,13 +19,13 @@ function Dashboard() {
     themeSettings,
     setThemeSettings,
   } = useStateContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const currentThemeColor = localStorage.getItem("colorMode");
-    const currentThemeMode = localStorage.getItem("themeMode");
-    if (currentThemeColor && currentThemeMode) {
-      setCurrentColor(currentThemeColor);
-      setCurrentMode(currentThemeMode);
+    const userInfo = localStorage.getItem("user");
+    if (!userInfo) {
+      // User is not authenticated, redirect to login
+      navigate("/login");
     }
   }, []);
   return (

@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Stats = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const param = useParams();
+  const navigate = useNavigate();
+
   console.log(param.id);
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +32,13 @@ const Stats = () => {
 
     fetchData();
   }, [param.id]);
+  useEffect(() => {
+    const userInfo = localStorage.getItem("user");
+    if (!userInfo) {
+      // User is not authenticated, redirect to login
+      navigate("/login");
+    }
+  }, []);
   return (
     <div>
       {data?.map((item) => (

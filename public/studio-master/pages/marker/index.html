@@ -149,8 +149,8 @@
           </div>
         </div>
       </div>
+  
 
-      <hr />
     </div>
     <style>
       #footer {
@@ -438,6 +438,7 @@
       }
     </style>
     <script>
+ 
       const { MarkerModule, Package } = ARjsStudioBackend;
       let selectedImage = null;
       let selectedImageGlb = "";
@@ -671,12 +672,35 @@
       </div>
 
       <hr />
+            <div class="pages-content-container">
+            <div class="pages-content-element">
+                <p class="lead">4. Choose the content(optional) </p>
+                <p class="paragraph">
+                
+                    <ul>
+                        <li>3D Object (.gltf, .glb .zip; max size 50MB)</li>
+                        <li>Image (.jpg, .png, .gif; max size 15MB)</li>
+                    
+                        <li>Video (.mp4; max size 25MB)</li>
+                    </ul>
+                </p>
+                <label class="passive-button file-input">
+                    <input id="content-file" accept="*" type="file" hidden onchange="handleContentUpload(this)" />
+                    Upload file
+                </label>
+                <p id="content-error" class="error"></p>
+            </div>
+            <div id="content-preview" target="content-file">
+                <file-holder></file-holder>
+            </div>
+        </div>
+      <hr />
     </div>
 
     <div>
       <div id="footer">
         <div class="row">
-          <p class="lead">4. Publish the project</p>
+          <p class="lead">5. Publish the project</p>
           <a href="#openModal-about" class="button2" rel="noopener"
             >Add Coupon</a
           >
