@@ -10,6 +10,7 @@ import "./App.css";
 import Dashboard from "./pages/Dashboard";
 import Analytics from "./pages/Analytics";
 import Stats from "./pages/Stats";
+import ARScene from "./pages/ARScene";
 function App() {
   return (
     <BrowserRouter>
@@ -22,6 +23,7 @@ function App() {
         <Route path="/editor" element={<Editor />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/analytics/:id" element={<Stats />} />
+        <Route path="/arscene/:id" element={<ARScene />} />
 
         {/* dc */}
       </Routes>

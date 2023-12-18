@@ -31,7 +31,7 @@ const Stats = () => {
   }, [param.id]);
   return (
     <div>
-      {data.map((item) => (
+      {data?.map((item) => (
         <div key={item.Id}>
           <p>viewscount: {item.viewscount}</p>
           <p>timespend: {item.timespend}</p>
