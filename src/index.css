@@ -20,7 +20,7 @@
 }
 
 .black-gradient {
-  background: #000000; /* fallback for old browsers */
+  background: #181b1d; /* fallback for old browsers */
   background: -webkit-linear-gradient(
     to right,
     #434343,
