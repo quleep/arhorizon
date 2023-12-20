@@ -18,7 +18,7 @@ const Editor = () => {
     navigate(`/${route}`);
   };
   const nextPage1 = () => {
-    window.location.href = "/studio-master/pages/marker/index.html";
+    navigate("/upload");
   };
   useEffect(() => {
     const userInfo = localStorage.getItem("user");

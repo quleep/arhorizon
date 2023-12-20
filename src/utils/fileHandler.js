@@ -20,33 +20,6 @@ function handleUnload(self, isMarker = false) {
   checkUserUploadStatus();
 }
 
-function handleMarkerUpload(event) {
-  const file = event.target.files[0];
-  console.log(event);
-
-  if (!isValidFile("image", file, "marker-error")) return;
-
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onloadend = function () {
-    const base64Data = reader.result;
-    window.markerImage = base64Data;
-
-    MarkerModule.getFullMarkerImage(base64Data, 0.5, 512, "black").then(
-      (fullMarkerImage) => {
-        window.fullMarkerImage = fullMarkerImage;
-        const blob = dataURItoBlob(fullMarkerImage);
-        const fileURL = URL.createObjectURL(blob);
-
-        const preview = document.getElementById("marker-preview");
-        preview.innerHTML = previewImageTemplate(fileURL, file.name, true);
-        checkUserUploadStatus();
-      }
-    );
-  };
-  event.target.value = ""; // Reset required for re-upload
-}
-
 function handleImageUpload(file) {
   const fileName = file.name;
   const fileURL = URL.createObjectURL(file);
