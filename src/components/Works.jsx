@@ -4,10 +4,8 @@ import { motion } from "framer-motion";
 import axios from "axios";
 
 import { styles } from "../styles";
-import { github } from "../assets";
 import { SectionWrapper } from "../hoc";
-import { projects } from "../constants";
-import { fadeIn, textVariant } from "../utils/motion";
+import { textVariant } from "../utils/motion";
 import { useNavigate } from "react-router-dom";
 
 const ProjectCard = ({

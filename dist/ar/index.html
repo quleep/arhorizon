@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+  </head>
+  <style></style>
+  <body style="margin: 0; overflow: hidden">
+    <script>
+      let responseData;
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get("id");
+      console.log("ID:", id);
+      async function logRandomNumber() {
+        try {
+          const response = await axios.get(
+            `https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/addtimespendarhorizon?id=${id}&timespend=5`
+          );
+          console.log("count");
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+
+      setInterval(logRandomNumber, 5000);
+      document.addEventListener("DOMContentLoaded", async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get("id");
+        console.log("ID:", id);
+        startTime = Date.now();
+        try {
+          const response = await axios.get(
+            `https://3ef9gn5kk2.execute-api.ap-south-1.amazonaws.com/arnxt_prod/ar-horizon/uploadtargetimage?id=${id}`
+          );
+          responseData = response.data;
+          console.log(responseData);
+
+          renderAScene();
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      });
+      AFRAME.registerComponent("loader", {
+        init: function () {
+          let loader = document.querySelector("#loadingEl");
+          this.el.addEventListener("model-loaded", async (e) => {
+            console.log("Model has been loaded.");
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get("id");
+            console.log("ID:", id);
+            try {
+              const response = await axios.get(
+                `https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/addcountarhorizon?id=${id}`
+              );
+              console.log("count");
+            } catch (error) {
+              console.error("Error fetching data:", error);
+            }
+            loader.setAttribute("visible", "false");
+          });
+        },
+      });
+      function renderAScene() {
+        if (responseData) {
+          document.body.innerHTML += `
+           <a-scene
+             vr-mode-ui="enabled: false;"
+             loading-screen="enabled: false;"
+             renderer="logarithmicDepthBuffer: true;"
+             arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+             id="scene"
+             embedded
+             gesture-detector
+           >
+
+                <a-assets>
+               <a-entity  id="animated-asset"  src="${responseData.TargetGlbFile}"></a-entity>
+
+             </a-assets>
+      <a-assets>
+                 <audio id="sound" src="assets/AudioSource.mp3" preload="auto"></audio>
+             </a-assets>
+             <a-marker
+               id="animated-marker"
+               type="pattern"
+               preset="custom"
+               url="${responseData.TargetImagePattFile}"
+               raycaster="objects: .clickable"
+               emitevents="true"
+               cursor="fuse: false; rayOrigin: mouse;"
+               id="markerA"
+             >
+                 <a-box id="loadingEl" color="yellow" ></a-box>
+
+               <a-entity
+                 id="bowser-model"
+                 scale="1 1 1"
+                 animation-mixer="loop: repeat"
+                 gltf-model="#animated-asset"
+                 class="clickable"
+                 gesture-handler
+                             loader
+
+               ></a-entity>
+
+               <!-- Optional: Add raycaster and cursor components directly -->
+               <a-entity raycaster="objects: .clickable" cursor="fuse: false; rayOrigin: mouse;"></a-entity>
+             </a-marker>
+
+             <a-entity camera></a-entity>
+           </a-scene>
+         `;
+        }
+      }
+    </script>
+  </body>
+</html>

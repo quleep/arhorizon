@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { About, Navbar, Works } from "../components";
+import { About, Navbar } from "../components";
 import { useNavigate } from "react-router-dom";
 import SidebarDash from "../components/SidebarDash";
 

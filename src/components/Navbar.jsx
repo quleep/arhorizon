@@ -4,8 +4,10 @@ import { useNavigate } from "react-router-dom";
 
 import { styles } from "../styles";
 import { navLinks } from "../constants";
-import { logo, menu, close } from "../assets";
 import { useStateContext } from "../contexts/ContextProvider";
+import { Menu } from "../assets/Menu";
+import { Close } from "../assets/Close";
+import { Logo } from "../assets/index";
 
 const Navbar = () => {
   const { user, setUser } = useStateContext();
@@ -55,7 +57,7 @@ const Navbar = () => {
             setActive("");
             window.scrollTo(0, 0);
           }}>
-          <img src={logo} alt="logo" className="w-9 h-9 object-contain" />
+          <img src={Logo} alt="logo" className="w-9 h-9 object-contain" />
           <p className="text-white text-[18px] font-bold cursor-pointer flex ">
             &nbsp;
             <span className="sm:block hidden"> AR Horizon</span>
@@ -97,13 +99,12 @@ const Navbar = () => {
         </ul>
 
         <div className="sm:hidden flex flex-1 justify-end items-center">
-          <img
-            src={toggle ? close : menu}
+          <div
             alt="menu"
             className="w-[28px] h-[28px] object-contain"
-            onClick={() => setToggle(!toggle)}
-          />
-
+            onClick={() => setToggle(!toggle)}>
+            {toggle ? <Close /> : <Menu />}
+          </div>
           <div
             className={`${
               !toggle ? "hidden" : "flex"

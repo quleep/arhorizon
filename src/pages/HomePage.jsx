@@ -1,15 +1,5 @@
 import React from "react";
-import {
-  About,
-  Contact,
-  Experience,
-  Feedbacks,
-  Hero,
-  Navbar,
-  Tech,
-  Works,
-  StarsCanvas,
-} from "../components";
+import { Hero, Navbar, Works } from "../components";
 
 function HomePage() {
   return (

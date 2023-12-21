@@ -5,7 +5,6 @@ import axios from "axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
 import { styles } from "../styles";
-import { services } from "../constants";
 import { SectionWrapper } from "../hoc";
 import { fadeIn, textVariant } from "../utils/motion";
 import { useNavigate } from "react-router-dom";

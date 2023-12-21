@@ -1,15 +1,5 @@
 import React from "react";
-import {
-  About,
-  Contact,
-  Experience,
-  Feedbacks,
-  Hero,
-  Navbar,
-  Tech,
-  Works,
-  StarsCanvas,
-} from "../components";
+import { Experience, Navbar } from "../components";
 function ProductId() {
   return (
     <div className="relative z-0 bg-primary">

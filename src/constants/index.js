@@ -4,5 +4,3 @@ export const navLinks = [
     title: "Login",
   },
 ];
-
-export { navLinks };
