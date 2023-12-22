@@ -3,6 +3,8 @@ import { Navbar } from "../components";
 import { useStateContext } from "../contexts/ContextProvider";
 import { useNavigate } from "react-router-dom";
 import SidebarDash from "../components/SidebarDash";
+import Tilt from "react-tilt";
+
 const Editor = () => {
   const { user } = useStateContext();
   const [open, setOpen] = useState(true);
@@ -32,13 +34,22 @@ const Editor = () => {
       <Navbar />
       <div className="flex mt-20">
         <SidebarDash />
-        <div className="h-screen flex-1 p-7 flex justify-end">
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-normal py-2 px-4 rounded h-16 sm:h-11"
-            onClick={() => nextPage1()}>
-            {" "}
-            Create New Experience
-          </button>
+        <div className="flex justify-center items-center w-full flex-1">
+          <div className="md:w-[500px] w-full" onClick={nextPage1}>
+            <div className="w-full green-pink-gradient p-[1px] rounded-[20px] shadow-card cursor-pointer transition hover:scale-105 ease-in-out duration-300">
+              <div
+                options={{
+                  max: 45,
+                  scale: 0.1,
+                  speed: 850,
+                }}
+                className="bg-tertiary rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col">
+                <h3 className="text-white text-[20px] font-bold text-center">
+                  Create a new Expereince
+                </h3>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>

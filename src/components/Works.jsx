@@ -23,17 +23,17 @@ const ProjectCard = ({
   };
   return (
     <div
-      className="bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full cursor-pointer transition hover:scale-105 ease-in-out"
+      className="bg-tertiary rounded-md sm:w-[360px] w-full cursor-pointer transition hover:scale-105 ease-in-out"
       onClick={() => nextPage(Id)}>
       <div className="relative w-full h-[230px]">
         <img
           src={TargetImageFile}
           alt="project_image"
-          className="w-full h-full object-cover rounded-2xl"
+          className="w-full h-full object-cover rounded-md"
         />
       </div>
 
-      <div className="mt-5">
+      <div className="py-4 px-1">
         <h3 className="text-white font-bold text-[20px]">{campaignName}</h3>
       </div>
     </div>
