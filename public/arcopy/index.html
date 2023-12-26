@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet" />
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
     <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
@@ -9,6 +14,49 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
   </head>
   <body style="margin: 0; overflow: hidden">
+    <style>
+      body {
+        margin: 0;
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .button1 {
+        padding: 15px 20px;
+        font: 12px "Montserrat", sans-serif;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-decoration: none;
+        text-align: center;
+        margin: 1em;
+        color: black;
+        background-color: #10ffb4;
+        transition: 0.2s ease-in-out;
+        border-left: 3px transparent solid;
+        border-right: 3px solid;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        background-color: white;
+        color: black;
+        border: 2px solid #04aa6d;
+        position: absolute;
+        bottom: 20px;
+        left: 1/2;
+        display: none;
+      }
+
+      .button1:hover {
+        color: #10ffb4;
+        background-color: black;
+        border-left: #10ffb4 3px solid;
+        border-right: #10ffb4 3px solid;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.2);
+      }
+    </style>
     <script>
       let responseData;
       let modelLoaded = false;
@@ -25,8 +73,8 @@
           const response = await axios.get(
             `https://3ef9gn5kk2.execute-api.ap-south-1.amazonaws.com/arnxt_prod/ar-horizon/uploadtargetimage?id=${id}`
           );
-          responseData = response;
-          console.log(startTime);
+          responseData = response.data;
+          console.log(responseData);
 
           renderAScene();
         } catch (error) {
@@ -76,55 +124,24 @@
       function renderAScene() {
         if (responseData) {
           document.body.innerHTML += `
-            <a-scene
-              vr-mode-ui="enabled: false;"
-              loading-screen="enabled: true;"
-              renderer="logarithmicDepthBuffer: true;"
-              arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
-              id="scene"
-              embedded
-              gesture-detector
-              log
-            >
-
+            <a-scene vr-mode-ui="enabled: false;" loading-screen="enabled: true;" renderer="logarithmicDepthBuffer: true;" arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" id="scene" embedded gesture-detector log>
               <a-assets>
-                <a-entity  id="animated-asset"  src="https://res.cloudinary.com/dd3c4j1sm/image/upload/v1703244065/Riva_Queen_Bed_Wenge_l8lvoo.glb"></a-entity>
-
+                <a-entity id="animated-asset" src="${responseData.TargetGlbFile}"></a-entity>
               </a-assets>
-
-       <a-assets>
-                  <audio id="sound" src="assets/AudioSource.mp3" preload="auto"></audio>
+              <a-assets>
+                <audio id="sound" src="assets/AudioSource.mp3" preload="auto"></audio>
               </a-assets>
-              <a-marker
-                id="animated-marker"
-                type="pattern"
-                preset="custom"
-                url="https://jobpostingbucket.s3.ap-south-1.amazonaws.com/markerPattern1702631567529.patt"
-                raycaster="objects: .clickable"
-                emitevents="true"
-                cursor="fuse: false; rayOrigin: mouse;"
-                          markerhandler
-              >
-                  <a-box id="loadingEl" color="tomato" depth="2" height="4" width="0.5" ></a-box>
-
-                <a-entity
-                  id="bowser-model"
-                  scale="1 1 1"
-                  animation-mixer="loop: repeat"
-                  gltf-model="#animated-asset"
-                  class="clickable"
-                  gesture-handler
-                  loader
-                ></a-entity>
-
+              <a-marker id="animated-marker" type="pattern" preset="custom" url="${responseData.TargetImagePattFile}" raycaster="objects: .clickable" emitevents="true" cursor="fuse: false; rayOrigin: mouse;" markerhandler>
+                 <a-box id="loadingEl" color="yellow" ></a-box>
+                <a-entity id="bowser-model" scale="1 1 1" animation-mixer="loop: repeat" gltf-model="#animated-asset" class="clickable" gesture-handler loader></a-entity>
                 <!-- Optional: Add raycaster and cursor components directly -->
                 <a-entity raycaster="objects: .clickable" cursor="fuse: false; rayOrigin: mouse;"></a-entity>
               </a-marker>
-
               <a-entity camera></a-entity>
-            </a-scene>
-                <button id="myButton" style="position: absolute; top: 20px; left: 20px; display: none;">Click me!</button>
+              <a-sound src="#sound" autoplay="true"></a-sound>
 
+            </a-scene>
+            <button id="myButton" class="button button1">Avail Coupon!</button>
           `;
         }
       }

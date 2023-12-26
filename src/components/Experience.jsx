@@ -14,36 +14,6 @@ import { textVariant } from "../utils/motion";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-const ExperienceCard = ({ experience }) => {
-  return (
-    <VerticalTimelineElement
-      contentStyle={{
-        background: "#1d1836",
-        color: "#fff",
-      }}
-      contentArrowStyle={{ borderRight: "7px solid  #232631" }}
-      iconStyle={{ background: "#383E56" }}
-      icon={
-        <div className="flex justify-center items-center w-full h-full">
-          <img
-            src={experience.TargetImageFile}
-            alt={experience.TargetImageFile}
-            className="w-[60%] h-[60%] object-contain"
-          />
-        </div>
-      }>
-      <div>
-        <h3 className="text-white text-[24px] font-bold">{experience.Id}</h3>
-        <p
-          className="text-secondary text-[16px] font-semibold"
-          style={{ margin: 0 }}>
-          {experience.Id}
-        </p>
-      </div>
-    </VerticalTimelineElement>
-  );
-};
-
 const Experience = () => {
   const [data, setData] = useState(null);
 
@@ -67,7 +37,7 @@ const Experience = () => {
     fetchProductData();
   }, [param]);
   return (
-    <>
+    <div>
       <motion.div variants={textVariant()}>
         <h2 className={`${styles.sectionHeadText} text-center`}>Steps</h2>
       </motion.div>
@@ -158,7 +128,7 @@ const Experience = () => {
           </VerticalTimeline>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
