@@ -9,7 +9,7 @@ const Computers = ({ isMobile }) => {
   // Move the useLoader hook call inside the Computers component
   const computer = useLoader(
     GLTFLoader,
-    "https://jobpostingbucket.s3.ap-south-1.amazonaws.com/model/oculus_quest_vr_headset.glb"
+    "https://res.cloudinary.com/dd3c4j1sm/image/upload/v1703659500/dron_explorer_001_nkwtue.glb"
   );
 
   return (
@@ -23,12 +23,13 @@ const Computers = ({ isMobile }) => {
         castShadow
         shadow-mapSize={1024}
       />
-      <pointLight intensity={1} />
+      <pointLight intensity={5} />
+      <directionalLight color="red" position={[0, 0, 5]} />
       <primitive
         object={computer.scene}
-        scale={isMobile ? 40 : 40}
-        position={isMobile ? [-0.5, -1, 3.2] : [-2, -1, 3]}
-        rotation={[-0.01, -1, -0.1]}
+        scale={isMobile ? 1.3 : 1.15}
+        position={isMobile ? [0.5, -1, 5] : [-2, -1, 3]}
+        rotation={[-0.01, -1.5, 0]}
       />
     </mesh>
   );
@@ -65,11 +66,7 @@ const ComputersCanvas = () => {
       camera={{ position: [20, 3, 5], fov: 25 }}
       gl={{ preserveDrawingBuffer: true }}>
       <Suspense fallback={<CanvasLoader />}>
-        <OrbitControls
-          enableZoom={false}
-          maxPolarAngle={Math.PI / 2}
-          minPolarAngle={Math.PI / 2}
-        />
+        <OrbitControls enableZoom={false} />
 
         <Computers isMobile={isMobile} />
       </Suspense>
