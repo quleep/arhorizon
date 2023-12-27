@@ -9,6 +9,8 @@ import "./App.css";
 import Analytics from "./pages/Analytics";
 import Stats from "./pages/Stats";
 import Upload from "./pages/Upload";
+import CouponCode from "./pages/CouponCode";
+import OTPScreen from "./pages/OTPScreen";
 function App() {
   return (
     <BrowserRouter>
@@ -20,6 +22,8 @@ function App() {
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/analytics/:id" element={<Stats />} />
         <Route path="/upload" element={<Upload />} />
+        <Route path="/couponCode" element={<CouponCode />} />
+        <Route path="/couponCodeOTP/:id" element={<OTPScreen />} />
 
         {/* dc */}
       </Routes>

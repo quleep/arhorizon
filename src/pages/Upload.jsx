@@ -669,7 +669,7 @@ function Upload() {
     </div>
     ${unloadFileTemplate(fileName, fileURL)}`;
   return (
-    <div class="pages-content">
+    <div class="pages-content bg-blue-gray-50">
       <div class="pages-content-container">
         <div class="pages-content-element">
           <p class="title">Marker-based</p>

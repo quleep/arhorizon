@@ -43,7 +43,7 @@ const Stats = () => {
     }
   }, []);
   return (
-    <>
+    <div className="bg-lightdark">
       <Navbar />
       <div className="flex mt-20">
         <SidebarDash />
@@ -119,7 +119,7 @@ const Stats = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

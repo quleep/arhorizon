@@ -30,7 +30,7 @@ const Editor = () => {
     }
   }, []);
   return (
-    <>
+    <div className="bg-lightdark">
       <Navbar />
       <div className="flex mt-20">
         <SidebarDash />
@@ -52,7 +52,7 @@ const Editor = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

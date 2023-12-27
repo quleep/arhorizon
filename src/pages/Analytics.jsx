@@ -17,7 +17,7 @@ const Analytics = () => {
     navigate(`/${route}`);
   };
   return (
-    <>
+    <div className="bg-lightdark">
       <Navbar />
       <div className="flex mt-20 ">
         <SidebarDash />
@@ -25,7 +25,7 @@ const Analytics = () => {
           <About />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
