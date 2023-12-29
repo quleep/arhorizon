@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Logo } from "../assets/index";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Spinner } from "@material-tailwind/react";
+import { useStateContext } from "../contexts/ContextProvider";
 
 function CouponCode() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const apiUrl =
     "https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/sendotparhorizon";
   const [loading, setLoading] = useState(false);
+  const param = useParams();
+  const { user, productId, setProductId } = useStateContext();
 
   const navigate = useNavigate();
   const handleSubmit = (event) => {
@@ -31,6 +34,11 @@ function CouponCode() {
         setLoading(false);
       });
   };
+
+  useEffect(() => {
+    setProductId(param.id);
+    console.log(productId);
+  }, [param]);
 
   return (
     <div className="relative flex min-h-screen flex-col justify-start overflow-hidden bg-lightdark py-12">

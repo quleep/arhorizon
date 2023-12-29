@@ -9,6 +9,7 @@ import {
   Typography,
   Spinner,
 } from "@material-tailwind/react";
+import { useStateContext } from "../contexts/ContextProvider";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -20,6 +21,8 @@ function OTPScreen() {
   const handleOpen = () => setOpen(!open);
   const [verificationResult, setVerificationResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { user, productId, setProductId } = useStateContext();
+  const [data, setData] = useState(false);
 
   const apiUrl =
     "https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/verifyarhorizonotp";
@@ -29,9 +32,6 @@ function OTPScreen() {
       .fill(null)
       .map(() => React.createRef())
   );
-  // Example phone number and OTP for demonstration
-  const correctPhoneNumber = "9855117155";
-  const correctOTP = "123456";
 
   const handleInputChange = (index, value) => {
     const newOtp = [...otp];
@@ -47,21 +47,6 @@ function OTPScreen() {
     e.preventDefault();
     const enteredOTP = otp.join("");
 
-    // if (enteredOTP === correctOTP) {
-    //   console.log("Verification successful. Allowing access.");
-
-    //   handleOpen();
-    // } else {
-    //   console.log(
-    //     "Verification failed. Please check your OTP and phone number."
-    //   );
-    //   toast.error(
-    //     "Verification failed. Please check your OTP and phone number.",
-    //     {
-    //       position: toast.POSITION.BOTTOM_CENTER,
-    //     }
-    //   );
-    // }
     const requestData = {
       phoneno: param.id,
       otp: enteredOTP,
@@ -70,10 +55,21 @@ function OTPScreen() {
 
     axios
       .post(apiUrl, requestData)
-      .then((response) => {
+      .then(async (response) => {
         setVerificationResult(response.data);
         console.log("Verification Result:", response.data);
-        handleOpen();
+        try {
+          const additionalApiResponse = await axios.get(
+            `https://3ef9gn5kk2.execute-api.ap-south-1.amazonaws.com/arnxt_prod/ar-horizon/uploadtargetimage?id=${productId}`
+          );
+
+          const additionalResponseData = additionalApiResponse.data;
+          console.log("Additional API Response:", additionalResponseData);
+          setData(additionalResponseData);
+          handleOpen();
+        } catch (additionalApiError) {
+          console.error("Error in additional API request:", additionalApiError);
+        }
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -154,12 +150,15 @@ function OTPScreen() {
           <div class="container bg-gradient-to-r from-indigo-500 to-indigo-300 text-white p-8 rounded-lg shadow-lg">
             <div class="text-3xl font-bold mb-4">Special Offer!</div>
             <div class="text-lg mb-4">
-              Get <span class="text-yellow-400 font-bold">25% OFF</span> your
-              next purchase!
+              Get{" "}
+              <span class="text-yellow-400 font-bold">
+                {data?.discountPercentage} OFF
+              </span>{" "}
+              your next purchase!
             </div>
             <div class="text-base mb-4">Use coupon code:</div>
             <div class="bg-white text-gray-800 rounded-lg px-4 py-2 flex items-center justify-between">
-              <span class="text-xl font-semibold">TAILOFFER25</span>
+              <span class="text-xl font-semibold">{data?.couponCode}</span>
               <button class="bg-blue-800 text-white px-3 py-1 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 Copy
               </button>

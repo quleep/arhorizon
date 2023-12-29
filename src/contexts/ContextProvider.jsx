@@ -5,6 +5,7 @@ const StateContext = createContext();
 export const ContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [selectedItem, setSelectedItem] = useState("editor");
+  const [productId, setProductId] = useState(null);
 
   useEffect(() => {
     const userInfo = localStorage.getItem("user");
@@ -20,6 +21,8 @@ export const ContextProvider = ({ children }) => {
         setUser,
         selectedItem,
         setSelectedItem,
+        productId,
+        setProductId,
       }}>
       {children}
     </StateContext.Provider>

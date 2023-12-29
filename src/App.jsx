@@ -22,7 +22,7 @@ function App() {
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/analytics/:id" element={<Stats />} />
         <Route path="/upload" element={<Upload />} />
-        <Route path="/couponCode" element={<CouponCode />} />
+        <Route path="/couponCode/:id" element={<CouponCode />} />
         <Route path="/couponCodeOTP/:id" element={<OTPScreen />} />
 
         {/* dc */}
