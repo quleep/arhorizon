@@ -85,7 +85,9 @@
         init: function () {
           let loader = document.querySelector("#loadingEl");
           let button = document.querySelector("#myButton");
-
+          button.addEventListener("click", () => {
+            window.location.href = "https://arhorizon.arnxt.com/couponCode";
+          });
           this.el.addEventListener("model-loaded", (e) => {
             if (!modelLoaded) {
               console.log(

@@ -7,15 +7,22 @@ import {
   DialogBody,
   DialogFooter,
   Typography,
+  Spinner,
 } from "@material-tailwind/react";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 function OTPScreen() {
   const param = useParams();
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(!open);
+  const [verificationResult, setVerificationResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const apiUrl =
+    "https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/verifyarhorizonotp";
 
   const inputRefs = useRef(
     Array(6)
@@ -40,21 +47,46 @@ function OTPScreen() {
     e.preventDefault();
     const enteredOTP = otp.join("");
 
-    if (enteredOTP === correctOTP) {
-      console.log("Verification successful. Allowing access.");
+    // if (enteredOTP === correctOTP) {
+    //   console.log("Verification successful. Allowing access.");
 
-      handleOpen();
-    } else {
-      console.log(
-        "Verification failed. Please check your OTP and phone number."
-      );
-      toast.error(
-        "Verification failed. Please check your OTP and phone number.",
-        {
-          position: toast.POSITION.BOTTOM_CENTER,
-        }
-      );
-    }
+    //   handleOpen();
+    // } else {
+    //   console.log(
+    //     "Verification failed. Please check your OTP and phone number."
+    //   );
+    //   toast.error(
+    //     "Verification failed. Please check your OTP and phone number.",
+    //     {
+    //       position: toast.POSITION.BOTTOM_CENTER,
+    //     }
+    //   );
+    // }
+    const requestData = {
+      phoneno: param.id,
+      otp: enteredOTP,
+    };
+    setLoading(true);
+
+    axios
+      .post(apiUrl, requestData)
+      .then((response) => {
+        setVerificationResult(response.data);
+        console.log("Verification Result:", response.data);
+        handleOpen();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        toast.error(
+          "Verification failed. Please check your OTP and phone number.",
+          {
+            position: toast.POSITION.BOTTOM_CENTER,
+          }
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
   return (
     <div class="relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-800 py-12">
@@ -65,7 +97,7 @@ function OTPScreen() {
               <p>OTP Verification</p>
             </div>
             <div class="flex flex-row text-sm font-medium text-gray-400">
-              <p>We have sent a code to your phone Number {param.id}.</p>
+              <p>We have sent a code to your Phone Number +91 {param.id}.</p>
             </div>
           </div>
 
@@ -74,7 +106,7 @@ function OTPScreen() {
               <div class="flex flex-col space-y-16">
                 <div className="flex flex-row items-center justify-between mx-auto w-full max-w-2xl">
                   {otp.map((digit, index) => (
-                    <div key={index} className="w-16 h-16">
+                    <div key={index} className="w-14 h-14">
                       <input
                         ref={inputRefs.current[index]}
                         className="w-full h-full flex flex-col items-center justify-center text-center px-5 outline-none rounded-xl border border-gray-300 text-lg bg-white focus:bg-gray-50 focus:ring-1 ring-blue-700"
@@ -93,7 +125,11 @@ function OTPScreen() {
                 <div class="flex flex-col space-y-5">
                   <div>
                     <button class="flex flex-row items-center justify-center text-center w-full border rounded-xl outline-none py-5 bg-blue-700 border-none text-white text-sm shadow-sm">
-                      Verify Account
+                      {loading ? (
+                        <Spinner className="h-6 w-6" color="pink" />
+                      ) : (
+                        "Verify OTP"
+                      )}
                     </button>
                   </div>
 
