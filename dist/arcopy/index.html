@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet" />
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
     <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
@@ -8,7 +13,6 @@
     <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
   </head>
-  <style></style>
   <body style="margin: 0; overflow: hidden">
     <style>
       body {
@@ -57,26 +61,14 @@
       let responseData;
       let modelLoaded = false;
       let markerFound = false;
-      const urlParams = new URLSearchParams(window.location.search);
-      const id = urlParams.get("id");
-      console.log("ID:", id);
-      async function logRandomNumber() {
-        try {
-          const response = await axios.get(
-            `https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/addtimespendarhorizon?id=${id}&timespend=5`
-          );
-          console.log("count");
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      }
 
-      setInterval(logRandomNumber, 5000);
       document.addEventListener("DOMContentLoaded", async () => {
+        startTime = Date.now();
+        localStorage.setItem("mytime", Date.now());
         const urlParams = new URLSearchParams(window.location.search);
         const id = urlParams.get("id");
         console.log("ID:", id);
-        startTime = Date.now();
+
         try {
           const response = await axios.get(
             `https://3ef9gn5kk2.execute-api.ap-south-1.amazonaws.com/arnxt_prod/ar-horizon/uploadtargetimage?id=${id}`
@@ -94,9 +86,9 @@
           let loader = document.querySelector("#loadingEl");
           let button = document.querySelector("#myButton");
           button.addEventListener("click", () => {
-            window.location.href = "https://192.168.0.194:5173/couponCode";
+            window.location.href = "https://arhorizon.arnxt.com/couponCode";
           });
-          this.el.addEventListener("model-loaded", async (e) => {
+          this.el.addEventListener("model-loaded", (e) => {
             if (!modelLoaded) {
               console.log(
                 "GLB model is loaded and visible for the first time."
@@ -109,17 +101,7 @@
               }
             }
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const id = urlParams.get("id");
-            console.log("ID:", id);
-            try {
-              const response = await axios.get(
-                `https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/addcountarhorizon?id=${id}`
-              );
-              console.log("count");
-            } catch (error) {
-              console.error("Error fetching data:", error);
-            }
+            console.log("Model loaded");
             loader.setAttribute("visible", "false");
           });
         },
