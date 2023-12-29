@@ -2,17 +2,29 @@ import React, { useState, useEffect } from "react";
 import { Logo } from "../assets/index";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { Button, Spinner } from "@material-tailwind/react";
 import { useStateContext } from "../contexts/ContextProvider";
-
+import {
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  Typography,
+  Spinner,
+} from "@material-tailwind/react";
 function CouponCode() {
+  const [open, setOpen] = React.useState(false);
+
   const [phoneNumber, setPhoneNumber] = useState("");
   const apiUrl =
     "https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/sendotparhorizon";
   const [loading, setLoading] = useState(false);
   const param = useParams();
   const { user, productId, setProductId } = useStateContext();
-
+  const handleOpen = () => setOpen(!open);
+  const handleClose = () => {
+    window.close();
+  };
   const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -40,14 +52,24 @@ function CouponCode() {
     if (markerStatus === "found") {
       console.log("Marker was found on the previous page.");
     } else {
-      window.location.href = `https://arhorizon.arnxt.com/ar/index.html?id=${param.id}`;
+      window.location.href = `https://arhorizon.arnxt.com}`;
+    }
+  }, []);
+  useEffect(() => {
+    var markerStatus = localStorage.getItem("ArUserDetected");
+
+    if (markerStatus === "found") {
+      handleOpen();
+    } else {
+      console.log("ArUserDetected was NOT found on the previous page.");
     }
   }, []);
   const localStorageAdd = () => {
-    localStorage.setItem("markerStatus", "found");
+    localStorage.setItem("ArUserDetected", "found");
   };
   const localStorageDelete = () => {
-    localStorage.removeItem("markerStatus");
+    localStorage.removeItem("ArUserDetected");
+    location.reload();
   };
   useEffect(() => {
     setProductId(param.id);
@@ -91,7 +113,52 @@ function CouponCode() {
             </div>
           </form>
         </div>
+        {/* <button onClick={localStorageAdd}>ADD</button>
+        <button onClick={localStorageDelete}>Dlete</button> */}
       </div>
+      <Dialog open={open} handler={handleOpen} size={"md"}>
+        <DialogBody>
+          <div class="w-full mx-auto">
+            <div class="flex flex-col p-5 rounded-lg bg-white">
+              <div class="flex flex-col items-center text-center">
+                <div class="inline-block p-4 bg-yellow-50 rounded-full">
+                  <svg
+                    class="w-12 h-12 fill-current text-yellow-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24">
+                    <path d="M0 0h24v24H0V0z" fill="none" />
+                    <path d="M12 5.99L19.53 19H4.47L12 5.99M12 2L1 21h22L12 2zm1 14h-2v2h2v-2zm0-6h-2v4h2v-4z" />
+                  </svg>
+                </div>
+                <h2 class="mt-2 font-semibold text-gray-800">
+                  Coupon Code Already Registered
+                </h2>
+                <p class="mt-2 text-sm text-gray-600 leading-relaxed">
+                  You have already registered the coupon code from this device.
+                  Please use another device if you want to register the coupon
+                  code again.
+                </p>
+              </div>
+            </div>
+          </div>
+        </DialogBody>
+        <DialogFooter>
+          <Button
+            variant="gradient"
+            color="green"
+            onClick={handleClose}
+            className="mr-1">
+            <span>Go Back</span>
+          </Button>
+          <Button
+            variant="gradient"
+            color="yellow"
+            onClick={localStorageDelete}
+            className="mr-1">
+            <span>Dev Try</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
     </div>
   );
 }

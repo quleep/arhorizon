@@ -21,6 +21,8 @@ function OTPScreen() {
   const handleOpen = () => setOpen(!open);
   const handleClose = () => {
     localStorage.removeItem("markerStatus");
+    localStorage.setItem("ArUserDetected", "found");
+
     setOpen(!open);
     window.close();
   };
