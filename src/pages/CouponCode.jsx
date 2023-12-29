@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Logo } from "../assets/index";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { Spinner } from "@material-tailwind/react";
+import { Button, Spinner } from "@material-tailwind/react";
 import { useStateContext } from "../contexts/ContextProvider";
 
 function CouponCode() {
@@ -34,7 +34,21 @@ function CouponCode() {
         setLoading(false);
       });
   };
+  useEffect(() => {
+    var markerStatus = localStorage.getItem("markerStatus");
 
+    if (markerStatus === "found") {
+      console.log("Marker was found on the previous page.");
+    } else {
+      window.location.href = `https://arhorizon.arnxt.com/ar/index.html?id=${param.id}`;
+    }
+  }, []);
+  const localStorageAdd = () => {
+    localStorage.setItem("markerStatus", "found");
+  };
+  const localStorageDelete = () => {
+    localStorage.removeItem("markerStatus");
+  };
   useEffect(() => {
     setProductId(param.id);
     console.log(productId);

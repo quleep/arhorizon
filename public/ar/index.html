@@ -62,6 +62,7 @@
       let responseData;
       let modelLoaded = false;
       let markerFound = false;
+
       const urlParams = new URLSearchParams(window.location.search);
       const id = urlParams.get("id");
       console.log("ID:", id);
@@ -98,8 +99,12 @@
         init: function () {
           let loader = document.querySelector("#loadingEl");
           let button = document.querySelector("#myButton");
-          button.addEventListener("click", () => {
-            window.location.href = `https://arhorizon.arnxt.com/couponCode/${id}`;
+
+          button.addEventListener("click", async () => {
+            window.open(`https://arhorizon.arnxt.com/couponCode/${id}`);
+            await new Promise((resolve) =>
+              window.addEventListener("custom", resolve)
+            );
           });
           this.el.addEventListener("model-loaded", async (e) => {
             if (!modelLoaded) {
@@ -137,6 +142,7 @@
             // Check if both model is loaded and marker is found
             if (modelLoaded && markerFound) {
               document.querySelector("#myButton").style.display = "block";
+              localStorage.setItem("markerStatus", "found");
             }
           });
 
@@ -166,6 +172,7 @@
 
             </a-scene>
             <button id="myButton" class="button button1">Avail Coupon!</button>
+
           `;
         }
       }

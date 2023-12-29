@@ -823,7 +823,7 @@ function Upload() {
       </div>
 
       <Dialog open={open} handler={handleOpen} size={"lg"}>
-        <DialogBody className="overflow-scroll">
+        <DialogBody>
           <Typography>
             <Tabs value="model">
               <TabsHeader>

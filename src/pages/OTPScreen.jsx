@@ -19,6 +19,11 @@ function OTPScreen() {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(!open);
+  const handleClose = () => {
+    localStorage.removeItem("markerStatus");
+    setOpen(!open);
+    window.close();
+  };
   const [verificationResult, setVerificationResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const { user, productId, setProductId } = useStateContext();
@@ -34,14 +39,24 @@ function OTPScreen() {
   );
 
   const handleInputChange = (index, value) => {
-    const newOtp = [...otp];
-    newOtp[index] = value;
+    const isPasteAction = value.length > 1;
 
-    if (value && index < inputRefs.current.length - 1) {
-      inputRefs.current[index + 1].current.focus();
+    if (isPasteAction) {
+      const otpArray = value.split("").slice(0, otp.length);
+      setOtp(otpArray);
+
+      if (inputRefs.current[index + 1] && otpArray.length < otp.length) {
+        inputRefs.current[index + 1].current.focus();
+      }
+    } else {
+      const newOtp = [...otp];
+      newOtp[index] = value;
+      setOtp(newOtp);
+      console.log(newOtp);
+      if (inputRefs.current[index + 1] && value.length === 1) {
+        inputRefs.current[index + 1].current.focus();
+      }
     }
-
-    setOtp(newOtp);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -175,9 +190,9 @@ function OTPScreen() {
           <Button
             variant="text"
             color="red"
-            onClick={handleOpen}
+            onClick={handleClose}
             className="mr-1">
-            <span>Close</span>
+            <span>Close Window</span>
           </Button>
         </DialogFooter>
       </Dialog>

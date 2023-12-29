@@ -11,6 +11,7 @@ import Stats from "./pages/Stats";
 import Upload from "./pages/Upload";
 import CouponCode from "./pages/CouponCode";
 import OTPScreen from "./pages/OTPScreen";
+import Ar from "./pages/Ar";
 function App() {
   return (
     <BrowserRouter>
@@ -24,6 +25,7 @@ function App() {
         <Route path="/upload" element={<Upload />} />
         <Route path="/couponCode/:id" element={<CouponCode />} />
         <Route path="/couponCodeOTP/:id" element={<OTPScreen />} />
+        <Route path="/arjs" element={<Ar />} />
 
         {/* dc */}
       </Routes>
