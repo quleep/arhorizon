@@ -129,9 +129,11 @@
           document.body.innerHTML += `
             <a-scene vr-mode-ui="enabled: false;" loading-screen="enabled: true;" renderer="logarithmicDepthBuffer: true;" arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" id="scene" embedded gesture-detector log>
               <a-assets>
+                                <a-entity id="animated-asset" src="https://res.cloudinary.com/dd3c4j1sm/image/upload/v1697128351/omanshu.glb"></a-entity>
               </a-assets>
             
-              <a-marker id="animated-marker" type="pattern" preset="custom" url="${responseData.TargetImagePattFile}" raycaster="objects: .clickable" emitevents="true" cursor="fuse: false; rayOrigin: mouse;" markerhandler>
+              <a-marker id="animated-marker" type="pattern" preset="custom" url="https://jobpostingbucket.s3.ap-south-1.amazonaws.com/markerPattern1702631567529.patt" raycaster="objects: .clickable" emitevents="true" cursor="fuse: false; rayOrigin: mouse;" markerhandler  smooth="true" smoothCount="10" smoothTolerance="0.1" smoothThreshold="20"
+>
                  <a-box id="loadingEl" color="yellow" ></a-box>
                 <a-entity id="bowser-model" scale="1 1 1" animation-mixer="loop: repeat" gltf-model="#animated-asset" class="clickable" gesture-handler loader></a-entity>
                 <!-- Optional: Add raycaster and cursor components directly -->
