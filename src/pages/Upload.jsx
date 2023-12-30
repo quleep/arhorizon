@@ -22,6 +22,7 @@ import { FaVideo } from "react-icons/fa";
 import { MdAudiotrack } from "react-icons/md";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Navbar } from "../components";
 
 function Upload() {
   const { MarkerModule, Package } = ARjsStudioBackend;
@@ -669,375 +670,62 @@ function Upload() {
     </div>
     ${unloadFileTemplate(fileName, fileURL)}`;
   return (
-    <div class="pages-content bg-blue-gray-50">
-      <div class="pages-content-container">
-        <div class="pages-content-element">
-          <p class="title">Marker-based</p>
-          <p class="paragraph">
-            A marker-based AR experience uses a black and white image to anchor
-            the AR content. Your scene will appear when the marker is in the
-            field of view of your camera.
-          </p>
-          <p class="paragraph">
-            You can print a paper version of your marker (which we recommend),
-            or display it on a screen.
-          </p>
-        </div>
-      </div>
-      <hr className="my-6" />
-      <div class="pages-content-container">
-        <div
-          class="pages-content-element"
-          style={{ display: "flex", flexDirection: "column", gap: "1em" }}>
-          <p class="lead">1. Add Campaign Name</p>
-          <p class="paragraph">
-            Create a distinctive campaign name by clicking the button below.
-          </p>
-
-          <div class="coupon-code-container">
-            <a class="button2" rel="noopener" onClick={handleOpen1}>
-              Add Campaign Name
-            </a>
-            <div id="selectedCampaignDiv" class="hiddenCampaign">
-              Campaign Name: <span id="selectedCampaignValue"></span>
-            </div>
+    <div>
+      <Navbar />
+      <div class="pages-content bg-blue-gray-50 mt-12">
+        <div class="pages-content-container">
+          <div class="pages-content-element">
+            <p class="title">Marker-based</p>
+            <p class="paragraph">
+              A marker-based AR experience uses a black and white image to
+              anchor the AR content. Your scene will appear when the marker is
+              in the field of view of your camera.
+            </p>
+            <p class="paragraph">
+              You can print a paper version of your marker (which we recommend),
+              or display it on a screen.
+            </p>
           </div>
         </div>
-      </div>
-      <hr />
-
-      <Dialog open={open1} handler={handleOpen1}>
-        <DialogBody>
-          <div style={{ display: "flex", flexDirection: "column", gap: "2em" }}>
-            <p class="lead">Add Campaign Name</p>
-            <div class="coupon-code-container">
-              <label for="couponCode" class="lead">
-                Campaign Name
-              </label>
-              <input
-                type="text"
-                id="campaignName"
-                name="campaignName"
-                placeholder="Enter Campaign Name"
-                value={campaignName}
-                onChange={handleCampaignNameChange}
-              />
-            </div>
-          </div>
-        </DialogBody>
-        <DialogFooter>
-          <Button
-            variant="text"
-            color="red"
-            onClick={handleOpen1}
-            className="mr-1">
-            <span>Cancel</span>
-          </Button>
-          <Button variant="gradient" color="green" onClick={handleOpen1}>
-            <span>Confirm</span>
-          </Button>
-        </DialogFooter>
-      </Dialog>
-      <div className="pages-content-container mt-12">
-        <div className="pages-content-element">
-          <p className="lead">2. Use a premade marker or upload your own</p>
-          <p className="paragraph">
-            Here is a sample marker for you. Feel free to use it as the marker
-            for your project. Alternatively, click “Upload image” to use a
-            custom one. Not sure what makes a good marker? Check out
-            <a
-              className="link"
-              target="_blank"
-              href="https://github.com/AR-js-org/studio/blob/master/what-makes-a-good-marker.md">
-              this guide
-            </a>
-            .
-          </p>
-          <label className="passive-button">
-            <input
-              id="marker-file"
-              type="file"
-              accept="image/png, image/jpeg"
-              hidden
-              onChange={(e) => handleMarkerUpload(e)}
-            />
-            Upload image
-          </label>
-          <p id="marker-error" className="error"></p>
-        </div>
-        <div id="marker-preview" target="marker-file">
-          <div className="marker">
-            <img src="./assets/default-marker.png" alt="Default marker png" />
-          </div>
+        <hr className="my-6" />
+        <div class="pages-content-container">
           <div
-            className="download-marker"
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              padding: "1em 0",
-            }}>
-            <div className="download-default-marker">
-              <span>
-                <svg width="17" height="16" viewBox="0 0 17 16" fill="none">
-                  <path
-                    d="M16.5 8L15.09 6.59L9.5 12.17V0H7.5V12.17L1.92 6.58L0.5 8L8.5 16L16.5 8Z"
-                    fill="black"
-                  />
-                </svg>
-              </span>
-              <a
-                className="filename"
-                style={{
-                  textDecoration: "none",
-                  color: "black",
-                  justifySelf: "flex-end",
-                }}
-                href="./assets/default-marker.png"
-                download>
-                Download marker
+            class="pages-content-element"
+            style={{ display: "flex", flexDirection: "column", gap: "1em" }}>
+            <p class="lead">1. Add Campaign Name</p>
+            <p class="paragraph">
+              Create a distinctive campaign name by clicking the button below.
+            </p>
+
+            <div class="coupon-code-container">
+              <a class="button2" rel="noopener" onClick={handleOpen1}>
+                Add Campaign Name
               </a>
+              <div id="selectedCampaignDiv" class="hiddenCampaign">
+                Campaign Name: <span id="selectedCampaignValue"></span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+        <hr />
 
-      <hr />
-      <p class="lead my-10">3. Choose from library</p>
-
-      <div className="flex justify-center items-center my-20">
-        <div className="xs:w-[600px] w-full" onClick={handleOpen}>
-          <div className="w-full green-pink-gradient p-[1px] rounded-[20px] shadow-card cursor-pointer transition hover:scale-105 ease-in-out duration-300">
-            <div
-              options={{
-                max: 45,
-                scale: 0.1,
-                speed: 850,
-              }}
-              className="bg-tertiary rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col">
-              <h3 className="text-white text-[20px] font-bold text-center">
-                Select or Upload from the 3D Library
-              </h3>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <Dialog open={open} handler={handleOpen} size={"lg"}>
-        <DialogBody>
-          <Typography>
-            <Tabs value="model">
-              <TabsHeader>
-                {data.map(({ label, value, icon }) => (
-                  <Tab key={value} value={value}>
-                    <div className="flex items-center gap-2">
-                      {React.createElement(icon, { className: "w-5 h-5" })}
-                      {label}
-                    </div>
-                  </Tab>
-                ))}
-              </TabsHeader>
-              <TabsBody>
-                <TabPanel value="model">
-                  <div class="flex flex-col items-center justify-center w-full scroll-auto">
-                    <label class="flex flex-col rounded-lg border-4 border-dashed w-2/3 h-40 p-10 group text-center passive-button file-input">
-                      <div class="h-full w-full text-center flex flex-col items-center justify-center ">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="w-10 h-10 text-blue-400 group-hover:text-blue-600 "
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor">
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                          />
-                        </svg>
-
-                        <p class="pointer-none text-gray-500 ">
-                          <a id="" class="text-blue-600 hover:underline">
-                            select a 3D Model
-                          </a>{" "}
-                          from your computer
-                        </p>
-                      </div>
-                      <input
-                        id="content-file"
-                        accept=".glb, .gltf"
-                        type="file"
-                        hidden
-                        onChange={handle3DModelUpload}
-                      />
-                    </label>
-                    <div class="py-4 font-bold">OR</div>
-
-                    <div class="grid grid-cols-4 md:grid-cols-5 gap-4 content-center">
-                      {model ? (
-                        model.map((item) => (
-                          <div
-                            key={item.Id}
-                            className={`flex justify-center items-center ${
-                              selectedGlb === item.animationglb
-                                ? "border-solid border-4 border-indigo-500/50 rounded-md "
-                                : ""
-                            }`}
-                            onClick={() => handleItemClick(item.animationglb)}>
-                            <img
-                              class="h-auto max-w-full rounded-lg"
-                              src={item.animationimage}
-                              alt=""
-                            />
-                          </div>
-                        ))
-                      ) : (
-                        <p></p>
-                      )}
-                    </div>
-                  </div>
-                  <p id="content-error" class="error"></p>
-                </TabPanel>
-                <TabPanel value="video">
-                  <div class="flex items-center justify-center w-full px-12">
-                    <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center passive-button file-input">
-                      <div class="h-full w-full text-center flex flex-col items-center justify-center ">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="w-10 h-10 text-blue-400 group-hover:text-blue-600 "
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor">
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                          />
-                        </svg>
-
-                        <p class="pointer-none text-gray-500 ">
-                          <a id="" class="text-blue-600 hover:underline">
-                            select a Video
-                          </a>{" "}
-                          from your computer
-                        </p>
-                      </div>
-                      <input
-                        id="content-file"
-                        accept="video/*"
-                        type="file"
-                        hidden
-                        onChange={handle3DModelUpload}
-                      />
-                    </label>
-                  </div>
-                </TabPanel>
-                <TabPanel value="audio">
-                  <div class="flex items-center justify-center w-full px-12">
-                    <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center passive-button file-input">
-                      <div class="h-full w-full text-center flex flex-col items-center justify-center ">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="w-10 h-10 text-blue-400 group-hover:text-blue-600 "
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor">
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                          />
-                        </svg>
-
-                        <p class="pointer-none text-gray-500 ">
-                          <a id="" class="text-blue-600 hover:underline">
-                            Select a Audio
-                          </a>{" "}
-                          from your computer
-                        </p>
-                      </div>
-                      <input
-                        id="content-file"
-                        accept="audio/*"
-                        type="file"
-                        hidden
-                        onChange={handle3DModelUpload}
-                      />
-                    </label>
-                  </div>
-                </TabPanel>
-              </TabsBody>
-            </Tabs>
-          </Typography>
-        </DialogBody>
-        <DialogFooter>
-          <Button
-            variant="text"
-            color="red"
-            onClick={handleOpen}
-            className="mr-1">
-            <span>Cancel</span>
-          </Button>
-          <Button variant="gradient" color="green" onClick={handleOpen}>
-            <span>Confirm</span>
-          </Button>
-        </DialogFooter>
-      </Dialog>
-      <hr />
-      <div>
-        <div class="row my-12">
-          <p class="lead">4. Coupon & Discount (Optional)</p>
-          <a class="button2" rel="noopener" onClick={handleOpen2}>
-            Add Coupon
-          </a>
-        </div>
-
-        <div class="buttons py-2">
-          <button
-            id="github-publish"
-            class="primary-button publish-disabled"
-            onClick={publish}>
-            Publish
-          </button>
-        </div>
-        <Dialog open={open2} handler={handleOpen2}>
+        <Dialog open={open1} handler={handleOpen1}>
           <DialogBody>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <p class="lead">Choose Coupon Code and Add Discount</p>
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "2em" }}>
+              <p class="lead">Add Campaign Name</p>
               <div class="coupon-code-container">
                 <label for="couponCode" class="lead">
-                  Coupon Code
+                  Campaign Name
                 </label>
                 <input
                   type="text"
-                  id="couponCode"
-                  name="couponCode"
-                  placeholder="Enter Coupon Code"
-                  value={couponCode}
-                  onChange={(e) => setCouponCode(e.target.value)}
-                  aria-labelledby="couponCodeLabel"
+                  id="campaignName"
+                  name="campaignName"
+                  placeholder="Enter Campaign Name"
+                  value={campaignName}
+                  onChange={handleCampaignNameChange}
                 />
-              </div>
-              <div class="coupon-code-container">
-                <label for="couponCode" class="lead">
-                  Discount
-                </label>
-
-                <div class="select">
-                  <select
-                    name="format"
-                    id="format"
-                    value={discount}
-                    onChange={(e) => setDiscount(e.target.value)}
-                    aria-labelledby="discountLabel">
-                    <option value="5%">5%</option>
-                    <option value="10%">10%</option>
-                    <option value="15%">15%</option>
-                    <option value="20%">20%</option>
-                    <option value="25%">25%</option>
-                  </select>
-                </div>
               </div>
             </div>
           </DialogBody>
@@ -1045,64 +733,383 @@ function Upload() {
             <Button
               variant="text"
               color="red"
-              onClick={handleOpen2}
+              onClick={handleOpen1}
               className="mr-1">
               <span>Cancel</span>
             </Button>
-            <Button variant="gradient" color="green" onClick={handleOpen2}>
+            <Button variant="gradient" color="green" onClick={handleOpen1}>
               <span>Confirm</span>
             </Button>
           </DialogFooter>
         </Dialog>
-      </div>
-      <Dialog open={open3} handler={handleOpen3} size={"lg"}>
-        <DialogBody>
-          <div className="flex flex-col justify-center items-center gap-5 md:flex-row">
-            <div className="flex flex-col">
-              <div className="font-bold">QR Code:</div>
-              <div
-                className="h-96 w-full rounded-lg object-contain object-center shadow-xl shadow-blue-gray-900/50"
-                src="https://images.unsplash.com/photo-1682407186023-12c70a4a35e0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2832&q=80"
-                alt="nature image">
-                <QRCode
-                  size={256}
+        <div className="pages-content-container mt-12">
+          <div className="pages-content-element">
+            <p className="lead">2. Use a premade marker or upload your own</p>
+            <p className="paragraph">
+              Here is a sample marker for you. Feel free to use it as the marker
+              for your project. Alternatively, click “Upload image” to use a
+              custom one. Not sure what makes a good marker? Check out
+              <a
+                className="link"
+                target="_blank"
+                href="https://github.com/AR-js-org/studio/blob/master/what-makes-a-good-marker.md">
+                this guide
+              </a>
+              .
+            </p>
+            <label className="passive-button">
+              <input
+                id="marker-file"
+                type="file"
+                accept="image/png, image/jpeg"
+                hidden
+                onChange={(e) => handleMarkerUpload(e)}
+              />
+              Upload image
+            </label>
+            <p id="marker-error" className="error"></p>
+          </div>
+          <div id="marker-preview" target="marker-file">
+            <div className="marker">
+              <img src="./assets/default-marker.png" alt="Default marker png" />
+            </div>
+            <div
+              className="download-marker"
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                padding: "1em 0",
+              }}>
+              <div className="download-default-marker">
+                <span>
+                  <svg width="17" height="16" viewBox="0 0 17 16" fill="none">
+                    <path
+                      d="M16.5 8L15.09 6.59L9.5 12.17V0H7.5V12.17L1.92 6.58L0.5 8L8.5 16L16.5 8Z"
+                      fill="black"
+                    />
+                  </svg>
+                </span>
+                <a
+                  className="filename"
                   style={{
-                    height: "100%",
-                    maxWidth: "100%",
-                    width: "100%",
-                    padding: "1rem",
+                    textDecoration: "none",
+                    color: "black",
+                    justifySelf: "flex-end",
                   }}
-                  value={qrcode}
-                  viewBox={`0 0 256 256`}
+                  href="./assets/default-marker.png"
+                  download>
+                  Download marker
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+        <p class="lead my-10">3. Choose from library</p>
+
+        <div className="flex justify-center items-center my-20">
+          <div className="xs:w-[600px] w-full" onClick={handleOpen}>
+            <div className="w-full green-pink-gradient p-[1px] rounded-[20px] shadow-2xl cursor-pointer transition hover:scale-105 ease-in-out duration-300">
+              <div
+                options={{
+                  max: 45,
+                  scale: 0.1,
+                  speed: 850,
+                }}
+                className="bg-tertiary rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col">
+                <h3 className="text-white text-[20px] font-bold text-center">
+                  Select or Upload from the 3D Library
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <Dialog open={open} handler={handleOpen} size={"lg"}>
+          <DialogBody>
+            <Typography>
+              <Tabs value="model">
+                <TabsHeader>
+                  {data.map(({ label, value, icon }) => (
+                    <Tab key={value} value={value}>
+                      <div className="flex items-center gap-2">
+                        {React.createElement(icon, { className: "w-5 h-5" })}
+                        {label}
+                      </div>
+                    </Tab>
+                  ))}
+                </TabsHeader>
+                <TabsBody>
+                  <TabPanel value="model">
+                    <div class="flex flex-col items-center justify-center w-full scroll-auto">
+                      <label class="flex flex-col rounded-lg border-4 border-dashed w-2/3 h-40 p-10 group text-center passive-button file-input">
+                        <div class="h-full w-full text-center flex flex-col items-center justify-center ">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="w-10 h-10 text-blue-400 group-hover:text-blue-600 "
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                            />
+                          </svg>
+
+                          <p class="pointer-none text-gray-500 ">
+                            <a id="" class="text-blue-600 hover:underline">
+                              select a 3D Model
+                            </a>{" "}
+                            from your computer
+                          </p>
+                        </div>
+                        <input
+                          id="content-file"
+                          accept=".glb, .gltf"
+                          type="file"
+                          hidden
+                          onChange={handle3DModelUpload}
+                        />
+                      </label>
+                      <div class="py-4 font-bold">OR</div>
+
+                      <div class="grid grid-cols-4 md:grid-cols-5 gap-4 content-center">
+                        {model ? (
+                          model.map((item) => (
+                            <div
+                              key={item.Id}
+                              className={`flex justify-center items-center ${
+                                selectedGlb === item.animationglb
+                                  ? "border-solid border-4 border-indigo-500/50 rounded-md "
+                                  : ""
+                              }`}
+                              onClick={() =>
+                                handleItemClick(item.animationglb)
+                              }>
+                              <img
+                                class="h-auto max-w-full rounded-lg"
+                                src={item.animationimage}
+                                alt=""
+                              />
+                            </div>
+                          ))
+                        ) : (
+                          <p></p>
+                        )}
+                      </div>
+                    </div>
+                    <p id="content-error" class="error"></p>
+                  </TabPanel>
+                  <TabPanel value="video">
+                    <div class="flex items-center justify-center w-full px-12">
+                      <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center passive-button file-input">
+                        <div class="h-full w-full text-center flex flex-col items-center justify-center ">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="w-10 h-10 text-blue-400 group-hover:text-blue-600 "
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                            />
+                          </svg>
+
+                          <p class="pointer-none text-gray-500 ">
+                            <a id="" class="text-blue-600 hover:underline">
+                              select a Video
+                            </a>{" "}
+                            from your computer
+                          </p>
+                        </div>
+                        <input
+                          id="content-file"
+                          accept="video/*"
+                          type="file"
+                          hidden
+                          onChange={handle3DModelUpload}
+                        />
+                      </label>
+                    </div>
+                  </TabPanel>
+                  <TabPanel value="audio">
+                    <div class="flex items-center justify-center w-full px-12">
+                      <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center passive-button file-input">
+                        <div class="h-full w-full text-center flex flex-col items-center justify-center ">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="w-10 h-10 text-blue-400 group-hover:text-blue-600 "
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                            />
+                          </svg>
+
+                          <p class="pointer-none text-gray-500 ">
+                            <a id="" class="text-blue-600 hover:underline">
+                              Select a Audio
+                            </a>{" "}
+                            from your computer
+                          </p>
+                        </div>
+                        <input
+                          id="content-file"
+                          accept="audio/*"
+                          type="file"
+                          hidden
+                          onChange={handle3DModelUpload}
+                        />
+                      </label>
+                    </div>
+                  </TabPanel>
+                </TabsBody>
+              </Tabs>
+            </Typography>
+          </DialogBody>
+          <DialogFooter>
+            <Button
+              variant="text"
+              color="red"
+              onClick={handleOpen}
+              className="mr-1">
+              <span>Cancel</span>
+            </Button>
+            <Button variant="gradient" color="green" onClick={handleOpen}>
+              <span>Confirm</span>
+            </Button>
+          </DialogFooter>
+        </Dialog>
+        <hr />
+        <div>
+          <div class="row my-12">
+            <p class="lead">4. Coupon & Discount (Optional)</p>
+            <a class="button2" rel="noopener" onClick={handleOpen2}>
+              Add Coupon
+            </a>
+          </div>
+
+          <div class="buttons py-2">
+            <button
+              id="github-publish"
+              class="primary-button publish-disabled"
+              onClick={publish}>
+              Publish
+            </button>
+          </div>
+          <Dialog open={open2} handler={handleOpen2}>
+            <DialogBody>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <p class="lead">Choose Coupon Code and Add Discount</p>
+                <div class="coupon-code-container">
+                  <label for="couponCode" class="lead">
+                    Coupon Code
+                  </label>
+                  <input
+                    type="text"
+                    id="couponCode"
+                    name="couponCode"
+                    placeholder="Enter Coupon Code"
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value)}
+                    aria-labelledby="couponCodeLabel"
+                  />
+                </div>
+                <div class="coupon-code-container">
+                  <label for="couponCode" class="lead">
+                    Discount
+                  </label>
+
+                  <div class="select">
+                    <select
+                      name="format"
+                      id="format"
+                      value={discount}
+                      onChange={(e) => setDiscount(e.target.value)}
+                      aria-labelledby="discountLabel">
+                      <option value="5%">5%</option>
+                      <option value="10%">10%</option>
+                      <option value="15%">15%</option>
+                      <option value="20%">20%</option>
+                      <option value="25%">25%</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </DialogBody>
+            <DialogFooter>
+              <Button
+                variant="text"
+                color="red"
+                onClick={handleOpen2}
+                className="mr-1">
+                <span>Cancel</span>
+              </Button>
+              <Button variant="gradient" color="green" onClick={handleOpen2}>
+                <span>Confirm</span>
+              </Button>
+            </DialogFooter>
+          </Dialog>
+        </div>
+        <Dialog open={open3} handler={handleOpen3} size={"lg"}>
+          <DialogBody>
+            <div className="flex flex-col justify-center items-center gap-5 md:flex-row">
+              <div className="flex flex-col">
+                <div className="font-bold">QR Code:</div>
+                <div
+                  className="h-96 w-full rounded-lg object-contain object-center shadow-xl shadow-blue-gray-900/50"
+                  src="https://images.unsplash.com/photo-1682407186023-12c70a4a35e0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2832&q=80"
+                  alt="nature image">
+                  <QRCode
+                    size={256}
+                    style={{
+                      height: "100%",
+                      maxWidth: "100%",
+                      width: "100%",
+                      padding: "1rem",
+                    }}
+                    value={qrcode}
+                    viewBox={`0 0 256 256`}
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col">
+                <div className="font-bold">Target Image:</div>
+                <img
+                  className="h-96 w-full rounded-lg object-contain object-center shadow-xl shadow-blue-gray-900/50"
+                  src={window.fullMarkerImage}
+                  alt="nature image"
                 />
               </div>
             </div>
-            <div className="flex flex-col">
-              <div className="font-bold">Target Image:</div>
-              <img
-                className="h-96 w-full rounded-lg object-contain object-center shadow-xl shadow-blue-gray-900/50"
-                src={window.fullMarkerImage}
-                alt="nature image"
-              />
-            </div>
+          </DialogBody>
+          <DialogFooter>
+            <Button
+              variant="text"
+              color="red"
+              onClick={handleOpen3}
+              className="mr-1">
+              <span>Close</span>
+            </Button>
+          </DialogFooter>
+        </Dialog>
+        {loading && (
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-full h-full flex justify-center items-center">
+            <div className="backdrop-blur-sm bg-white/30 absolute inset-0  opacity-75"></div>
+            <div className="border-t-transparent border-solid animate-spin rounded-full border-blue-400 border-8 h-64 w-64"></div>
           </div>
-        </DialogBody>
-        <DialogFooter>
-          <Button
-            variant="text"
-            color="red"
-            onClick={handleOpen3}
-            className="mr-1">
-            <span>Close</span>
-          </Button>
-        </DialogFooter>
-      </Dialog>
-      {loading && (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-full h-full flex justify-center items-center">
-          <div className="backdrop-blur-sm bg-white/30 absolute inset-0  opacity-75"></div>
-          <div className="border-t-transparent border-solid animate-spin rounded-full border-blue-400 border-8 h-64 w-64"></div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

@@ -12,6 +12,7 @@ import {
   Typography,
   Spinner,
 } from "@material-tailwind/react";
+import { ToastContainer, toast } from "react-toastify";
 function CouponCode() {
   const [open, setOpen] = React.useState(false);
 
@@ -41,6 +42,15 @@ function CouponCode() {
       })
       .catch((error) => {
         console.error("Error:", error);
+        if (error.response && error.response.status === 401) {
+          // Handle 401 Unauthorized error
+          toast.error(`${error.response.data}`, {
+            position: toast.POSITION.BOTTOM_CENTER,
+          });
+        } else {
+          // Handle other errors
+          toast.error("An error occurred. Please try again.");
+        }
       })
       .finally(() => {
         setLoading(false);
@@ -52,7 +62,7 @@ function CouponCode() {
     if (markerStatus === "found") {
       console.log("Marker was found on the previous page.");
     } else {
-      window.location.href = `https://arhorizon.arnxt.com}`;
+      window.location.href = `https://arhorizon.arnxt.com`;
     }
   }, []);
   useEffect(() => {
@@ -95,8 +105,10 @@ function CouponCode() {
               <input
                 id="phone"
                 required
-                type="number"
+                type="text"
                 pattern="[0-9]{10}"
+                maxLength="10"
+                inputMode="numeric"
                 className="text-base flex-1 px-4 py-3 focus:ring-blue-500 focus:border-blue-500 rounded-r-md w-full  rounded-md shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset"
                 placeholder="Phone number"
                 value={phoneNumber}
@@ -159,6 +171,7 @@ function CouponCode() {
           </Button>
         </DialogFooter>
       </Dialog>
+      <ToastContainer />
     </div>
   );
 }

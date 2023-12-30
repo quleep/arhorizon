@@ -377,7 +377,7 @@ select::-ms-expand {
   border: 1px solid #ccc; /* Adjust the border color according to your design */
   border-radius: 4px;
   width: 40%;
-  color: white;
+  color: black;
 }
 .hidden {
   display: none;
