@@ -17,7 +17,7 @@
     <audio id="myAudio">
       <source
         src="https://res.cloudinary.com/dd3c4j1sm/video/upload/v1703838875/x2mate.com_-_Matchday_Meal_music_cooking_128_kbps_oqgsea.mp3"
-        type="audio/mpeg" />
+        type="audio/mp3" />
       Your browser does not support the audio element.
     </audio>
 
@@ -68,7 +68,15 @@
       let responseData;
       let modelLoaded = false;
       let markerFound = false;
+      var x = document.getElementById("myAudio");
 
+      function playAudio() {
+        x.play();
+      }
+
+      function pauseAudio() {
+        x.pause();
+      }
       document.addEventListener("DOMContentLoaded", async () => {
         startTime = Date.now();
         localStorage.setItem("mytime", Date.now());
@@ -92,7 +100,6 @@
         init: function () {
           let loader = document.querySelector("#loadingEl");
           let button = document.querySelector("#myButton");
-          var x = document.getElementById("myAudio");
 
           button.addEventListener("click", () => {
             window.location.href = "https://arhorizon.arnxt.com/couponCode";
@@ -120,15 +127,12 @@
       AFRAME.registerComponent("markerhandler", {
         init: function () {
           this.el.addEventListener("markerFound", (e) => {
-            var entity = document.querySelector("[sound]");
-
             console.log("found");
             markerFound = true;
 
             // Check if both model is loaded and marker is found
             if (modelLoaded && markerFound) {
-              entity.components.sound.playSound();
-
+              x.play();
               document.querySelector("#myButton").style.display = "block";
             }
           });
@@ -189,10 +193,7 @@
             <a-scene vr-mode-ui="enabled: false;" loading-screen="enabled: true;" renderer="logarithmicDepthBuffer: true;" arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" id="scene" embedded gesture-detector log>
               <a-assets>
                                 <a-entity id="animated-asset" src="https://res.cloudinary.com/dd3c4j1sm/image/upload/v1697128351/omanshu.glb" position="0 0.5 0" ></a-entity>
-                                    <audio id="river" src="https://res.cloudinary.com/dd3c4j1sm/video/upload/v1703838875/x2mate.com_-_Matchday_Meal_music_cooking_128_kbps_oqgsea.mp3" preload="auto"></audio>
-
               </a-assets>
-            
               <a-marker id="animated-marker" type="pattern" preset="custom" url="https://jobpostingbucket.s3.ap-south-1.amazonaws.com/markerPattern1702631567529.patt" raycaster="objects: .clickable" emitevents="true" cursor="fuse: false; rayOrigin: mouse;" markerhandler  smooth="true" smoothCount="10" smoothTolerance="0.1" smoothThreshold="20" lerpsmooth
 >
                  <a-box id="loadingEl" color="yellow" ></a-box>
@@ -201,7 +202,6 @@
                 <a-entity raycaster="objects: .clickable" cursor="fuse: false; rayOrigin: mouse;"></a-entity>
               </a-marker>
               <a-entity camera look-controls-enabled="true"></a-entity>
-  <a-entity sound="src: #river"></a-entity>
 
             </a-scene>
             <button id="myButton" class="button button1">Avail Coupon!</button>

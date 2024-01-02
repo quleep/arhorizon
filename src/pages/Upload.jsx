@@ -56,6 +56,7 @@ function Upload() {
   ];
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [selectedModel, setSelectedModel] = useState(null);
 
   const [open, setOpen] = React.useState(false);
   const [open1, setOpen1] = React.useState(false);
@@ -101,10 +102,11 @@ function Upload() {
 
     fetchData();
   }, []);
-  const handleItemClick = (glb) => {
+  const handleItemClick = (item) => {
     // Perform actions with the selected item's Id
-    console.log(`Item with Id ${glb} clicked`);
-    setSelectedGlb(glb);
+    setSelectedModel(item);
+
+    setSelectedGlb(item.animationglb);
   };
   const handleCampaignNameChange = (event) => {
     setCampaignName(event.target.value);
@@ -687,7 +689,7 @@ function Upload() {
             </p>
           </div>
         </div>
-        <hr className="my-6" />
+        <hr className="my-6" style={{ color: "black" }} />
         <div class="pages-content-container">
           <div
             class="pages-content-element"
@@ -701,13 +703,19 @@ function Upload() {
               <a class="button2" rel="noopener" onClick={handleOpen1}>
                 Add Campaign Name
               </a>
-              <div id="selectedCampaignDiv" class="hiddenCampaign">
-                Campaign Name: <span id="selectedCampaignValue"></span>
-              </div>
             </div>
           </div>
+          {/* Display entered campaign name outside the popup */}
+          {campaignName && (
+            <div>
+              <p className="lead bg-yellow-400">
+                Entered Campaign Name: {campaignName}
+              </p>
+            </div>
+          )}
         </div>
-        <hr />
+
+        <hr className="bg-black" />
 
         <Dialog open={open1} handler={handleOpen1}>
           <DialogBody>
@@ -825,7 +833,19 @@ function Upload() {
             </div>
           </div>
         </div>
-
+        {selectedModel && (
+          <div className="">
+            <p className="lead my-5 bg-yellow-500 max-w-fit">
+              Selected 3D Model: {selectedModel.name}
+            </p>
+            <img
+              className="w-52 h-auto rounded-md "
+              src={selectedModel.animationimage}
+              alt={selectedModel.name}
+            />
+            {/* Add additional details or actions if needed */}
+          </div>
+        )}
         <Dialog open={open} handler={handleOpen} size={"lg"}>
           <DialogBody>
             <Typography>
@@ -886,9 +906,7 @@ function Upload() {
                                   ? "border-solid border-4 border-indigo-500/50 rounded-md "
                                   : ""
                               }`}
-                              onClick={() =>
-                                handleItemClick(item.animationglb)
-                              }>
+                              onClick={() => handleItemClick(item)}>
                               <img
                                 class="h-auto max-w-full rounded-lg"
                                 src={item.animationimage}
@@ -998,7 +1016,15 @@ function Upload() {
               Add Coupon
             </a>
           </div>
-
+          {/* Display selected coupon code and discount outside the coupon code dialog */}
+          {couponCode && discount && (
+            <div>
+              <p className=" my-10 bg-yellow-400 max-w-fit">
+                Selected Coupon Code: {couponCode}, Discount: {discount}
+              </p>
+              {/* Add additional details or actions if needed */}
+            </div>
+          )}
           <div class="buttons py-2">
             <button
               id="github-publish"

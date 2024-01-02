@@ -25,7 +25,9 @@ function SidebarDash() {
       <img
         src={Control}
         className={`absolute cursor-pointer -right-3 top-16 w-7 border-dark-purple
-           border-2 rounded-full  ${!open && "rotate-180"}`}
+           border-2 rounded-full  ${
+             !open && "rotate-180"
+           } transition hover:scale-105 ease-in-out duration-300`}
         onClick={() => setOpen(!open)}
       />
       <div className="flex gap-x-4 items-center">
@@ -43,7 +45,9 @@ function SidebarDash() {
             className={`flex rounded-md p-2 py-3 cursor-pointer text-white text-sm items-center gap-x-4
             ${Menu.gap ? "mt-9" : "mt-2"} ${index === 0 && "bg-light-white"} 
             hover:bg-blue-gray-400 hover:text-white ${
-              selectedItem === Menu.route ? "bg-blue-gray-300" : ""
+              selectedItem === Menu.route
+                ? "bg-blue-gray-300 transition hover:scale-105 ease-in-out duration-300"
+                : ""
             }`}
             onClick={() => {
               nextPage(Menu.route);
