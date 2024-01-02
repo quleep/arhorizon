@@ -101,6 +101,20 @@ function OTPScreen() {
         setLoading(false);
       });
   };
+  const handleCopy = () => {
+    const couponCode = data?.couponCode;
+
+    if (couponCode) {
+      // Copy to clipboard
+      navigator.clipboard.writeText(couponCode);
+
+      // Display toast notification
+      toast.success("Coupon code copied to clipboard!", {
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+    }
+  };
+
   return (
     <div class="relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-800 py-12">
       <div class="relative bg-white px-6 pt-10 pb-9 shadow-xl mx-auto w-full max-w-lg rounded-2xl">
@@ -176,13 +190,15 @@ function OTPScreen() {
             <div class="text-base mb-4">Use coupon code:</div>
             <div class="bg-white text-gray-800 rounded-lg px-4 py-2 flex items-center justify-between">
               <span class="text-xl font-semibold">{data?.couponCode}</span>
-              <button class="bg-blue-800 text-white px-3 py-1 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <button
+                class="bg-blue-800 text-white px-3 py-1 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onClick={handleCopy}>
                 Copy
               </button>
             </div>
             <div class="text-sm mt-4">
               <p>
-                Valid until <span class="font-semibold">December 31, 2023</span>
+                Valid until <span class="font-semibold">December 31, 2024</span>
               </p>
               <p>Terms and conditions apply.</p>
             </div>
