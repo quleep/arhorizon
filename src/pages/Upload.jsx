@@ -708,7 +708,7 @@ function Upload() {
           {/* Display entered campaign name outside the popup */}
           {campaignName && (
             <div>
-              <p className="lead bg-yellow-400">
+              <p className="lead bg-yellow-400 text-base">
                 Entered Campaign Name: {campaignName}
               </p>
             </div>
@@ -835,7 +835,7 @@ function Upload() {
         </div>
         {selectedModel && (
           <div className="">
-            <p className="lead my-5 bg-yellow-500 max-w-fit">
+            <p className="lead my-5 bg-yellow-500 max-w-fit text-base">
               Selected 3D Model: {selectedModel.name}
             </p>
             <img
@@ -1019,7 +1019,7 @@ function Upload() {
           {/* Display selected coupon code and discount outside the coupon code dialog */}
           {couponCode && discount && (
             <div>
-              <p className=" my-10 bg-yellow-400 max-w-fit">
+              <p className="lead my-10 bg-yellow-400 max-w-fit text-base">
                 Selected Coupon Code: {couponCode}, Discount: {discount}
               </p>
               {/* Add additional details or actions if needed */}

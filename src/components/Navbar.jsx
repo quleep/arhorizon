@@ -110,19 +110,37 @@ const Navbar = () => {
               !toggle ? "hidden" : "flex"
             } p-6 black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] z-10 rounded-xl`}>
             <ul className="list-none flex justify-end items-start flex-1 flex-col gap-4">
-              {navLinks.map((nav) => (
-                <li
-                  key={nav.id}
-                  className={`font-poppins font-medium cursor-pointer text-[16px] ${
-                    active === nav.title ? "text-white" : "text-secondary"
-                  }`}
-                  onClick={() => {
-                    setToggle(!toggle);
-                    setActive(nav.title);
-                  }}>
-                  <a href={`#${nav.id}`}>{nav.title}</a>
-                </li>
-              ))}
+              {user ? (
+                <>
+                  <li
+                    className={`${
+                      active === "Logout" ? "text-white" : "text-secondary"
+                    } hover:text-white text-[18px] font-medium cursor-pointer`}
+                    onClick={() => editorPage()}>
+                    <a>Editor</a>
+                  </li>
+                  <li
+                    className={`${
+                      active === "Logout" ? "text-white" : "text-secondary"
+                    } hover:text-white text-[18px] font-medium cursor-pointer`}
+                    onClick={() => logout()}>
+                    <a>Logout</a>
+                  </li>
+                </>
+              ) : (
+                <ul>
+                  {navLinks.map((nav) => (
+                    <li
+                      key={nav.id}
+                      className={`${
+                        active === nav.title ? "text-white" : "text-secondary"
+                      } hover:text-white text-[18px] font-medium cursor-pointer`}
+                      onClick={() => handleNavLinkClick(nav.id, nav.title)}>
+                      <a>{nav.title}</a>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </ul>
           </div>
         </div>

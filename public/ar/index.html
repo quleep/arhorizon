@@ -12,9 +12,18 @@
     <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
     <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
   </head>
   <style></style>
   <body style="margin: 0; overflow: hidden">
+    <audio id="myAudio" loop>
+      <source
+        src="https://res.cloudinary.com/dd3c4j1sm/video/upload/v1703838875/x2mate.com_-_Matchday_Meal_music_cooking_128_kbps_oqgsea.mp3"
+        type="audio/mp3" />
+      Your browser does not support the audio element.
+    </audio>
     <style>
       body {
         margin: 0;
@@ -57,11 +66,38 @@
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
           0 6px 20px 0 rgba(0, 0, 0, 0.2);
       }
+      .btn {
+        background-color: DodgerBlue;
+        border: none;
+        color: white;
+        padding: 12px 16px;
+        font-size: 16px;
+        cursor: pointer;
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        border-radius: 5px;
+        display: none;
+      }
+
+      /* Darker background on mouse-over */
+      .btn:hover {
+        background-color: RoyalBlue;
+      }
     </style>
     <script>
       let responseData;
       let modelLoaded = false;
       let markerFound = false;
+      var x = document.getElementById("myAudio");
+
+      function playAudio() {
+        if (x.paused) {
+          x.play();
+        } else {
+          x.pause();
+        }
+      }
 
       const urlParams = new URLSearchParams(window.location.search);
       const id = urlParams.get("id");
@@ -141,6 +177,7 @@
 
             // Check if both model is loaded and marker is found
             if (modelLoaded && markerFound) {
+              document.querySelector("#musicButton").style.display = "block";
               document.querySelector("#myButton").style.display = "block";
               localStorage.setItem("markerStatus", "found");
             }
@@ -217,6 +254,7 @@
 
             </a-scene>
             <button id="myButton" class="button button1">Avail Coupon!</button>
+            <button class="btn" id="musicButton" onclick="playAudio()"><i class="fa fa-music"></i></button>
 
           `;
         }
