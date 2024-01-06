@@ -37,7 +37,7 @@ const Experience = () => {
     fetchProductData();
   }, [param]);
   return (
-    <div className="mt-10">
+    <div className="mt-10 ">
       <motion.div variants={textVariant()}>
         <h2 className={`${styles.sectionHeadText} text-center`}>Steps</h2>
       </motion.div>

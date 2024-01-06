@@ -777,8 +777,8 @@ function Upload() {
             </label>
             <p id="marker-error" className="error"></p>
           </div>
-          <div id="marker-preview" target="marker-file">
-            <div className="marker">
+          <div id="marker-preview" target="marker-file" className="">
+            <div className="marker w-auto">
               <img src="./assets/default-marker.png" alt="Default marker png" />
             </div>
             <div
@@ -846,7 +846,11 @@ function Upload() {
             {/* Add additional details or actions if needed */}
           </div>
         )}
-        <Dialog open={open} handler={handleOpen} size={"lg"}>
+        <Dialog
+          open={open}
+          handler={handleOpen}
+          size={"xxl"}
+          className="h-[42rem] overflow-scroll">
           <DialogBody>
             <Typography>
               <Tabs value="model">
@@ -896,7 +900,7 @@ function Upload() {
                       </label>
                       <div class="py-4 font-bold">OR</div>
 
-                      <div class="grid grid-cols-4 md:grid-cols-5 gap-4 content-center">
+                      <div class="grid grid-cols-4 md:grid-cols-5 gap-4 content-center overflow-y-auto">
                         {model ? (
                           model.map((item) => (
                             <div
