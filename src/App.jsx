@@ -12,6 +12,7 @@ import Upload from "./pages/Upload";
 import CouponCode from "./pages/CouponCode";
 import OTPScreen from "./pages/OTPScreen";
 import Ar from "./pages/Ar";
+import TapUpload from "./pages/TapUpload";
 function App() {
   return (
     <BrowserRouter>
@@ -23,6 +24,8 @@ function App() {
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/analytics/:id" element={<Stats />} />
         <Route path="/upload" element={<Upload />} />
+        <Route path="/upload_tap_to_place" element={<TapUpload />} />
+
         <Route path="/couponCode/:id" element={<CouponCode />} />
         <Route path="/couponCodeOTP/:id" element={<OTPScreen />} />
         <Route path="/arjs" element={<Ar />} />

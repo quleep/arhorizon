@@ -46,7 +46,7 @@ const Navbar = () => {
     <nav
       className={`${
         styles.paddingX
-      } w-full flex items-center py-7 fixed top-0 z-20 ${
+      } w-full flex items-center py-1 fixed top-0 z-20 ${
         scrolled ? "bg-primary" : "bg-primary shadow-2xl shadow-cyan-700"
       }`}>
       <div className="w-full flex justify-between items-center max-w-7xl mx-auto mb-1">
@@ -57,10 +57,10 @@ const Navbar = () => {
             setActive("");
             window.scrollTo(0, 0);
           }}>
-          <img src={Logo} alt="logo" className="w-8 h-8 object-contain" />
+          <img src={Logo} alt="logo" className="w-20 h-20 object-contain" />
           <p className="text-white text-[18px] font-bold cursor-pointer flex ">
             &nbsp;
-            <span className="sm:block hidden"> AR Horizon</span>
+            <span className="sm:block hidden text-lg"> AR Horizon</span>
           </p>
         </Link>
 
