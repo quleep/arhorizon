@@ -300,6 +300,7 @@ function TapUpload() {
         campaignName: campaignName,
         email: user,
         TargetImageFile: selectedModel.animationimage,
+        tapToPlace: "yes",
       };
       const applicantResponse = await axios.post(
         "https://3ef9gn5kk2.execute-api.ap-south-1.amazonaws.com/arnxt_prod/ar-horizon/uploadtargetimage",
