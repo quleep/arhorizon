@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import Register from "./pages/Register";
 import ProductId from "./pages/ProductId";
 import Editor from "./pages/Editor";
+import EditorTap from "./pages/EditorTap";
 
 import "./App.css";
 import Analytics from "./pages/Analytics";
@@ -21,6 +22,8 @@ function App() {
         <Route path="/login" element={<Register />} />
         <Route path="/productid/:id" element={<ProductId />} />
         <Route path="/editor" element={<Editor />} />
+        <Route path="/editorTap" element={<EditorTap />} />
+
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/analytics/:id" element={<Stats />} />
         <Route path="/upload" element={<Upload />} />

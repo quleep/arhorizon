@@ -60,7 +60,12 @@ const Works = () => {
   return (
     <>
       <motion.div variants={textVariant()}>
-        <h2 className={`${styles.sectionHeadText}`}>Products.</h2>
+        <h2
+          className={
+            "text-white font-black md:text-[60px] sm:text-[50px] xs:text-[35px] text-[30px]"
+          }>
+          Products
+        </h2>
       </motion.div>
 
       <div className="mt-20 flex flex-wrap gap-7">

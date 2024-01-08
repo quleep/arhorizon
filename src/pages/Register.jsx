@@ -14,6 +14,7 @@ import {
 import Loader from "../components/Loader";
 import Alert from "../components/Alert";
 import Loading from "../components/Loading";
+import { Navbar } from "../components";
 
 const Register = () => {
   const [state, setState] = useState();

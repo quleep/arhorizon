@@ -25,8 +25,6 @@ import { useNavigate } from "react-router-dom";
 import { Navbar } from "../components";
 
 function TapUpload() {
-  const { MarkerModule, Package } = ARjsStudioBackend;
-
   const data = [
     {
       label: "3D Model",
@@ -309,7 +307,7 @@ function TapUpload() {
       console.log(applicantResponse);
       console.log(applicantResponse.data.Item.Id);
       setQRCode(
-        `https://arhorizon.arnxt.com/ar/index.html?id=${applicantResponse.data.Item.Id}`
+        `https://arhorizon.arnxt.com/tap_to_place/index.html?id=${applicantResponse.data.Item.Id}`
       );
     } catch (error) {
       console.error("An error occurred:", error);

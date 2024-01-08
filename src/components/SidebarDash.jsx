@@ -10,6 +10,11 @@ function SidebarDash() {
 
   const Menus = [
     { title: "Image Based AR", src: Folder, route: "editor", gap: true },
+    {
+      title: "Tap to Place on Ground",
+      src: Folder,
+      route: "editorTap",
+    },
 
     { title: "Analytics", src: Chart, route: "analytics" },
     // { title: "Products", src: "Folder", gap: true },
