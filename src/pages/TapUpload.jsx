@@ -288,7 +288,7 @@ function TapUpload() {
     try {
       const newApplicant = {
         Id: now.getTime().toString(),
-        AR_Link: `https://arhorizon.arnxt.com/ar/index.html?id=${now
+        AR_Link: `https://arhorizon.arnxt.com/tap_to_place/index.html?id=${now
           .getTime()
           .toString()}`,
 
