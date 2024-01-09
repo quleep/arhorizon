@@ -67,6 +67,7 @@ function OTPScreen() {
     const requestData = {
       phoneno: param.id,
       otp: enteredOTP,
+      productId: productId,
     };
     setLoading(true);
 
