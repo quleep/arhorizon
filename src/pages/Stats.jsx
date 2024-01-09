@@ -8,12 +8,14 @@ import { Navbar } from "../components";
 
 const Stats = () => {
   const [data, setData] = useState(null);
+  const [locationData, setLocationData] = useState(null);
+  const [location, setLocation] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const param = useParams();
   const navigate = useNavigate();
 
-  console.log(param.id);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -34,7 +36,25 @@ const Stats = () => {
     };
 
     fetchData();
-  }, [param.id]);
+  }, [param]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post(
+          "https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/gethorizoncampaigndata",
+          {
+            productId: data?.Id,
+          }
+        );
+        console.log(response);
+        setLocationData(response.data);
+      } catch (error) {
+        setError(error);
+      }
+    };
+
+    fetchData();
+  }, [data]);
   useEffect(() => {
     const userInfo = localStorage.getItem("user");
     if (!userInfo) {
@@ -42,6 +62,27 @@ const Stats = () => {
       navigate("/login");
     }
   }, []);
+
+  useEffect(() => {
+    console.log(locationData);
+    const updatedCityCounts = [];
+
+    locationData?.forEach((item) => {
+      const city = item.City;
+      const existingCityIndex = updatedCityCounts.findIndex(
+        (c) => c.city === city
+      );
+
+      if (existingCityIndex !== -1) {
+        updatedCityCounts[existingCityIndex].count += 1;
+      } else {
+        updatedCityCounts.push({ city, count: 1 });
+      }
+    });
+    setLocation(updatedCityCounts);
+    console.log(updatedCityCounts);
+  }, [locationData]);
+
   return (
     <div className="bg-lightdark">
       <Navbar />
@@ -74,7 +115,7 @@ const Stats = () => {
                         height="24"
                       />
                     </svg>
-                  </span>{" "}
+                  </span>
                 </h2>
               </div>
               <div class="grid max-w-screen-md gap-10 md:grid-cols-2 sm:mx-auto">
@@ -113,6 +154,46 @@ const Stats = () => {
                   <div class="w-11/12 h-2 mx-auto bg-gray-900 rounded-b opacity-75" />
                   <div class="w-10/12 h-2 mx-auto bg-gray-900 rounded-b opacity-50" />
                   <div class="w-9/12 h-2 mx-auto bg-gray-900 rounded-b opacity-25" />
+                </div>
+              </div>
+              <div class="w-2/3  px-4 mx-auto mt-24">
+                <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white ">
+                  <div class="rounded-t mb-0 px-4 py-3 border-0">
+                    <div class="flex flex-wrap items-center">
+                      <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+                        <h3 class="font-bold text-lg text-blue-gray-800">
+                          Registered Users by City
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="block w-full overflow-x-auto">
+                    <table class="items-center w-full border-collapse text-blueGray-700  ">
+                      <thead class="thead-light ">
+                        <tr>
+                          <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                            City
+                          </th>
+                          <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                            Number of users
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {location?.map((nav) => (
+                          <tr>
+                            <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                              {nav.city}
+                            </th>
+                            <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                              {nav.count}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
