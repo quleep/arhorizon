@@ -65,22 +65,23 @@ const Stats = () => {
 
   useEffect(() => {
     console.log(locationData);
-    const updatedCityCounts = [];
+    const updatedStateCounts = [];
 
     locationData?.forEach((item) => {
-      const city = item.City;
-      const existingCityIndex = updatedCityCounts.findIndex(
-        (c) => c.city === city
+      const state = item.State; // Change from "city" to "State"
+      const existingStateIndex = updatedStateCounts.findIndex(
+        (c) => c.state === state
       );
 
-      if (existingCityIndex !== -1) {
-        updatedCityCounts[existingCityIndex].count += 1;
+      if (existingStateIndex !== -1) {
+        updatedStateCounts[existingStateIndex].count += 1;
       } else {
-        updatedCityCounts.push({ city, count: 1 });
+        updatedStateCounts.push({ state, count: 1 });
       }
     });
-    setLocation(updatedCityCounts);
-    console.log(updatedCityCounts);
+
+    setLocation(updatedStateCounts);
+    console.log(updatedStateCounts);
   }, [locationData]);
 
   return (
@@ -145,9 +146,12 @@ const Stats = () => {
                       </p>
                       <div class="flex items-center justify-center">
                         <p class="mr-2 text-5xl font-semibold text-white lg:text-6xl">
-                          {data?.timespend}
+                          {data?.timespend
+                            ? (data.timespend / 60).toFixed(2)
+                            : 0}{" "}
+                          {/* Convert seconds to minutes */}
                         </p>
-                        <p class="text-base text-gray-500">seconds</p>
+                        <p class="text-base text-gray-500">minutes</p>
                       </div>
                     </div>
                   </div>
@@ -162,7 +166,7 @@ const Stats = () => {
                     <div class="flex flex-wrap items-center">
                       <div class="relative w-full px-4 max-w-full flex-grow flex-1">
                         <h3 class="font-bold text-lg text-blue-gray-800">
-                          Registered Users by City
+                          Viewed Users by States
                         </h3>
                       </div>
                     </div>
@@ -173,10 +177,10 @@ const Stats = () => {
                       <thead class="thead-light ">
                         <tr>
                           <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                            City
+                            State
                           </th>
                           <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                            Number of users
+                            Number of users by State
                           </th>
                         </tr>
                       </thead>
@@ -184,7 +188,7 @@ const Stats = () => {
                         {location?.map((nav) => (
                           <tr>
                             <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                              {nav.city}
+                              {nav.state}
                             </th>
                             <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                               {nav.count}
