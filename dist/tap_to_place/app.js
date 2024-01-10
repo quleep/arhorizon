@@ -6,6 +6,7 @@ import { GLTFLoader } from "https://cdn.skypack.dev/three@0.127.0/examples/jsm/l
 
 // ====== ThreeJS ======
 let responseData;
+let button = document.querySelector("#myButton");
 
 var renderer, scene, camera, floor, raycaster, clock, animationMixers, started;
 const urlParams = new URLSearchParams(window.location.search);
@@ -125,6 +126,13 @@ function onTouch(touchPos) {
       const action = mixer.clipAction(animations[0]);
       action.play();
       animationMixers.push(mixer);
+      document.querySelector("#myButton").style.display = "block";
+      button.addEventListener("click", async () => {
+        window.open(`https://arhorizon.arnxt.com/couponCode/${id}`);
+        await new Promise((resolve) =>
+          window.addEventListener("custom", resolve)
+        );
+      });
     });
 
     if (!started) {
