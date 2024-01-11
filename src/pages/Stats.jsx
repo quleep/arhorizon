@@ -26,8 +26,6 @@ const Stats = () => {
           }
         );
         setData(response.data[0]);
-
-        console.log(response.data);
       } catch (error) {
         setError(error);
       } finally {
@@ -46,7 +44,6 @@ const Stats = () => {
             productId: data?.Id,
           }
         );
-        console.log(response);
         setLocationData(response.data);
       } catch (error) {
         setError(error);
@@ -64,24 +61,37 @@ const Stats = () => {
   }, []);
 
   useEffect(() => {
-    console.log(locationData);
-    const updatedStateCounts = [];
+    if (!locationData || locationData.length === 0) {
+      // handle empty or undefined locationData
+      return;
+    }
 
-    locationData?.forEach((item) => {
-      const state = item.State; // Change from "city" to "State"
-      const existingStateIndex = updatedStateCounts.findIndex(
-        (c) => c.state === state
+    const combinedCounts = [];
+
+    locationData.forEach((item) => {
+      const state = item.State;
+      const city = item.City;
+
+      // Update combined counts
+      const existingIndex = combinedCounts.findIndex(
+        (count) => count.state === state
       );
 
-      if (existingStateIndex !== -1) {
-        updatedStateCounts[existingStateIndex].count += 1;
+      if (existingIndex !== -1) {
+        combinedCounts[existingIndex].count += 1;
+        // Check if the city is not already in the cities array
+        if (!combinedCounts[existingIndex].cities.includes(city)) {
+          combinedCounts[existingIndex].cities.push(city);
+        }
       } else {
-        updatedStateCounts.push({ state, count: 1 });
+        combinedCounts.push({ state, count: 1, cities: [city] });
       }
     });
+    const combin = [
+      { state: "Delhi", count: 1, cities: ["New Delhi", "Ambolie"] },
+    ];
 
-    setLocation(updatedStateCounts);
-    console.log(updatedStateCounts);
+    setLocation(combinedCounts);
   }, [locationData]);
 
   return (
@@ -160,7 +170,7 @@ const Stats = () => {
                   <div class="w-9/12 h-2 mx-auto bg-gray-900 rounded-b opacity-25" />
                 </div>
               </div>
-              <div class="w-2/3  px-4 mx-auto mt-24">
+              <div class="w-4/5  px-4 mx-auto mt-24">
                 <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white ">
                   <div class="rounded-t mb-0 px-4 py-3 border-0">
                     <div class="flex flex-wrap items-center">
@@ -180,6 +190,9 @@ const Stats = () => {
                             State
                           </th>
                           <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                            City
+                          </th>
+                          <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                             Number of users by State
                           </th>
                         </tr>
@@ -189,6 +202,10 @@ const Stats = () => {
                           <tr>
                             <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                               {nav.state}
+                            </th>
+
+                            <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                              {nav.cities.length > 0 ? nav.cities[0] : ""}
                             </th>
                             <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                               {nav.count}

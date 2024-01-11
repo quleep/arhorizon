@@ -26,8 +26,6 @@ const About = () => {
           }
         );
         setData(response.data);
-
-        console.log(data);
       } catch (error) {
         setError(error);
       } finally {
@@ -40,7 +38,9 @@ const About = () => {
   return (
     <>
       <div>
-        <p className={styles.sectionSubText}>Campaign Name</p>
+        <p className="sm:text-[18px] text-[14px] text-secondary tracking-wider text-center">
+          Campaign
+        </p>
       </div>
 
       <div className="mt-20 flex flex-wrap gap-10">

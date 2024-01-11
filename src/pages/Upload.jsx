@@ -94,7 +94,6 @@ function Upload() {
         );
 
         setModel(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -110,14 +109,12 @@ function Upload() {
   };
   const handleCampaignNameChange = (event) => {
     setCampaignName(event.target.value);
-    console.log(event.target.value);
   };
   const handle3DModelUpload = (event) => {
     const file = event.target.files[0];
     window.assetType = getFileType(file); // set the assetType according to the file extension.
     window.assetParam.scale = 1.0;
     window.assetParam.size = { width: 1.0, height: 1.0, depth: 1.0 };
-    console.log(window.assetType);
 
     if (isValidFile(window.assetType, file, "content-error")) {
       switch (window.assetType) {
@@ -162,7 +159,6 @@ function Upload() {
     reader.onloadend = function () {
       //for backend api asset needs only base64 part
       window.assetFile = Array.from(new Uint8Array(reader.result));
-      console.log(window.assetFile);
       window.assetName = file.type.replace("audio/", "asset.");
       checkUserUploadStatus();
     };
@@ -179,7 +175,6 @@ function Upload() {
     reader.onloadend = function () {
       //for backend api asset needs only base64 part
       window.assetFile = Array.from(new Uint8Array(reader.result));
-      console.log(window.assetFile);
       window.assetName = file.type.replace("video/", "asset.");
       checkUserUploadStatus();
     };
@@ -213,7 +208,6 @@ function Upload() {
         //for backend api asset needs only base64 part
         window.assetFile = reader.result.split(",")[1];
         window.assetName = "asset.glb";
-        console.log(window.assetFile);
         checkUserUploadStatus();
         let preview = document.getElementById("content-preview");
         preview.innerHTML = previewModelTemplate(reader.result, file.name);
@@ -282,7 +276,6 @@ function Upload() {
   }
   function handleMarkerUpload(event) {
     const file = event.target.files[0];
-    console.log(event);
 
     if (!isValidFile("image", file, "marker-error")) return;
 
@@ -372,8 +365,6 @@ function Upload() {
         "https://3ef9gn5kk2.execute-api.ap-south-1.amazonaws.com/arnxt_prod/ar-horizon/uploadtargetimage",
         newApplicant
       );
-      console.log(applicantResponse);
-      console.log(applicantResponse.data.Item.Id);
       setQRCode(
         `https://arhorizon.arnxt.com/ar/index.html?id=${applicantResponse.data.Item.Id}`
       );

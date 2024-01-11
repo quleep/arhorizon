@@ -114,7 +114,6 @@ const LoginForm = () => {
         .then((res) => {
           setUserSession(res.data.user, res.data.token);
           setIsLoadingLogin(false);
-          console.log(res.data.user);
           navigate(`/editor`);
           window.location.reload();
         })
@@ -3756,7 +3755,6 @@ const RegisterForm = ({ states, cities }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log(name);
     setRegistrationData((prevData) => ({
       ...prevData,
       [name]: value,

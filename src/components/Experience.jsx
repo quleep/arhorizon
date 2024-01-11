@@ -21,7 +21,6 @@ const Experience = () => {
   const param = useParams();
 
   useEffect(() => {
-    console.log(param.id);
     const fetchProductData = async () => {
       try {
         const response = await axios.get(
@@ -30,7 +29,6 @@ const Experience = () => {
         setData(response.data);
         // Check if the tapToPlace key is present
         setIsTapToPlacePresent("tapToPlace" in response.data);
-        console.log(response.data);
       } catch (error) {
         console.error(error);
       }

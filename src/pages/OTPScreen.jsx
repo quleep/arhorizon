@@ -54,7 +54,6 @@ function OTPScreen() {
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
-      console.log(newOtp);
       if (inputRefs.current[index + 1] && value.length === 1) {
         inputRefs.current[index + 1].current.focus();
       }
@@ -75,14 +74,12 @@ function OTPScreen() {
       .post(apiUrl, requestData)
       .then(async (response) => {
         setVerificationResult(response.data);
-        console.log("Verification Result:", response.data);
         try {
           const additionalApiResponse = await axios.get(
             `https://3ef9gn5kk2.execute-api.ap-south-1.amazonaws.com/arnxt_prod/ar-horizon/uploadtargetimage?id=${productId}`
           );
 
           const additionalResponseData = additionalApiResponse.data;
-          console.log("Additional API Response:", additionalResponseData);
           setData(additionalResponseData);
           handleOpen();
         } catch (additionalApiError) {

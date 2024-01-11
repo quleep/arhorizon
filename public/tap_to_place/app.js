@@ -7,6 +7,7 @@ import { GLTFLoader } from "https://cdn.skypack.dev/three@0.127.0/examples/jsm/l
 // ====== ThreeJS ======
 let responseData;
 let button = document.querySelector("#myButton");
+let currentModel; // Variable to keep track of the currently displayed model
 
 var renderer, scene, camera, floor, raycaster, clock, animationMixers, started;
 const urlParams = new URLSearchParams(window.location.search);
@@ -21,6 +22,18 @@ try {
 } catch (error) {
   console.error("Error fetching data:", error);
 }
+async function logRandomNumber() {
+  try {
+    const response = await axios.get(
+      `https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/addtimespendarhorizon?id=${id}&timespend=5`
+    );
+    console.log("count");
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+}
+
+setInterval(logRandomNumber, 5000);
 function setupRenderer(rendererCanvas) {
   const width = rendererCanvas.width;
   const height = rendererCanvas.height;
@@ -103,42 +116,68 @@ function onTouch(touchPos) {
   const intersects = raycaster.intersectObject(floor);
 
   if (intersects.length > 0 && intersects[0].object == floor) {
-    // Load a 3D model and add it to the scene over touched position
-    const gltfLoader = new GLTFLoader();
-    gltfLoader.load(`${responseData?.TargetGlbFile}`, (gltf) => {
-      const model = gltf.scene;
-      const animations = gltf.animations;
-      model.scale.set(0.5, 0.5, 0.5);
-
-      model.position.set(
+    // Check if there's already a model displayed
+    if (currentModel) {
+      // Shift the existing model to a new position
+      currentModel.position.set(
         intersects[0].point.x,
         intersects[0].point.y,
         intersects[0].point.z
       );
-      // Model looking to the camera on Y axis
-      model.rotation.y = Math.atan2(
-        camera.position.x - model.position.x,
-        camera.position.z - model.position.z
-      );
-      scene.add(model);
-      // Play model animation
-      const mixer = new THREE.AnimationMixer(model);
-      const action = mixer.clipAction(animations[0]);
-      action.play();
-      animationMixers.push(mixer);
-      document.querySelector("#myButton").style.display = "block";
-      button.addEventListener("click", async () => {
-        window.open(`https://arhorizon.arnxt.com/couponCode/${id}`);
-        await new Promise((resolve) =>
-          window.addEventListener("custom", resolve)
-        );
-      });
-    });
+    } else {
+      // Load a new 3D model and add it to the scene
+      const gltfLoader = new GLTFLoader();
+      gltfLoader.load(`${responseData?.TargetGlbFile}`, async (gltf) => {
+        const model = gltf.scene;
+        const animations = gltf.animations;
+        model.scale.set(0.5, 0.5, 0.5);
 
-    if (!started) {
-      // Start tracking on first touch
-      OX.start();
-      started = true;
+        model.position.set(
+          intersects[0].point.x,
+          intersects[0].point.y,
+          intersects[0].point.z
+        );
+
+        // Model looking to the camera on Y axis
+        model.rotation.y = Math.atan2(
+          camera.position.x - model.position.x,
+          camera.position.z - model.position.z
+        );
+
+        scene.add(model);
+
+        // Play model animation
+        const mixer = new THREE.AnimationMixer(model);
+        const action = mixer.clipAction(animations[0]);
+        action.play();
+        animationMixers.push(mixer);
+
+        // Update the currentModel variable
+        currentModel = model;
+
+        document.querySelector("#myButton").style.display = "block";
+        button.addEventListener("click", async () => {
+          window.open(`https://arhorizon.arnxt.com/couponCode/${id}`);
+          await new Promise((resolve) =>
+            window.addEventListener("custom", resolve)
+          );
+        });
+
+        try {
+          const response = await axios.get(
+            `https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/addcountarhorizon?id=${id}`
+          );
+          console.log("count");
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      });
+
+      if (!started) {
+        // Start tracking on first touch
+        OX.start();
+        started = true;
+      }
     }
   }
 }

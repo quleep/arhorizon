@@ -9,7 +9,6 @@ export const ContextProvider = ({ children }) => {
 
   useEffect(() => {
     const userInfo = localStorage.getItem("user");
-    console.log(userInfo);
 
     setUser(userInfo);
   }, []);

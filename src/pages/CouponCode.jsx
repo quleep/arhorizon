@@ -37,7 +37,6 @@ function CouponCode() {
     axios
       .post(apiUrl, requestData)
       .then((response) => {
-        console.log("Response:", response.data);
         navigate(`/couponCodeOTP/${phoneNumber}`);
       })
       .catch((error) => {
@@ -60,7 +59,6 @@ function CouponCode() {
     var markerStatus = localStorage.getItem("markerStatus");
 
     if (markerStatus === "found") {
-      console.log("Marker was found on the previous page.");
     } else {
       window.location.href = `https://arhorizon.arnxt.com`;
     }
@@ -71,7 +69,6 @@ function CouponCode() {
     if (markerStatus === "found") {
       handleOpen();
     } else {
-      console.log("ArUserDetected was NOT found on the previous page.");
     }
   }, []);
   const localStorageAdd = () => {
@@ -83,7 +80,6 @@ function CouponCode() {
   };
   useEffect(() => {
     setProductId(param.id);
-    console.log(productId);
   }, [param]);
 
   return (
