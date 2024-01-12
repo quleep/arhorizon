@@ -6,6 +6,7 @@ import {
   DialogBody,
   DialogFooter,
   Typography,
+  Input,
 } from "@material-tailwind/react";
 import QRCode from "react-qr-code";
 
@@ -26,6 +27,7 @@ import { Navbar } from "../components";
 
 function Upload() {
   const { MarkerModule, Package } = ARjsStudioBackend;
+  const [cardExpires, setCardExpires] = React.useState("");
 
   const data = [
     {
@@ -78,6 +80,19 @@ function Upload() {
   const handleOpen1 = () => setOpen1(!open1);
   const handleOpen2 = () => setOpen2(!open2);
   const handleOpen3 = () => setOpen3(!open3);
+  const handleDiscountChange = (e) => {
+    let inputDiscount = e.target.value;
+
+    // Ensure the input is a valid number
+    if (inputDiscount === "" || isNaN(inputDiscount)) {
+      // If the input is empty or not a number, set it to an empty string
+      setDiscount("");
+    } else {
+      // Otherwise, ensure the input is less than 100
+      const clampedDiscount = Math.min(parseFloat(inputDiscount), 100);
+      setDiscount(clampedDiscount);
+    }
+  };
 
   useEffect(() => {
     const userInfo = localStorage.getItem("user");
@@ -662,6 +677,7 @@ function Upload() {
         </a-scene>
     </div>
     ${unloadFileTemplate(fileName, fileURL)}`;
+
   return (
     <div>
       <Navbar />
@@ -1050,20 +1066,16 @@ function Upload() {
                   <label for="couponCode" class="lead">
                     Discount
                   </label>
-
-                  <div class="select">
-                    <select
-                      name="format"
-                      id="format"
+                  <div className="flex flex-row items-center gap-4">
+                    <input
+                      type="number"
+                      id="customDiscount"
+                      name="customDiscount"
+                      placeholder="Enter percentage"
                       value={discount}
-                      onChange={(e) => setDiscount(e.target.value)}
-                      aria-labelledby="discountLabel">
-                      <option value="5%">5%</option>
-                      <option value="10%">10%</option>
-                      <option value="15%">15%</option>
-                      <option value="20%">20%</option>
-                      <option value="25%">25%</option>
-                    </select>
+                      onChange={(e) => handleDiscountChange(e)}
+                    />
+                    <div>%</div>
                   </div>
                 </div>
               </div>

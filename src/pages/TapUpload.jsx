@@ -69,7 +69,19 @@ function TapUpload() {
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState("");
   const [qrcode, setQRCode] = useState("");
+  const handleDiscountChange = (e) => {
+    let inputDiscount = e.target.value;
 
+    // Ensure the input is a valid number
+    if (inputDiscount === "" || isNaN(inputDiscount)) {
+      // If the input is empty or not a number, set it to an empty string
+      setDiscount("");
+    } else {
+      // Otherwise, ensure the input is less than 100
+      const clampedDiscount = Math.min(parseFloat(inputDiscount), 100);
+      setDiscount(clampedDiscount);
+    }
+  };
   const now = new Date();
 
   const handleOpen = () => setOpen(!open);
@@ -912,20 +924,16 @@ function TapUpload() {
                   <label for="couponCode" class="lead">
                     Discount
                   </label>
-
-                  <div class="select">
-                    <select
-                      name="format"
-                      id="format"
+                  <div className="flex flex-row items-center gap-4">
+                    <input
+                      type="number"
+                      id="customDiscount"
+                      name="customDiscount"
+                      placeholder="Enter percentage"
                       value={discount}
-                      onChange={(e) => setDiscount(e.target.value)}
-                      aria-labelledby="discountLabel">
-                      <option value="5%">5%</option>
-                      <option value="10%">10%</option>
-                      <option value="15%">15%</option>
-                      <option value="20%">20%</option>
-                      <option value="25%">25%</option>
-                    </select>
+                      onChange={(e) => handleDiscountChange(e)}
+                    />
+                    <div>%</div>
                   </div>
                 </div>
               </div>
