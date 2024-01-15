@@ -37,6 +37,8 @@ function CouponCode() {
     axios
       .post(apiUrl, requestData)
       .then((response) => {
+        console.log("Response:", response.data);
+
         navigate(`/couponCodeOTP/${phoneNumber}`);
       })
       .catch((error) => {

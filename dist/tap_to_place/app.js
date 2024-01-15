@@ -157,6 +157,8 @@ function onTouch(touchPos) {
 
         document.querySelector("#myButton").style.display = "block";
         button.addEventListener("click", async () => {
+          localStorage.setItem("markerStatus", "found");
+
           window.open(`https://arhorizon.arnxt.com/couponCode/${id}`);
           await new Promise((resolve) =>
             window.addEventListener("custom", resolve)

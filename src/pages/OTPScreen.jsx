@@ -16,7 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 function OTPScreen() {
   const param = useParams();
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const [otp, setOtp] = useState("");
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(!open);
   const handleClose = () => {
@@ -40,32 +40,15 @@ function OTPScreen() {
       .map(() => React.createRef())
   );
 
-  const handleInputChange = (index, value) => {
-    const isPasteAction = value.length > 1;
-
-    if (isPasteAction) {
-      const otpArray = value.split("").slice(0, otp.length);
-      setOtp(otpArray);
-
-      if (inputRefs.current[index + 1] && otpArray.length < otp.length) {
-        inputRefs.current[index + 1].current.focus();
-      }
-    } else {
-      const newOtp = [...otp];
-      newOtp[index] = value;
-      setOtp(newOtp);
-      if (inputRefs.current[index + 1] && value.length === 1) {
-        inputRefs.current[index + 1].current.focus();
-      }
-    }
+  const handleInputChange = (value) => {
+    setOtp(value);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    const enteredOTP = otp.join("");
 
     const requestData = {
       phoneno: param.id,
-      otp: enteredOTP,
+      otp: otp,
       productId: productId,
     };
     setLoading(true);
@@ -99,6 +82,7 @@ function OTPScreen() {
         setLoading(false);
       });
   };
+
   const handleCopy = () => {
     const couponCode = data?.couponCode;
 
@@ -112,7 +96,32 @@ function OTPScreen() {
       });
     }
   };
+  const handleResend = (event) => {
+    event.preventDefault();
+    const requestData = {
+      phoneno: param.id,
+    };
 
+    axios
+      .post(
+        "https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/sendotparhorizon",
+        requestData
+      )
+      .then((response) => {})
+      .catch((error) => {
+        console.error("Error:", error);
+        if (error.response && error.response.status === 401) {
+          // Handle 401 Unauthorized error
+          toast.error(`${error.response.data}`, {
+            position: toast.POSITION.BOTTOM_CENTER,
+          });
+        } else {
+          // Handle other errors
+          toast.error("An error occurred. Please try again.");
+        }
+      })
+      .finally(() => {});
+  };
   return (
     <div class="relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-800 py-12">
       <div class="relative bg-white px-6 pt-10 pb-9 shadow-xl mx-auto w-full max-w-lg rounded-2xl">
@@ -130,21 +139,13 @@ function OTPScreen() {
             <form onSubmit={handleSubmit}>
               <div class="flex flex-col space-y-16">
                 <div className="flex flex-row items-center justify-between mx-auto w-full max-w-2xl">
-                  {otp.map((digit, index) => (
-                    <div key={index} className="w-14 h-14">
-                      <input
-                        ref={inputRefs.current[index]}
-                        className="w-full h-full flex flex-col items-center justify-center text-center px-5 outline-none rounded-xl border border-gray-300 text-lg bg-white focus:bg-gray-50 focus:ring-1 ring-blue-700"
-                        type="number"
-                        name={`digit-${index}`}
-                        maxLength="1"
-                        value={digit}
-                        onChange={(e) =>
-                          handleInputChange(index, e.target.value)
-                        }
-                      />
-                    </div>
-                  ))}
+                  <input
+                    className="w-full h-16 flex flex-col items-center justify-center text-center px-5 outline-none rounded-xl border border-gray-300 text-lg bg-white focus:bg-gray-50 focus:ring-1 ring-blue-700"
+                    maxLength="6"
+                    type="number"
+                    value={otp}
+                    onChange={(e) => handleInputChange(e.target.value)}
+                  />
                 </div>
 
                 <div class="flex flex-col space-y-5">
@@ -160,13 +161,15 @@ function OTPScreen() {
 
                   <div class="flex flex-row items-center justify-center text-center text-sm font-medium space-x-1 text-gray-500">
                     <p>Didn't recieve OTP?</p>{" "}
-                    <a
-                      class="flex flex-row items-center text-blue-600"
-                      href="http://"
-                      target="_blank"
-                      rel="noopener noreferrer">
-                      Resend
-                    </a>
+                    <div onClick={handleResend}>
+                      <a
+                        class="flex flex-row items-center text-blue-600"
+                        href="http://"
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        Resend
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
