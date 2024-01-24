@@ -62,7 +62,7 @@ function CouponCode() {
 
     if (markerStatus === "found") {
     } else {
-      window.location.href = `https://arhorizon.arnxt.com`;
+      window.location.href = `https://arhorizon.in`;
     }
   }, []);
   useEffect(() => {

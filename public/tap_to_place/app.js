@@ -127,53 +127,56 @@ function onTouch(touchPos) {
     } else {
       // Load a new 3D model and add it to the scene
       const gltfLoader = new GLTFLoader();
-      gltfLoader.load(`${responseData?.TargetGlbFile}`, async (gltf) => {
-        const model = gltf.scene;
-        const animations = gltf.animations;
-        model.scale.set(0.5, 0.5, 0.5);
+      gltfLoader.load(
+        `https://res.cloudinary.com/dd3c4j1sm/image/upload/v1705730401/Santa_syzmdp.glb`,
+        async (gltf) => {
+          const model = gltf.scene;
+          const animations = gltf.animations;
+          model.scale.set(0.5, 0.5, 0.5);
 
-        model.position.set(
-          intersects[0].point.x,
-          intersects[0].point.y,
-          intersects[0].point.z
-        );
-
-        // Model looking to the camera on Y axis
-        model.rotation.y = Math.atan2(
-          camera.position.x - model.position.x,
-          camera.position.z - model.position.z
-        );
-
-        scene.add(model);
-
-        // Play model animation
-        const mixer = new THREE.AnimationMixer(model);
-        const action = mixer.clipAction(animations[0]);
-        action.play();
-        animationMixers.push(mixer);
-
-        // Update the currentModel variable
-        currentModel = model;
-
-        document.querySelector("#myButton").style.display = "block";
-        button.addEventListener("click", async () => {
-          localStorage.setItem("markerStatus", "found");
-
-          window.open(`https://arhorizon.arnxt.com/couponCode/${id}`);
-          await new Promise((resolve) =>
-            window.addEventListener("custom", resolve)
+          model.position.set(
+            intersects[0].point.x,
+            intersects[0].point.y,
+            intersects[0].point.z
           );
-        });
 
-        try {
-          const response = await axios.get(
-            `https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/addcountarhorizon?id=${id}`
+          // Model looking to the camera on Y axis
+          model.rotation.y = Math.atan2(
+            camera.position.x - model.position.x,
+            camera.position.z - model.position.z
           );
-          console.log("count");
-        } catch (error) {
-          console.error("Error fetching data:", error);
+
+          scene.add(model);
+
+          // Play model animation
+          const mixer = new THREE.AnimationMixer(model);
+          const action = mixer.clipAction(animations[0]);
+          action.play();
+          animationMixers.push(mixer);
+
+          // Update the currentModel variable
+          currentModel = model;
+
+          document.querySelector("#myButton").style.display = "block";
+          button.addEventListener("click", async () => {
+            localStorage.setItem("markerStatus", "found");
+
+            window.open(`https://arhorizon.in/couponCode/${id}`);
+            await new Promise((resolve) =>
+              window.addEventListener("custom", resolve)
+            );
+          });
+
+          try {
+            const response = await axios.get(
+              `https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/addcountarhorizon?id=${id}`
+            );
+            console.log("count");
+          } catch (error) {
+            console.error("Error fetching data:", error);
+          }
         }
-      });
+      );
 
       if (!started) {
         // Start tracking on first touch

@@ -366,7 +366,7 @@ function Upload() {
         Id: now.getTime().toString(),
         TargetImagePattFile: uploadedFileUrl,
         TargetImageFile: uploadedImageUrl,
-        AR_Link: `https://arhorizon.arnxt.com/ar/index.html?id=${now
+        AR_Link: `https://arhorizon.in/ar/index.html?id=${now
           .getTime()
           .toString()}`,
 
@@ -381,7 +381,7 @@ function Upload() {
         newApplicant
       );
       setQRCode(
-        `https://arhorizon.arnxt.com/ar/index.html?id=${applicantResponse.data.Item.Id}`
+        `https://arhorizon.in/ar/index.html?id=${applicantResponse.data.Item.Id}`
       );
     } catch (error) {
       console.error("An error occurred:", error);
