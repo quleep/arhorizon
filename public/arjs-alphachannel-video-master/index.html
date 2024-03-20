@@ -3,25 +3,39 @@
     <link rel="stylesheet" type="text/css" href="styles.css" />
     <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
     <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
+    <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+
     <!-- <script src="aframe-ar.js"></script> use this (v1.6) if this demo ever breaks-->
   </head>
   <body>
     <a id="playButton" onclick="play('alpha')"
       ><div class="btn btn-primary play-overlay menu-overlay"></div
     ></a>
-    <a-scene>
+    <a-scene
+      vr-mode-ui="enabled: false;"
+      loading-screen="enabled: true;"
+      renderer="logarithmicDepthBuffer: true;"
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+      id="scene"
+      embedded
+      gesture-detector
+      log>
       <a-assets>
-        <video
-          id="alpha"
-          autoplay
-          loop="true"
-          src="assets/Vampires.mp4"></video>
+        <video id="alpha" autoplay loop="true" src="assets/cricket.mp4"></video>
       </a-assets>
 
       <!-- Using the asset management system. -->
-
-      <a-marker-camera
-        preset="hiro"
+      <a-marker
+        id="animated-marker"
+        type="pattern"
+        preset="custom"
+        url="https://arhorizon.s3.ap-south-1.amazonaws.com/markerPattFile/markerPattern1706165770364.patt"
+        raycaster="objects: .clickable"
+        emitevents="true"
+        cursor="fuse: false; rayOrigin: mouse;"
+        markerhandler
         smooth="true"
         smoothCount="10"
         smoothTolerance="0.1"
@@ -29,11 +43,12 @@
         <a-video
           id="vid"
           rotation="-62.584 -3.936 4.509"
-          scale="5 5 5"
-          src="#alpha">
-          <video scale="20 20 1" src="#source"></video
-        ></a-video>
-      </a-marker-camera>
+          position="0 -1 0"
+          scale="2 2 2"
+          src="#alpha"
+          gesture-handler>
+        </a-video>
+      </a-marker>
     </a-scene>
   </body>
 
@@ -55,50 +70,5 @@
         x.style.display = "none";
       }
     }
-    AFRAME.registerComponent("lerpsmooth", {
-      init: function () {
-        this.target = document.querySelector("#animated-asset");
-        this.prevPosition = null;
-        this.prevRotation = null;
-      },
-      tick: function () {
-        // if marker is visible
-        if (this.el.object3D.visible) {
-          // also make the object-to-smooth visible
-          this.target.setAttribute("visible", "true");
-          // if we know about the previous position
-          if (this.prevPosition) {
-            // smooth position
-            this.target.object3D.position.lerp(this.prevPosition, 0.1);
-
-            // smooth rotation
-            let rot = this.target.object3D.rotation
-              .toVector3()
-              .lerp(this.prevRotation, 0.1);
-            this.target.object3D.rotation.setFromVector3(rot);
-          }
-          // we don't know about the previous position
-          else {
-            // initial values to start with
-            var initialPosition = this.el.getAttribute("position");
-            var initialRotation = this.el.getAttribute("rotation");
-            // TODO This does not take into account the initial `position` and `rotation` values of the target, so everything starts at the marker with 0 0 0
-            this.target.setAttribute("position", initialPosition);
-            this.target.setAttribute("rotation", initialRotation);
-          }
-          // cache position for next tick
-          this.prevPosition = this.el.object3D.position;
-          this.prevRotation = this.el.object3D.rotation;
-        }
-        // marker is not visible
-        else {
-          // also make the object-to-smooth invisible
-          this.target.setAttribute("visible", "false");
-          // reset the cache position
-          this.prevPosition = null;
-          this.prevRotation = null;
-        }
-      },
-    });
   </script>
 </html>
