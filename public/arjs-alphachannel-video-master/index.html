@@ -1,18 +1,11 @@
+<!DOCTYPE html>
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="styles.css" />
-    <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
-    <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
-
-    <!-- <script src="aframe-ar.js"></script> use this (v1.6) if this demo ever breaks-->
   </head>
   <body>
-    <a id="playButton" onclick="play('alpha')"
-      ><div class="btn btn-primary play-overlay menu-overlay"></div
-    ></a>
     <a-scene
       vr-mode-ui="enabled: false;"
       loading-screen="enabled: true;"
@@ -20,10 +13,14 @@
       arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
       id="scene"
       embedded
-      gesture-detector
       log>
       <a-assets>
-        <video id="alpha" autoplay loop="true" src="assets/cricket.mp4"></video>
+        <video
+          id="alpha"
+          autoplay
+          loop="true"
+          preload="auto"
+          src="assets/cricket.mp4"></video>
       </a-assets>
 
       <!-- Using the asset management system. -->
@@ -32,43 +29,53 @@
         type="pattern"
         preset="custom"
         url="https://arhorizon.s3.ap-south-1.amazonaws.com/markerPattFile/markerPattern1706165770364.patt"
-        raycaster="objects: .clickable"
-        emitevents="true"
-        cursor="fuse: false; rayOrigin: mouse;"
-        markerhandler
         smooth="true"
-        smoothCount="10"
-        smoothTolerance="0.1"
-        smoothThreshold="20">
+        smoothcount="10"
+        smoothtolerance="0.1"
+        smooththreshold="20">
         <a-video
           id="vid"
-          rotation="-62.584 -3.936 4.509"
-          position="0 -1 0"
-          scale="2 2 2"
-          src="#alpha"
-          gesture-handler>
+          rotation="-90.584 -3.936 1.509"
+          position="0 -10 0"
+          scale="5 5 5"
+          vidhandler
+          src="#alpha">
         </a-video>
       </a-marker>
     </a-scene>
-  </body>
 
-  <script>
-    function play(id) {
-      var aVideoAsset = document.querySelector("#" + id);
-      aVideoAsset.play().catch(function (error) {
-        aVideoAsset.pause();
-        hideOrShow("playButton");
+    <script>
+      AFRAME.registerComponent("vidhandler", {
+        init: function () {
+          this.toggle = false;
+          document.querySelector("#vid").pause(); //reference to the video
+        },
+        tick: function () {
+          if (document.querySelector("a-marker").object3D.visible == true) {
+            if (!this.toggle) {
+              this.toggle = true;
+              document.querySelector("#vid").play();
+            }
+          } else {
+            this.toggle = false;
+            document.querySelector("#vid").pause();
+          }
+        },
       });
-      aVideoAsset.setAttribute("loop", "false");
-      hideOrShow("playButton");
-    }
-    function hideOrShow(id) {
-      var x = document.getElementById(id);
-      if (x.style.display === "none") {
-        x.style.display = "block";
-      } else {
-        x.style.display = "none";
+
+      function hideOrShow(id) {
+        var x = document.getElementById(id);
+        if (x.style.display === "none") {
+          x.style.display = "block";
+        } else {
+          x.style.display = "none";
+        }
       }
-    }
-  </script>
+      // Prevent click event on video
+      var videoElement = document.getElementById("alpha");
+      videoElement.addEventListener("click", function (event) {
+        event.preventDefault();
+      });
+    </script>
+  </body>
 </html>
