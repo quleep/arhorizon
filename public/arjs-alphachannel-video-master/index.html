@@ -2,10 +2,17 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="styles.css" />
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
   </head>
   <body>
+    <a id="playButton" onclick="play('alpha')"
+      ><div class="btn btn-primary play-overlay menu-overlay"></div
+    ></a>
     <a-scene
       vr-mode-ui="enabled: false;"
       loading-screen="enabled: true;"
@@ -45,24 +52,15 @@
     </a-scene>
 
     <script>
-      AFRAME.registerComponent("vidhandler", {
-        init: function () {
-          this.toggle = false;
-          document.querySelector("#vid").pause(); //reference to the video
-        },
-        tick: function () {
-          if (document.querySelector("a-marker").object3D.visible == true) {
-            if (!this.toggle) {
-              this.toggle = true;
-              document.querySelector("#vid").play();
-            }
-          } else {
-            this.toggle = false;
-            document.querySelector("#vid").pause();
-          }
-        },
-      });
-
+      function play(id) {
+        var aVideoAsset = document.querySelector("#" + id);
+        aVideoAsset.play().catch(function (error) {
+          aVideoAsset.pause();
+          hideOrShow("playButton");
+        });
+        aVideoAsset.setAttribute("loop", "false");
+        hideOrShow("playButton");
+      }
       function hideOrShow(id) {
         var x = document.getElementById(id);
         if (x.style.display === "none") {
@@ -71,11 +69,6 @@
           x.style.display = "none";
         }
       }
-      // Prevent click event on video
-      var videoElement = document.getElementById("alpha");
-      videoElement.addEventListener("click", function (event) {
-        event.preventDefault();
-      });
     </script>
   </body>
 </html>
