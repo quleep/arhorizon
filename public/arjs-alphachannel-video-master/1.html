@@ -48,12 +48,12 @@
     <a-scene
       mindar-image="imageTargetSrc: assets/targets.mind;"
       color-space="sRGB"
-      renderer="colorManagement: true"
       vr-mode-ui="enabled: false"
       device-orientation-permission-ui="enabled: false"
       cursor="rayOrigin: mouse;"
       raycaster="objects: .clickable"
-      mindar-image="filterMinCF:0.1; filterBeta: 10; warmupTolerance: 1;missTolerance: 1">
+      mindar-image="filterMinCF:0.1; filterBeta: 10; warmupTolerance: 1;missTolerance: 1"
+      renderer="colorManagement: true, physicallyCorrectLights">
       <a-assets>
         <video id="video" src="assets/Momomania.mp4" preload loop></video>
       </a-assets>
@@ -62,6 +62,8 @@
       <a-entity id="target" mindar-image-target="targetIndex: 0">
         <a-plane
           class="clickable"
+          height="0.585"
+          width="1.04"
           material="src: #video; opacity: 1; transparent: true"
           video-controller>
         </a-plane>
