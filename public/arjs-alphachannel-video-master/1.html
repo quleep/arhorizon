@@ -46,15 +46,16 @@
       <button>Play video</button> - if the plane is black on mobile.
     </div>
     <a-scene
-      mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/examples/image-tracking/assets/card-example/card.mind;"
+      mindar-image="imageTargetSrc: assets/targets.mind;"
       color-space="sRGB"
       renderer="colorManagement: true"
       vr-mode-ui="enabled: false"
       device-orientation-permission-ui="enabled: false"
       cursor="rayOrigin: mouse;"
-      raycaster="objects: .clickable">
+      raycaster="objects: .clickable"
+      mindar-image="filterMinCF:0.1; filterBeta: 10; warmupTolerance: 1;missTolerance: 1">
       <a-assets>
-        <video id="video" src="assets/cricket.mp4" preload></video>
+        <video id="video" src="assets/Momomania.mp4" preload loop></video>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
