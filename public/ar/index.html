@@ -12,7 +12,6 @@
     <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
     <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
-
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -132,7 +131,44 @@
           console.error("Error fetching data:", error);
         }
       });
+      AFRAME.registerComponent("loader", {
+        init: function () {
+          let loader = document.querySelector("#loadingEl");
+          let button = document.querySelector("#myButton");
 
+          button.addEventListener("click", async () => {
+            window.open(`https://arhorizon.in/couponCode/${id}`);
+            await new Promise((resolve) =>
+              window.addEventListener("custom", resolve)
+            );
+          });
+          this.el.addEventListener("model-loaded", async (e) => {
+            if (!modelLoaded) {
+              console.log(
+                "GLB model is loaded and visible for the first time."
+              );
+              modelLoaded = true;
+
+              if (modelLoaded && markerFound) {
+                button.style.display = "block";
+              }
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get("id");
+            console.log("ID:", id);
+            try {
+              const response = await axios.get(
+                `https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/addcountarhorizon?id=${id}`
+              );
+              console.log("count");
+            } catch (error) {
+              console.error("Error fetching data:", error);
+            }
+            loader.setAttribute("visible", "false");
+          });
+        },
+      });
       AFRAME.registerComponent("markerhandler", {
         init: function () {
           this.el.addEventListener("markerFound", (e) => {
@@ -200,32 +236,23 @@
       function renderAScene() {
         if (responseData) {
           document.body.innerHTML += `
-    <a-scene>
-      <a-assets>
-        <video
-          id="alpha"
-          autoplay
-          loop="true"
-          src="assets/Vampires.mp4"></video>
-      </a-assets>
+            <a-scene vr-mode-ui="enabled: false;" loading-screen="enabled: true;" renderer="logarithmicDepthBuffer: true;" arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" id="scene" embedded gesture-detector log>
+              <a-assets>
+                <a-entity id="animated-asset" src="${responseData.TargetGlbFile}"></a-entity>
+              </a-assets>
+              <a-assets>
+                <audio id="sound" src="assets/AudioSource.mp3" preload="auto"></audio>
+              </a-assets>
+              <a-marker id="animated-marker" type="pattern" preset="custom" url="${responseData.TargetImagePattFile}" raycaster="objects: .clickable" emitevents="true" cursor="fuse: false; rayOrigin: mouse;" markerhandler smooth="true" smoothCount="10" smoothTolerance="0.1" smoothThreshold="20" lerpsmooth>
+                 <a-box id="loadingEl" color="yellow" ></a-box>
+                <a-entity id="bowser-model" scale="1 1 1" animation-mixer="loop: repeat" gltf-model="#animated-asset" class="clickable" gesture-handler loader></a-entity>
+                <!-- Optional: Add raycaster and cursor components directly -->
+                <a-entity raycaster="objects: .clickable" cursor="fuse: false; rayOrigin: mouse;"></a-entity>
+              </a-marker>
+              <a-entity camera look-controls-enabled="true"></a-entity>
+              <a-sound src="#sound" autoplay="true"></a-sound>
 
-      <!-- Using the asset management system. -->
-
-      <a-marker-camera
-        preset="hiro"
-        smooth="true"
-        smoothcount="10"
-        smoothtolerance="0.1"
-        smooththreshold="20">
-        <a-video
-          id="vid"
-          rotation="-62.584 -3.936 4.509"
-          scale="5 5 5"
-          src="#alpha">
-          <video scale="20 20 1" src="#source"></video
-        ></a-video>
-      </a-marker-camera>
-    </a-scene>
+            </a-scene>
             <button id="myButton" class="button button1">Avail Coupon!</button>
             <button class="btn" id="musicButton" onclick="playAudio()"><i class="fa fa-music"></i></button>
 
