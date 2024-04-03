@@ -31,10 +31,6 @@
             console.log("btn click");
             if (this.found) video.play();
           });
-
-          video.addEventListener("click", (event) => {
-            playButton.style.display = "none";
-          });
         },
       });
     </script>
@@ -50,7 +46,7 @@
         z-index: 1;
         color: grey;
       ">
-      <button id="button">Play video</button> - if the plane is black on mobile.
+      <button>Play video</button> - if the plane is black on mobile.
     </div>
     <a-scene
       mindar-image="imageTargetSrc: assets/targets.mind;"
