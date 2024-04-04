@@ -49,7 +49,7 @@
       <button>Play video</button> - if the plane is black on mobile.
     </div>
     <a-scene
-      mindar-image="imageTargetSrc: assets/targets.mind;"
+      mindar-image="imageTargetSrc: https://res.cloudinary.com/dd3c4j1sm/raw/upload/v1712217255/targets_snvq6t.mind;"
       color-space="sRGB"
       vr-mode-ui="enabled: false"
       device-orientation-permission-ui="enabled: false"
@@ -58,7 +58,11 @@
       mindar-image="filterMinCF:0.1; filterBeta: 10; warmupTolerance: 1;missTolerance: 1"
       renderer="colorManagement: true, physicallyCorrectLights">
       <a-assets>
-        <video id="video" src="assets/ArNXT Product.mp4" preload loop></video>
+        <video
+          id="video"
+          src="https://res.cloudinary.com/dd3c4j1sm/video/upload/v1712217293/ArNXT_Product_qzgyrv.mp4"
+          preload
+          loop></video>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
