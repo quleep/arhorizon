@@ -24,9 +24,6 @@ const Hero = () => {
           </p>
         </div>
       </div>
-      <div className="absolute top-56 h-64 w-full sm:h-[550px] cursor-pointer">
-        <ComputersCanvas />
-      </div>
     </section>
   );
 };
