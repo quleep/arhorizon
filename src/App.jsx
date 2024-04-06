@@ -14,6 +14,8 @@ import CouponCode from "./pages/CouponCode";
 import OTPScreen from "./pages/OTPScreen";
 import Ar from "./pages/Ar";
 import TapUpload from "./pages/TapUpload";
+import EditorVideo from "./pages/EditorVideo";
+import VideoUpload from "./pages/VideoUpload";
 function App() {
   return (
     <BrowserRouter>
@@ -23,11 +25,13 @@ function App() {
         <Route path="/productid/:id" element={<ProductId />} />
         <Route path="/editor" element={<Editor />} />
         <Route path="/editorTap" element={<EditorTap />} />
+        <Route path="/editorVideo" element={<EditorVideo />} />
 
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/analytics/:id" element={<Stats />} />
         <Route path="/upload" element={<Upload />} />
         <Route path="/upload_tap_to_place" element={<TapUpload />} />
+        <Route path="/upload_video_based_ar" element={<VideoUpload />} />
 
         <Route path="/couponCode/:id" element={<CouponCode />} />
         <Route path="/couponCodeOTP/:id" element={<OTPScreen />} />

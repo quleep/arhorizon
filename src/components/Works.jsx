@@ -91,8 +91,8 @@ const Works = () => {
             key={`project-${index}`}
             index={index}
             {...project}
-            uniqueText={project.tapToPlace ? "taptoplace" : "imagetracking"}
-            uniquecolor={project.tapToPlace ? "green" : "red"}
+            uniqueText={project?.tapToPlace ? "taptoplace" : "imagetracking"}
+            uniquecolor={project?.tapToPlace ? "green" : "yellow"}
           />
         ))}
       </div>

@@ -15,7 +15,11 @@ function SidebarDash() {
       src: Folder,
       route: "editorTap",
     },
-
+    {
+      title: "Video Based AR",
+      src: Folder,
+      route: "editorVideo",
+    },
     { title: "Analytics", src: Chart, route: "analytics" },
     // { title: "Products", src: "Folder", gap: true },
   ];

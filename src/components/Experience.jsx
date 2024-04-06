@@ -20,6 +20,9 @@ const Experience = () => {
 
   const param = useParams();
 
+  const handleClick = (link) => {
+    window.open(link, "_blank");
+  };
   useEffect(() => {
     const fetchProductData = async () => {
       try {
@@ -66,7 +69,9 @@ const Experience = () => {
                     </div>
                   }>
                   <div>
-                    <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                    <div
+                      class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
+                      onClick={() => handleClick(data.AR_Link)}>
                       <QRCode
                         size={256}
                         style={{
@@ -82,7 +87,15 @@ const Experience = () => {
                     <p
                       className="text-secondary text-[16px] font-semibold p-6"
                       style={{ margin: 0 }}>
-                      Tap the screen to place the content in AR
+                      Tap the screen to place the content in AR{" "}
+                      <a
+                        href={data.AR_Link}
+                        target="_blank"
+                        className="text-yellow-600"
+                        rel="noopener noreferrer">
+                        Click here to open the link
+                      </a>
+                      .
                     </p>
                   </div>
                 </VerticalTimelineElement>
@@ -114,7 +127,9 @@ const Experience = () => {
                     </div>
                   }>
                   <div>
-                    <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                    <div
+                      class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
+                      onClick={() => handleClick(data.AR_Link)}>
                       <QRCode
                         size={256}
                         style={{
@@ -132,7 +147,15 @@ const Experience = () => {
                       style={{ margin: 0 }}>
                       Unlock your mobile phone's camera, scan the QR code, and
                       effortlessly open the link in your browser for quick
-                      access.
+                      access.{" "}
+                      <a
+                        href={data.AR_Link}
+                        target="_blank"
+                        className="text-yellow-600"
+                        rel="noopener noreferrer">
+                        Click here to open the link
+                      </a>
+                      .
                     </p>
                   </div>
                 </VerticalTimelineElement>

@@ -20,7 +20,7 @@ function HomePage() {
                   className="bg-transparent relative z-10 w-72 "
                 />
               </div>
-              <div className="absolute w-72 top-8 -left-0 rounded-3xl overflow-hidden">
+              <div className="absolute w-72 top-3 -left-0 rounded-3xl overflow-hidden">
                 <video
                   data-autoplay
                   autoPlay
@@ -41,7 +41,7 @@ function HomePage() {
             </div>
             <div>
               <h1
-                className={`font-black text-[40px] md:text-[50px] lg:leading-[98px] mt-2 text-white`}>
+                className={`font-black text-[40px] md:text-[45px] lg:leading-[98px] mt-2 text-white`}>
                 AR Image Tracking with{" "}
                 <span className="text-[#915EFF]">Video Playback</span>
               </h1>
@@ -64,16 +64,15 @@ function HomePage() {
             </div>
             <div>
               <h1
-                className={`font-black text-[40px] md:text-[50px] lg:leading-[98px] mt-2 text-white`}>
+                className={`font-black text-[40px] md:text-[45px] lg:leading-[98px] mt-2 text-white`}>
                 Tap to Place: Experience{" "}
                 <span className="text-[#915EFF]">Interactive 3D Models</span>
               </h1>
               <p
                 className={`font-medium text-[19px] md:text-[20px] lg:leading-[40px] mt-2 text-white-100`}>
                 Discover the future with Tap to Place technology, where you can
-                simply tap <br className="sm:block hidden" />
-                on the ground and witness mesmerizing 3D model animations unfold
-                before your eyes.
+                simply tap on the ground and witness mesmerizing 3D model
+                animations unfold before your eyes.
               </p>
             </div>
           </div>
@@ -86,7 +85,7 @@ function HomePage() {
                   className="bg-transparent relative z-10 w-72 "
                 />
               </div>
-              <div className="absolute w-72 top-12 -left-0 rounded-sm overflow-hidden">
+              <div className="absolute w-72 top-3 -left-0 rounded-sm overflow-hidden">
                 {/* <video className="pointer-events-none" autoPlay>
                 <source src="public/videos/frame.mp4" type="video/mp4" />
               </video> */}

@@ -16,7 +16,7 @@ const Hero = () => {
         </div>
         <div>
           <h1
-            className={`font-black text-[40px] md:text-[50px] lg:leading-[98px] mt-2 text-white`}>
+            className={`font-black text-[40px] md:text-[45px] lg:leading-[98px] mt-2 text-white`}>
             Marker-Based AR: Explore{" "}
             <span className="text-[#915EFF]">3D Models</span>
           </h1>
@@ -40,7 +40,7 @@ const Hero = () => {
               className="bg-transparent relative z-10 w-72 "
             />
           </div>
-          <div className="absolute w-72 top-12 -left-0 rounded-sm overflow-hidden">
+          <div className="absolute w-72 top-3 -left-0 rounded-sm overflow-hidden">
             {/* <video className="pointer-events-none" autoPlay>
                 <source src="public/videos/frame.mp4" type="video/mp4" />
               </video> */}
