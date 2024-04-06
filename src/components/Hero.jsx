@@ -35,7 +35,7 @@ const Hero = () => {
         <div className="relative flex-center">
           <div className="overflow-hidden">
             <img
-              src="public/images/frame.png"
+              src="/assets/images/frame.png"
               alt="frame"
               className="bg-transparent relative z-10 w-72 "
             />
@@ -52,7 +52,7 @@ const Hero = () => {
               muted
               loop
               type="video/mp4"
-              src="public/videos/frame1.mp4"
+              src="/assets/videos/frame1.mp4"
             />
           </div>
         </div>

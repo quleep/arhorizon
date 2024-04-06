@@ -15,7 +15,7 @@ function HomePage() {
             <div className="relative flex-center">
               <div className="overflow-hidden">
                 <img
-                  src="public/images/frame.png"
+                  src="/assets/images/frame.png"
                   alt="frame"
                   className="bg-transparent relative z-10 w-72 "
                 />
@@ -29,7 +29,7 @@ function HomePage() {
                   muted
                   loop
                   type="video/mp4"
-                  src="public/videos/frame2.mp4"
+                  src="/assets/videos/frame2.mp4"
                 />
               </div>
             </div>
@@ -80,7 +80,7 @@ function HomePage() {
             <div className="relative flex-center">
               <div className="overflow-hidden">
                 <img
-                  src="public/images/frame.png"
+                  src="/assets/images/frame.png"
                   alt="frame"
                   className="bg-transparent relative z-10 w-72 "
                 />
@@ -97,7 +97,7 @@ function HomePage() {
                   muted
                   loop
                   type="video/mp4"
-                  src="public/videos/frame3.mp4"
+                  src="/assets/videos/frame3.mp4"
                 />
               </div>
             </div>
