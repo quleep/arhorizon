@@ -286,3 +286,9 @@
   font-size: 14pt;
   padding: 20px 40px;
 }
+.screen-max-width {
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+  position: relative;
+  max-width: 1120px;
+}
