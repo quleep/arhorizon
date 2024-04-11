@@ -44,16 +44,7 @@ const Hero = () => {
             {/* <video className="pointer-events-none" autoPlay>
                 <source src="public/videos/frame.mp4" type="video/mp4" />
               </video> */}
-            <video
-              data-autoplay
-              autoPlay
-              data-object-fit="contain"
-              playsInline
-              muted
-              loop
-              type="video/mp4"
-              src="/assets/videos/frame1.mp4"
-            />
+            <img src="/assets/videos/frame1.gif" alt="frame" />
           </div>
         </div>
       </div>

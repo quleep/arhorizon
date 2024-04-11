@@ -1,6 +1,6 @@
 import React from "react";
 import { Hero, Navbar, Works } from "../components";
-import HowItWorks from "../components/HowItWorks";
+import HowItWorks from "../../public/assets/videos/frame1.gif";
 import { styles } from "../styles";
 
 function HomePage() {
@@ -21,16 +21,7 @@ function HomePage() {
                 />
               </div>
               <div className="absolute w-72 top-3 -left-0 rounded-3xl overflow-hidden">
-                <video
-                  data-autoplay
-                  autoPlay
-                  data-object-fit="contain"
-                  playsInline
-                  muted
-                  loop
-                  type="video/mp4"
-                  src="/assets/videos/frame2.mp4"
-                />
+                <img src="/assets/videos/frame2.gif" alt="frame" />
               </div>
             </div>
           </div>
@@ -86,19 +77,7 @@ function HomePage() {
                 />
               </div>
               <div className="absolute w-72 top-3 -left-0 rounded-sm overflow-hidden">
-                {/* <video className="pointer-events-none" autoPlay>
-                <source src="public/videos/frame.mp4" type="video/mp4" />
-              </video> */}
-                <video
-                  data-autoplay
-                  autoPlay
-                  data-object-fit="contain"
-                  playsInline
-                  muted
-                  loop
-                  type="video/mp4"
-                  src="/assets/videos/frame3.mp4"
-                />
+                <img src="/assets/videos/frame3.gif" alt="frame" />
               </div>
             </div>
           </div>
