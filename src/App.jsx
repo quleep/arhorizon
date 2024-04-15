@@ -16,6 +16,7 @@ import Ar from "./pages/Ar";
 import TapUpload from "./pages/TapUpload";
 import EditorVideo from "./pages/EditorVideo";
 import VideoUpload from "./pages/VideoUpload";
+import Test from "./pages/Test";
 function App() {
   return (
     <BrowserRouter>
@@ -36,6 +37,7 @@ function App() {
         <Route path="/couponCode/:id" element={<CouponCode />} />
         <Route path="/couponCodeOTP/:id" element={<OTPScreen />} />
         <Route path="/arjs" element={<Ar />} />
+        <Route path="/test" element={<Test />} />
       </Routes>
     </BrowserRouter>
   );

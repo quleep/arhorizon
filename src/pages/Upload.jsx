@@ -119,7 +119,7 @@ function Upload() {
   const handleItemClick = (item) => {
     // Perform actions with the selected item's Id
     setSelectedModel(item);
-
+    console.log(item);
     setSelectedGlb(item.animationglb);
   };
   const handleCampaignNameChange = (event) => {
