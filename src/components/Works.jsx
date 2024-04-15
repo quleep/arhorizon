@@ -48,11 +48,11 @@ const ProjectCard = ({
           <h3 className="text-white font-bold text-[24px]">{campaignName}</h3>
         </div>
         <div className="flex flex-row gap-2">
-          <p className={`text-[14px] text-${uniquecolor}-200  py-2 w-fit`}>
+          <p className={`text-[14px] text-green-200  py-2 w-fit`}>
             #{uniqueText}
           </p>
 
-          <p className={`text-[14px] text-green-200  py-2 w-fit`}>#arhorizon</p>
+          <p className={`text-[14px] text-red-200  py-2 w-fit`}>#arhorizon</p>
         </div>
       </div>
     </div>

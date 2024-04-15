@@ -36,8 +36,6 @@ function App() {
         <Route path="/couponCode/:id" element={<CouponCode />} />
         <Route path="/couponCodeOTP/:id" element={<OTPScreen />} />
         <Route path="/arjs" element={<Ar />} />
-
-        {/* dc */}
       </Routes>
     </BrowserRouter>
   );
