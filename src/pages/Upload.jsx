@@ -356,12 +356,15 @@ function Upload() {
         "https://gsrhol3xd0.execute-api.ap-south-1.amazonaws.com/prod/file-upload",
         uploadFormData
       );
-      const uploadedFileUrl = uploadResponse.data.fileUrl;
+      const uploadedFileUrl = uploadResponse.data.response.fileUrl;
+  
       const uploadImageResponse = await axios.post(
         "https://gsrhol3xd0.execute-api.ap-south-1.amazonaws.com/prod/image-upload",
         uploadFormData1
       );
-      const uploadedImageUrl = uploadImageResponse.data.fileUrl;
+
+
+      const uploadedImageUrl = uploadImageResponse.data.response.fileUrl;
       const newApplicant = {
         Id: now.getTime().toString(),
         TargetImagePattFile: uploadedFileUrl,
