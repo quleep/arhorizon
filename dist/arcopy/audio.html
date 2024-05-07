@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet" />
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  </head>
+  <body style="margin: 0; overflow: hidden">
+    <audio id="myAudio" loop>
+      <source
+        src="https://res.cloudinary.com/dd3c4j1sm/video/upload/v1703838875/x2mate.com_-_Matchday_Meal_music_cooking_128_kbps_oqgsea.mp3"
+        type="audio/mp3" />
+      Your browser does not support the audio element.
+    </audio>
+
+    <style>
+      body {
+        margin: 0;
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .button1 {
+        padding: 15px 20px;
+        font: 12px "Montserrat", sans-serif;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-decoration: none;
+        text-align: center;
+        margin: 1em;
+        color: black;
+        background-color: #10ffb4;
+        transition: 0.2s ease-in-out;
+        border-left: 3px transparent solid;
+        border-right: 3px solid;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        background-color: white;
+        color: black;
+        border: 2px solid #04aa6d;
+        position: absolute;
+        bottom: 20px;
+        left: 1/2;
+        display: none;
+      }
+
+      .button1:hover {
+        color: #10ffb4;
+        background-color: black;
+        border-left: #10ffb4 3px solid;
+        border-right: #10ffb4 3px solid;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.2);
+      }
+      .btn {
+        background-color: DodgerBlue;
+        border: none;
+        color: white;
+        padding: 12px 16px;
+        font-size: 16px;
+        cursor: pointer;
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        border-radius: 5px;
+      }
+
+      /* Darker background on mouse-over */
+      .btn:hover {
+        background-color: RoyalBlue;
+      }
+    </style>
+    <script>
+      let responseData;
+      let modelLoaded = false;
+      let markerFound = false;
+      var x = document.getElementById("myAudio");
+      let synth = speechSynthesis;
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get("id");
+      function playAudio() {
+        const value = `Wish you a really happy birthday, ${id}`;
+        let utterance = new SpeechSynthesisUtterance(value);
+        window.speechSynthesis.speak(utterance);
+      }
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        startTime = Date.now();
+        localStorage.setItem("mytime", Date.now());
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get("id");
+        console.log("ID:", id);
+
+        renderAScene();
+      });
+
+      AFRAME.registerComponent("loader", {
+        init: function () {
+          let loader = document.querySelector("#loadingEl");
+          let button = document.querySelector("#myButton");
+
+          button.addEventListener("click", () => {
+            window.location.href = "https://arhorizon.in/couponCode";
+          });
+
+          this.el.addEventListener("model-loaded", (e) => {
+            if (!modelLoaded) {
+              console.log(
+                "GLB model is loaded and visible for the first time."
+              );
+
+              modelLoaded = true;
+
+              // Check if both model is loaded and marker is found
+              if (modelLoaded && markerFound) {
+                button.style.display = "block";
+              }
+            }
+
+            console.log("Model loaded");
+            loader.setAttribute("visible", "false");
+          });
+        },
+      });
+      AFRAME.registerComponent("markerhandler", {
+        init: function () {
+          this.el.addEventListener("markerFound", (e) => {
+            console.log("found");
+            markerFound = true;
+
+            // Check if both model is loaded and marker is found
+            if (modelLoaded && markerFound) {
+              document.querySelector("#myButton").style.display = "block";
+              document.querySelector("#musicButton").style.display = "block";
+            }
+          });
+
+          this.el.addEventListener("markerLost", (e) => {
+            console.log("lost");
+          });
+        },
+      });
+      AFRAME.registerComponent("lerpsmooth", {
+        init: function () {
+          this.target = document.querySelector("#animated-asset");
+          this.prevPosition = null;
+          this.prevRotation = null;
+        },
+        tick: function () {
+          // if marker is visible
+          if (this.el.object3D.visible) {
+            // also make the object-to-smooth visible
+            this.target.setAttribute("visible", "true");
+            // if we know about the previous position
+            if (this.prevPosition) {
+              // smooth position
+              this.target.object3D.position.lerp(this.prevPosition, 0.1);
+
+              // smooth rotation
+              let rot = this.target.object3D.rotation
+                .toVector3()
+                .lerp(this.prevRotation, 0.1);
+              this.target.object3D.rotation.setFromVector3(rot);
+            }
+            // we don't know about the previous position
+            else {
+              // initial values to start with
+              var initialPosition = this.el.getAttribute("position");
+              var initialRotation = this.el.getAttribute("rotation");
+              // TODO This does not take into account the initial `position` and `rotation` values of the target, so everything starts at the marker with 0 0 0
+              this.target.setAttribute("position", initialPosition);
+              this.target.setAttribute("rotation", initialRotation);
+            }
+            // cache position for next tick
+            this.prevPosition = this.el.object3D.position;
+            this.prevRotation = this.el.object3D.rotation;
+          }
+          // marker is not visible
+          else {
+            // also make the object-to-smooth invisible
+            this.target.setAttribute("visible", "false");
+            // reset the cache position
+            this.prevPosition = null;
+            this.prevRotation = null;
+          }
+        },
+      });
+      function renderAScene() {
+        document.body.innerHTML += `
+            <a-scene vr-mode-ui="enabled: false;" loading-screen="enabled: true;" renderer="logarithmicDepthBuffer: true;" arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" id="scene" embedded gesture-detector log>
+              <a-assets>
+                                <a-entity id="animated-asset" src="https://arhorizon.s3.ap-south-1.amazonaws.com/character6.glb" position="0 0.5 0" ></a-entity>
+              </a-assets>
+              <a-marker id="animated-marker" type="pattern" preset="custom" url="https://arhorizon.s3.ap-south-1.amazonaws.com/markerPattFile/markerPattern1706165770364.patt"
+ raycaster="objects: .clickable" emitevents="true" cursor="fuse: false; rayOrigin: mouse;" markerhandler smooth="true" smoothCount="10" smoothTolerance="0.1" smoothThreshold="20" lerpsmooth>
+>
+                 <a-box id="loadingEl" color="yellow" ></a-box>
+                <a-entity id="bowser-model" scale="0.09 0.09 0.09"  rotation="90 0 0" animation-mixer="loop: repeat" gltf-model="#animated-asset" class="clickable" gesture-handler loader></a-entity>
+                <!-- Optional: Add raycaster and cursor components directly -->
+                <a-entity raycaster="objects: .clickable" cursor="fuse: false; rayOrigin: mouse;"></a-entity>
+              </a-marker>
+              <a-entity camera look-controls-enabled="true"></a-entity>
+
+            </a-scene>
+            <button id="myButton" class="button button1">Avail Coupon!</button>
+            <button class="btn" id="musicButton" onclick="playAudio()"><i class="fa fa-music"></i></button>
+
+          `;
+      }
+    </script>
+  </body>
+</html>
