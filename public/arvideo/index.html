@@ -20,6 +20,8 @@
           );
           responseData = response.data;
           console.log(responseData);
+          console.log("images", responseData.mindfile);
+          console.log("video", responseData.videofile);
 
           renderAScene();
         } catch (error) {

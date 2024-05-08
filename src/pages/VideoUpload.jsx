@@ -118,8 +118,8 @@ function VideoUpload() {
         uploadFormData
       );
 
-      const uploadedFileUrl = uploadResponse.data.fileUrl;
-      console.log(uploadedFileUrl);
+      const uploadedFileUrl = uploadResponse.data.response.fileUrl;
+      console.log(uploadResponse.data.response.fileUrl);
       return uploadedFileUrl;
     } catch (error) {
       console.error("Error uploading mind file:", error);
@@ -335,7 +335,7 @@ function VideoUpload() {
     console.log(mindfile);
     if (imageres.res && videores.res) {
       const body = {
-        Id: new Date().getTime().toString(),
+        Id: now.getTime().toString(),
         TargetImageFile: imageres.item,
         videofile: videores.item,
         campaignName: formdata.brandname,
@@ -363,10 +363,14 @@ function VideoUpload() {
         <div>
           <label>Name</label>
           <input name="brandname" onChange={handleinputchange} />
+          <label>Mind file</label>
+
           <input type="file" accept=".mind" onChange={handleUploadMindFile} />
-          <label>Imagefile</label>
+          <label>Image file</label>
+
           <input onChange={handleuploadimagefile} id="imagefile" type="file" />
-          <label>video file</label>
+          <label>Video file</label>
+
           <input type="file" onChange={handleuploadvideofile} />
 
           <button onClick={handlesubmit}>submit</button>

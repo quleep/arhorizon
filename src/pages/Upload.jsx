@@ -357,12 +357,14 @@ function Upload() {
         uploadFormData
       );
       const uploadedFileUrl = uploadResponse.data.response.fileUrl;
-  
+
+      console.log("patt file", uploadResponse.data);
       const uploadImageResponse = await axios.post(
         "https://gsrhol3xd0.execute-api.ap-south-1.amazonaws.com/prod/image-upload",
         uploadFormData1
       );
 
+      console.log("image filke", uploadImageResponse.data);
 
       const uploadedImageUrl = uploadImageResponse.data.response.fileUrl;
       const newApplicant = {
