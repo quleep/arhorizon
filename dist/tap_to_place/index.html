@@ -1,62 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
-    <title>Tap on place iOS</title>
-    <script async type="module" src="app.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
-      rel="stylesheet" />
-    <link rel="stylesheet" href="app.css" />
-  </head>
-  <body>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Model Viewer Demonstration</title>
     <style>
-      .button1 {
-        padding: 15px 20px;
-        font: 12px "Montserrat", sans-serif;
-        font-weight: 700;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        text-decoration: none;
-        text-align: center;
-        margin: 1em;
-        color: black;
-        background-color: #10ffb4;
-        transition: 0.2s ease-in-out;
-        border-left: 3px transparent solid;
-        border-right: 3px solid;
-        transition-duration: 0.4s;
-        cursor: pointer;
-        background-color: white;
-        color: black;
-        border: 2px solid #04aa6d;
-        position: absolute;
-        bottom: 20px;
-        left: 25%;
-        display: none;
-      }
-
-      .button1:hover {
-        color: #10ffb4;
-        background-color: black;
-        border-left: #10ffb4 3px solid;
-        border-right: #10ffb4 3px solid;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
-          0 6px 20px 0 rgba(0, 0, 0, 0.2);
+      model-viewer {
+        height: 70vh;
+        width: 100%;
       }
     </style>
-    <div id="loading-screen">
-      <div class="bounce1"></div>
-      <div class="bounce2"></div>
-      <div class="bounce3"></div>
-    </div>
-    <div id="error-screen">
-      <span id="error-title"></span>
-      <span id="error-message"></span>
-    </div>
-    <button id="myButton" class="button button1">Avail Coupon!</button>
+  </head>
+  <body>
+    <model-viewer
+      id="modelViewer"
+      alt="3D Model Viewer"
+      auto-rotate
+      camera-controls
+      loading="eager"
+      ar
+      autoplay
+      ar-scale="auto"
+      ar-modes="scene-viewer quick-look"
+      touch-action="pan-y">
+    </model-viewer>
+
+    <!-- Import the Model Viewer component -->
+    <script
+      type="module"
+      src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.0.1/model-viewer.min.js"></script>
+    <!-- Import Axios -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+    <!-- JavaScript to fetch URL and update model-viewer -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get("id");
+        console.log("ID:", id);
+        startTime = Date.now();
+        axios
+          .get(
+            `https://3ef9gn5kk2.execute-api.ap-south-1.amazonaws.com/arnxt_prod/ar-horizon/uploadtargetimage?id=${id}`,
+            {
+              // Replace with your request payload if needed
+            }
+          )
+          .then((response) => {
+            const modelUrl = response.data.TargetGlbFile; // Adjust based on your API response structure
+
+            // const modelUrl =
+            //   "https://jobpostingbucket.s3.ap-south-1.amazonaws.com/necklace+Turntable+(1).glb";
+            const modelViewer = document.getElementById("modelViewer");
+            modelViewer.setAttribute("src", modelUrl);
+          })
+          .catch((error) => {
+            console.error("Error fetching model URL:", error);
+          });
+      });
+    </script>
   </body>
 </html>

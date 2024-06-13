@@ -1,79 +1,23 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image.prod.js"></script>
-    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image-aframe.prod.js"></script>
-    <script>
-      AFRAME.registerComponent("video-controller", {
-        init: function () {
-          const target = document.getElementById("target");
-          const btn = document.querySelector("button");
-          const video = document.getElementById("video");
-          const target1 = this.el; // The model itself
-          const examplePlane = document.querySelector("#example-plane");
-          const playButton = document.querySelector("#button");
-
-          // detect target found
-          target.addEventListener("targetFound", (event) => {
-            console.log("target found");
-            this.found = true;
-            video.play();
-          });
-          // detect target lost
-          target.addEventListener("targetLost", (event) => {
-            console.log("target lost");
-            this.found = false;
-            video.pause();
-          });
-          // detect click event
-          btn.addEventListener("click", (event) => {
-            console.log("btn click");
-            if (this.found) video.play();
-          });
-        },
-      });
-    </script>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   </head>
-
   <body>
-    <div
-      style="
-        position: fixed;
-        top: 10px;
-        width: 100%;
-        text-align: center;
-        z-index: 1;
-        color: grey;
-      ">
-      <button>Play video</button> - if the p lane is black on mobile.
-    </div>
-    <a-scene
-      mindar-image="imageTargetSrc: https://res.cloudinary.com/dd3c4j1sm/raw/upload/v1712217255/targets_snvq6t.mind;"
-      color-space="sRGB"
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false"
-      cursor="rayOrigin: mouse;"
-      raycaster="objects: .clickable"
-      mindar-image="filterMinCF:0.1; filterBeta: 10; warmupTolerance: 1;missTolerance: 1"
-      renderer="colorManagement: true, physicallyCorrectLights">
+    <a-scene mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.2/examples/image-tracking/assets/card-example/card.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
-        <video
-          id="video"
-          src="https://res.cloudinary.com/dd3c4j1sm/video/upload/v1712308859/ArNXT_Product_3_h41slf.mp4"
-          preload
-          loop></video>
+	<img id="card" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.2/examples/image-tracking/assets/card-example/card.png" />
+	<a-asset-item id="avatarModel" src="https://jobpostingbucket.s3.ap-south-1.amazonaws.com/necklace+m%26+r+reduced+.glb"></a-asset-item>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-      <a-entity id="target" mindar-image-target="targetIndex: 0">
-        <a-plane
-          class="clickable"
-          height="0.715"
-          width="1.00"
-          material="src: #video; opacity: 1; transparent: true"
-          video-controller>
-        </a-plane>
+
+      <a-entity mindar-image-target="targetIndex: 0">
+	<a-plane src="#card" position="0 0 0" height="0.552" width="1" rotation="0 0 0"></a-plane>
+	<a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.5 0.5 0.5" src="#avatarModel"
+	  animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
+	>
       </a-entity>
     </a-scene>
   </body>

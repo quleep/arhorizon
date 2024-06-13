@@ -6,12 +6,19 @@
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
       rel="stylesheet" />
-    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
     <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
     <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+
+    <script src="lib/RGBELoader.js"></script>
+
+    <script src="components/aframe-orbit-controls.js"></script>
+    <script src="components/aframe-env-map-component.js"></script>
+    <script src="components/aframe-hdr-environment.js"></script>
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -201,11 +208,11 @@
       });
       function renderAScene() {
         document.body.innerHTML += `
-            <a-scene vr-mode-ui="enabled: false;" loading-screen="enabled: true;" renderer="logarithmicDepthBuffer: true;" arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" id="scene" embedded gesture-detector log>
+            <a-scene light="defaultLightsEnabled: true" hdr-environment="url: images/venice_sunset_1k.hdr; vr-mode-ui="enabled: false;" loading-screen="enabled: true;" renderer="logarithmicDepthBuffer: true;" arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;" id="scene" embedded gesture-detector log >
               <a-assets>
-                                <a-entity id="animated-asset" src="https://arhorizon.s3.ap-south-1.amazonaws.com/character6.glb" position="0 0.5 0" ></a-entity>
+                                <a-entity id="animated-asset" src="https://res.cloudinary.com/dd3c4j1sm/image/upload/v1718021533/necklace_reduced_tqdrkg.glb" position="0 0.5 0" ></a-entity>
               </a-assets>
-              <a-marker id="animated-marker" type="pattern" preset="custom" url="https://arhorizon.s3.ap-south-1.amazonaws.com/markerPattFile/markerPattern1706165770364.patt"
+              <a-marker id="animated-marker" type="pattern" preset="custom" url="https://arhorizon.s3.ap-south-1.amazonaws.com/markerPattFile/markerPattern1712140804109.patt"
  raycaster="objects: .clickable" emitevents="true" cursor="fuse: false; rayOrigin: mouse;" markerhandler smooth="true" smoothCount="10" smoothTolerance="0.1" smoothThreshold="20" lerpsmooth>
 >
                  <a-box id="loadingEl" color="yellow" ></a-box>
