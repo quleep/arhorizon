@@ -261,3 +261,7 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+.leaflet-container {
+  height: 600px;
+  width: 100%;
+}

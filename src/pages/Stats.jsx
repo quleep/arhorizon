@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SidebarDash from "../components/SidebarDash";
 import Tilt from "react-tilt";
+import "leaflet/dist/leaflet.css";
+
 import { Navbar } from "../components";
+import osm from "../service/osm-providers";
+
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
 const Stats = () => {
   const [data, setData] = useState(null);
@@ -15,6 +20,10 @@ const Stats = () => {
   const [error, setError] = useState(null);
   const param = useParams();
   const navigate = useNavigate();
+  const [center, setCenter] = useState({ lat: 13.084622, lng: 80.248357 });
+  const ZOOM_LEVEL = 9;
+  const mapRef = useRef();
+  const [map, setMap] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +44,17 @@ const Stats = () => {
 
     fetchData();
   }, [param]);
+  // useEffect(() => {
+  //   axios
+  //     .get("https://ipinfo.io?token=da12d7e081a410")
+  //     .then((response) => {
+  //       setIp(response.data.ip);
+  //       console.log(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("There was an error fetching the IP address!", error);
+  //     });
+  // }, []);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -45,6 +65,7 @@ const Stats = () => {
           }
         );
         setLocationData(response.data);
+        console.log("dcd", response.data);
       } catch (error) {
         setError(error);
       }
@@ -216,6 +237,19 @@ const Stats = () => {
                     </table>
                   </div>
                 </div>
+              </div>
+              <div class="w-4/5  px-4 mx-auto mt-24 h-52">
+                <MapContainer
+                  center={center}
+                  zoom={ZOOM_LEVEL}
+                  ref={mapRef}
+                  zoomControl={false}
+                  whenCreated={setMap}>
+                  <TileLayer
+                    url={osm.maptiler.url}
+                    attribution={osm.maptiler.attribution}
+                  />
+                </MapContainer>
               </div>
             </div>
           </div>

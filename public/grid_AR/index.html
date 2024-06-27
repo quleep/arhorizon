@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <title>FESC - WebAR</title>
+  </head>
+  <body>
+    <div class="logo">
+      <img class="imgLogo" src="./img/LogoFesc.png" alt="LogoFesc" />
+    </div>
+    <div class="container">
+      <header>
+        <h1>Bienvenido a nuestra plataforma de Realidad Aumentada</h1>
+        <p>
+          Podras ver modelos 3D relacionados a las carreras de nuestra
+          institución al detectar alguna de estas tarjetas:
+        </p>
+      </header>
+      <div class="targets">
+        <img class="target" src="./img/avatarSoftware.jpg" />
+        <img class="target" src="./img/avatarDiseño.jpg" />
+        <img class="target" src="./img/avatarModas.jpg" />
+        <img class="target" src="./img/avatarTurismo.jpg" />
+      </div>
+      <section class="wrapper">
+        <a href="./pagRealidad.html" class="button"
+          >Iniciar realidad aumentada</a
+        >
+      </section>
+    </div>
+
+    <svg
+      style="visibility: hidden; position: absolute"
+      width="0"
+      height="0"
+      xmlns="http://www.w3.org/2000/svg"
+      version="1.1"
+    >
+      <defs>
+        <filter id="goo">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+          <feColorMatrix
+            in="blur"
+            mode="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9"
+            result="goo"
+          />
+          <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+        </filter>
+      </defs>
+    </svg>
+  </body>
+</html>
