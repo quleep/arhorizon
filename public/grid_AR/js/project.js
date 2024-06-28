@@ -1,12 +1,18 @@
 document.addEventListener("DOMContentLoaded", function () {
   const askButtonSoft = document.querySelector("#ask-button-sof");
   askButtonSoft.addEventListener("click", (event) => {
-    window.open("https://www.fesc.edu.co/micrositios/software/", "_blank");
+    window.open(
+      "https://wowmomodashboard.com/links/wow-momo-nutrition/",
+      "_blank"
+    );
   });
 
   const askButtonGraf = document.querySelector("#ask-button-graf");
   askButtonGraf.addEventListener("click", (event) => {
-    window.open("https://www.fesc.edu.co/micrositios/grafico/", "_blank");
+    window.open(
+      "https://wowmomodashboard.com/links/wow-china-nutrition/",
+      "_blank"
+    );
   });
 
   const askButtonTur = document.querySelector("#ask-button-tur");
