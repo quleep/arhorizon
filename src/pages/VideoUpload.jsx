@@ -1,46 +1,64 @@
 import React, { useEffect, useState } from "react";
+import { TbAugmentedReality } from "react-icons/tb";
+import { FaVideo } from "react-icons/fa";
+import { MdAudiotrack } from "react-icons/md";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Navbar } from "../components";
 
 function VideoUpload() {
+  const data = [
+    {
+      label: "3D Model",
+      value: "model",
+      icon: TbAugmentedReality,
+      desc: `It really matters and then like it really doesn't matter.
+      What matters is the people who are sparked by it. And the people
+      who are like offended by it, it doesn't matter.`,
+    },
+    {
+      label: "Video",
+      value: "video",
+      icon: FaVideo,
+      desc: `Because it's about motivating the doers. Because I'm here
+      to follow my dreams and inspire other people to follow their dreams, too.`,
+    },
+    {
+      label: "Audio",
+      value: "audio",
+      icon: MdAudiotrack,
+      desc: `We're not always in the position that we want to be at.
+      We're constantly growing. We're constantly making mistakes. We're
+      constantly trying to express ourselves and actualize our dreams.`,
+    },
+  ];
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [selectedModel, setSelectedModel] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [open1, setOpen1] = useState(false);
+  const [open2, setOpen2] = useState(false);
+  const [open3, setOpen3] = useState(false);
+  const [model, setModel] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
   const [campaignName, setCampaignName] = useState("");
+  const [pattFile, setPattFile] = useState(null);
+  const [selectedGlb, setSelectedGlb] = useState(null);
+  const [couponCode, setCouponCode] = useState("");
+  const [discount, setDiscount] = useState("");
+  const [qrcode, setQRCode] = useState("");
+  const videouploadurl =
+    "https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/arhorizonvideocontentupload";
+  const imageuploadurl =
+    "https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/arhorizonimagefileupload";
+  const submitformurl =
+    "https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/submitformvideoarhorizon";
+  const [videofile, setVideoFile] = useState();
+  const [imagefile, setImageFile] = useState();
   const [mindFile, setMindFile] = useState(null);
-  const [imagefile, setImageFile] = useState(null);
-  const [videofile, setVideoFile] = useState(null);
-  const [formdata, setFormData] = useState({ brandname: "" });
-
-  const handleSubmit = async () => {
-    setLoading(true); // Set loading state to true
-    try {
-      const imageres = await handlesubmitimagefile();
-      const videores = await handlesubmitvideo();
-      const mindfile = await handleSubmitMindFile();
-
-      if (imageres.res && videores.res) {
-        const body = {
-          Id: new Date().getTime().toString(),
-          TargetImageFile: imageres.item,
-          videofile: videores.item,
-          campaignName: formdata.brandname,
-          mindfile: mindfile,
-          AR_Link: `https://arhorizon.in/arvideo/index.html?id=${new Date()
-            .getTime()
-            .toString()}`,
-          regtime: new Date().getTime(),
-        };
-
-        const response = await axios.post(submitformurl, body);
-        console.log(response);
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    } finally {
-      setLoading(false); // Set loading state to false after submission
-    }
-  };
+  const [formdata, setFormData] = useState({
+    imagefile: "",
+  });
 
   const handleUploadMindFile = (e) => {
     const file = e.target.files[0];
@@ -53,168 +71,299 @@ function VideoUpload() {
         console.error("No mind file selected.");
         return;
       }
+      console.log(mindFile);
 
       const formData = new FormData();
       formData.append("markerPattern", mindFile);
+      const readAsDataURL = (file) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      };
 
+      const base64Content = await readAsDataURL(mindFile);
+      const uploadFormData = new FormData();
+      uploadFormData.append(
+        `markerPattern${now.getTime().toString()}`,
+        base64Content
+      );
       const uploadResponse = await axios.post(
         "https://gsrhol3xd0.execute-api.ap-south-1.amazonaws.com/prod/file-upload-mindfile",
-        formData
+        uploadFormData
       );
 
       const uploadedFileUrl = uploadResponse.data.response.fileUrl;
-      console.log(uploadedFileUrl);
+      console.log(uploadResponse.data.response.fileUrl);
       return uploadedFileUrl;
     } catch (error) {
       console.error("Error uploading mind file:", error);
     }
   };
 
-  const handleuploadimagefile = (e) => {
-    const file = e.target.files[0];
-    setImageFile(file);
-  };
+  const handleDiscountChange = (e) => {
+    let inputDiscount = e.target.value;
 
-  const handlesubmitimagefile = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("file", imagefile);
-
-      const response = await axios.post(imageuploadurl, formData);
-      const uploadResponse = await axios.put(
-        response.data.uploadURL,
-        imagefile,
-        {
-          headers: { "Content-Type": "image/jpeg" },
-        }
-      );
-
-      if (uploadResponse.status === 200) {
-        const imgurl = uploadResponse.config.url.split("?")[0];
-        return { item: imgurl, res: true };
-      }
-    } catch (error) {
-      console.error("Error uploading image file:", error);
-      return { res: false };
+    if (inputDiscount === "" || isNaN(inputDiscount)) {
+      setDiscount("");
+    } else {
+      const clampedDiscount = Math.min(parseFloat(inputDiscount), 100);
+      setDiscount(clampedDiscount);
     }
   };
 
-  const handleuploadvideofile = (e) => {
-    const file = e.target.files[0];
-    setVideoFile(file);
-  };
+  const now = new Date();
 
-  const handlesubmitvideo = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("file", videofile);
-
-      const response = await axios.post(videouploadurl, formData);
-      const uploadResponse = await axios.put(
-        response.data.uploadURL,
-        videofile,
-        {
-          headers: { "Content-Type": "video/mp4" },
-        }
-      );
-
-      if (uploadResponse.status === 200) {
-        const videourl = uploadResponse.config.url.split("?")[0];
-        return { item: videourl, res: true };
-      }
-    } catch (error) {
-      console.error("Error uploading video file:", error);
-      return { res: false };
-    }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formdata, [name]: value });
-  };
+  const handleOpen = () => setOpen(!open);
+  const handleOpen1 = () => setOpen1(!open1);
+  const handleOpen2 = () => setOpen2(!open2);
+  const handleOpen3 = () => setOpen3(!open3);
 
   useEffect(() => {
     const userInfo = localStorage.getItem("user");
     if (!userInfo) {
       navigate("/login");
     }
-  }, [navigate]);
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/getarhorizondata"
+        );
+        setModel(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleCampaignNameChange = (event) => {
+    setCampaignName(event.target.value);
+  };
+
+  const publish = async () => {
+    if (!campaignName) return alert("Please, add Campaign Name.");
+    if (!selectedGlb) return alert("Please, Select 3D Model.");
+    const user = localStorage.getItem("user");
+    setLoading(true);
+
+    try {
+      const newApplicant = {
+        Id: now.getTime().toString(),
+        AR_Link: `https://arhorizon.in/tap_to_place/index.html?id=${now
+          .getTime()
+          .toString()}`,
+        TargetGlbFile: selectedGlb,
+        couponCode: couponCode,
+        discountPercentage: discount,
+        campaignName: campaignName,
+        email: user,
+        TargetImageFile: selectedModel.animationimage,
+        tapToPlace: "yes",
+      };
+      const applicantResponse = await axios.post(
+        "https://3ef9gn5kk2.execute-api.ap-south-1.amazonaws.com/arnxt_prod/ar-horizon/uploadtargetimage",
+        newApplicant
+      );
+      setQRCode(
+        `https://arhorizon.in/tap_to_place/index.html?id=${applicantResponse.data.Item.Id}`
+      );
+    } catch (error) {
+      console.error("An error occurred:", error);
+    } finally {
+      setLoading(false);
+    }
+    handleOpen3();
+  };
+
+  const handleuploadvideofile = (e) => {
+    let files = Array.from(e.target.files);
+    files.forEach((file) => {
+      setVideoFile(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleuploadimagefile = (e) => {
+    let val = document.getElementById(`imagefile`).value;
+    let indx = val.lastIndexOf(".") + 1;
+    let filetype = val.substr(indx, val.length).toLowerCase();
+    let files = Array.from(e.target.files);
+    files.forEach((file) => {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handlesubmitimagefile = async () => {
+    try {
+      const url = imageuploadurl;
+      const response = await fetch(url, {
+        method: "POST",
+        body: imagefile.name,
+      });
+      const data = await response.json();
+      const uploadResponse = await fetch(data.uploadURL, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "image/jpeg",
+        },
+        body: imagefile,
+      });
+
+      if (uploadResponse.status === 200) {
+        let resnew = uploadResponse.url.split("?");
+        let imgurl = resnew[0];
+        const returndata = {
+          item: imgurl,
+          res: true,
+        };
+        return returndata;
+      }
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  };
+
+  const handlesubmitvideo = async () => {
+    try {
+      const url = videouploadurl;
+      const response = await fetch(url, {
+        method: "POST",
+        body: videofile.name,
+      });
+      const data = await response.json();
+      const uploadResponse = await fetch(data.uploadURL, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "video/mp4",
+        },
+        body: videofile,
+      });
+
+      if (uploadResponse.status === 200) {
+        let resnew = uploadResponse.url.split("?");
+        let imgurl = resnew[0];
+        const returndata = {
+          item: imgurl,
+          res: true,
+        };
+        return returndata;
+      }
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  };
+
+  const handleinputchange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formdata,
+      [name]: value,
+    });
+  };
+
+  console.log(formdata);
+
+  const handlesubmit = async () => {
+    const imageres = await handlesubmitimagefile();
+    const videores = await handlesubmitvideo();
+    const mindfile = await handleSubmitMindFile();
+    console.log(mindfile);
+    if (imageres.res && videores.res) {
+      const body = {
+        Id: now.getTime().toString(),
+        TargetImageFile: imageres.item,
+        videofile: videores.item,
+        campaignName: formdata.brandname,
+        mindfile: mindfile,
+        AR_Link: `https://arhorizon.in/arvideo/index.html?id=${now
+          .getTime()
+          .toString()}`,
+        regtime: new Date().getTime(),
+      };
+
+      try {
+        const response = await axios.post(submitformurl, body).then((res) => {
+          console.log(res);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   return (
     <div>
       <Navbar />
-      <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12 mt-20">
-        <div className="relative py-3 sm:max-w-xl sm:mx-auto">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
-          <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
-            <div className="max-w-md mx-auto">
-              <div>
-                <h2 className="text-center text-3xl font-extrabold text-gray-900">
-                  Upload Your Video
-                </h2>
-              </div>
-              <div className="divide-y divide-gray-200">
-                <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  <div className="flex flex-col">
-                    <label htmlFor="brandname" className="leading-loose">
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      id="brandname"
-                      name="brandname"
-                      onChange={handleInputChange}
-                      className="w-full px-5 py-2 text-gray-700 bg-gray-200 rounded"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <label htmlFor="mindfile" className="leading-loose">
-                      Mind File (.mind)
-                    </label>
-                    <input
-                      type="file"
-                      id="mindfile"
-                      accept=".mind"
-                      onChange={handleUploadMindFile}
-                      className="w-full px-5 py-2 text-gray-700 bg-gray-200 rounded"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <label htmlFor="imagefile" className="leading-loose">
-                      Image File
-                    </label>
-                    <input
-                      type="file"
-                      id="imagefile"
-                      onChange={handleuploadimagefile}
-                      className="w-full px-5 py-2 text-gray-700 bg-gray-200 rounded"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <label htmlFor="videofile" className="leading-loose">
-                      Video File
-                    </label>
-                    <input
-                      type="file"
-                      id="videofile"
-                      onChange={handleuploadvideofile}
-                      className="w-full px-5 py-2 text-gray-700 bg-gray-200 rounded"
-                    />
-                  </div>
-                  <div className="flex justify-center">
-                    <button
-                      onClick={handleSubmit}
-                      className={`px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600 ${
-                        loading ? "opacity-50 cursor-not-allowed" : ""
-                      }`}
-                      disabled={loading}>
-                      {loading ? "Submitting..." : "Submit"}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+      <div className="pages-content bg-blue-gray-50 mt-24 p-6">
+        <div className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-2xl font-semibold mb-4">Upload Your Campaign</h2>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Name
+            </label>
+            <input
+              name="brandname"
+              onChange={handleinputchange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            />
           </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Mind file
+            </label>
+            <input
+              type="file"
+              accept=".mind"
+              onChange={handleUploadMindFile}
+              className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer focus:outline-none"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Image file
+            </label>
+            <input
+              onChange={handleuploadimagefile}
+              id="imagefile"
+              type="file"
+              className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer focus:outline-none"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Video file
+            </label>
+            <input
+              type="file"
+              onChange={handleuploadvideofile}
+              className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer focus:outline-none"
+            />
+          </div>
+          <button
+            onClick={handlesubmit}
+            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            Submit
+          </button>
         </div>
       </div>
     </div>
