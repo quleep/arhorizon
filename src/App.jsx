@@ -17,6 +17,7 @@ import TapUpload from "./pages/TapUpload";
 import EditorVideo from "./pages/EditorVideo";
 import VideoUpload from "./pages/VideoUpload";
 import Test from "./pages/Test";
+import VideoUploadQR from "./pages/VideoUploadQR";
 function App() {
   return (
     <BrowserRouter>
@@ -33,6 +34,7 @@ function App() {
         <Route path="/upload" element={<Upload />} />
         <Route path="/upload_tap_to_place" element={<TapUpload />} />
         <Route path="/upload_video_based_ar" element={<VideoUpload />} />
+        <Route path="/upload_video_based_ar_QR" element={<VideoUploadQR />} />
 
         <Route path="/couponCode/:id" element={<CouponCode />} />
         <Route path="/couponCodeOTP/:id" element={<OTPScreen />} />

@@ -6,7 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Navbar } from "../components";
 
-function VideoUpload() {
+function VideoUploadQR() {
   const data = [
     {
       label: "3D Model",
@@ -147,41 +147,6 @@ function VideoUpload() {
     setCampaignName(event.target.value);
   };
 
-  const publish = async () => {
-    if (!campaignName) return alert("Please, add Campaign Name.");
-    if (!selectedGlb) return alert("Please, Select 3D Model.");
-    const user = localStorage.getItem("user");
-    setLoading(true);
-
-    try {
-      const newApplicant = {
-        Id: now.getTime().toString(),
-        AR_Link: `https://arhorizon.in/tap_to_place/index.html?id=${now
-          .getTime()
-          .toString()}`,
-        TargetGlbFile: selectedGlb,
-        couponCode: couponCode,
-        discountPercentage: discount,
-        campaignName: campaignName,
-        email: user,
-        TargetImageFile: selectedModel.animationimage,
-        tapToPlace: "yes",
-      };
-      const applicantResponse = await axios.post(
-        "https://3ef9gn5kk2.execute-api.ap-south-1.amazonaws.com/arnxt_prod/ar-horizon/uploadtargetimage",
-        newApplicant
-      );
-      setQRCode(
-        `https://arhorizon.in/tap_to_place/index.html?id=${applicantResponse.data.Item.Id}`
-      );
-    } catch (error) {
-      console.error("An error occurred:", error);
-    } finally {
-      setLoading(false);
-    }
-    handleOpen3();
-  };
-
   const handleuploadvideofile = (e) => {
     let files = Array.from(e.target.files);
     files.forEach((file) => {
@@ -299,7 +264,7 @@ function VideoUpload() {
           .getTime()
           .toString()}`,
         regtime: new Date().getTime(),
-        qr_code: "yes",
+        qr_image: "yes",
       };
 
       try {
@@ -371,4 +336,4 @@ function VideoUpload() {
   );
 }
 
-export default VideoUpload;
+export default VideoUploadQR;
