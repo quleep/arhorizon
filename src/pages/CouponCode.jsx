@@ -57,14 +57,7 @@ function CouponCode() {
         setLoading(false);
       });
   };
-  useEffect(() => {
-    var markerStatus = localStorage.getItem("markerStatus");
 
-    if (markerStatus === "found") {
-    } else {
-      window.location.href = `https://arhorizon.in`;
-    }
-  }, []);
   useEffect(() => {
     var markerStatus = localStorage.getItem("ArUserDetected");
 
