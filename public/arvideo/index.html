@@ -2,9 +2,8 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image.prod.js"></script>
-    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image-aframe.prod.js"></script>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
     <script>
       let responseData;
@@ -94,8 +93,15 @@
       function renderAScene() {
         if (responseData) {
           document.body.innerHTML += `
+    <div class="example-container">
+           <div id="example-scanning-overlay" class="hidden">
+        <div class="inner">
+          <img src="${responseData.TargetImageFile}" />
+          <div class="scanline"></div>
+        </div>
+      </div>
           <a-scene
-            mindar-image="imageTargetSrc: ${responseData.mindfile};"
+            mindar-image="uiScanning: #example-scanning-overlay; imageTargetSrc: ${responseData.mindfile};"
             color-space="sRGB"
             vr-mode-ui="enabled: false"
             device-orientation-permission-ui="enabled: false"
@@ -111,6 +117,9 @@
                 preload
                 loop
               ></video>
+                     <img
+            id="paintandquest-preview"
+            src="https://arhorizon.s3.ap-south-1.amazonaws.com/1720773426818_UO4q0rl6GpI-HD.jpg" />
             </a-assets>
 
             <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
@@ -127,6 +136,7 @@
           <button id="couponButton" class="button button1" style="display:none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);">
             Avail Coupon!
           </button>
+          </div>
         `;
         }
       }
@@ -177,6 +187,81 @@
 
       .btn:hover {
         background-color: RoyalBlue;
+      }
+      .example-container {
+        overflow: hidden;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      #example-scanning-overlay {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: transparent;
+        z-index: 2;
+      }
+      @media (min-aspect-ratio: 1/1) {
+        #example-scanning-overlay .inner {
+          width: 50vh;
+          height: 50vh;
+        }
+      }
+      @media (max-aspect-ratio: 1/1) {
+        #example-scanning-overlay .inner {
+          width: 80vw;
+          height: 80vw;
+        }
+      }
+
+      #example-scanning-overlay .inner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+
+        background: linear-gradient(to right, white 10px, transparent 10px) 0 0,
+          linear-gradient(to right, white 10px, transparent 10px) 0 100%,
+          linear-gradient(to left, white 10px, transparent 10px) 100% 0,
+          linear-gradient(to left, white 10px, transparent 10px) 100% 100%,
+          linear-gradient(to bottom, white 10px, transparent 10px) 0 0,
+          linear-gradient(to bottom, white 10px, transparent 10px) 100% 0,
+          linear-gradient(to top, white 10px, transparent 10px) 0 100%,
+          linear-gradient(to top, white 10px, transparent 10px) 100% 100%;
+        background-repeat: no-repeat;
+        background-size: 40px 40px;
+      }
+
+      #example-scanning-overlay.hidden {
+        display: none;
+      }
+
+      #example-scanning-overlay img {
+        opacity: 0.6;
+        width: 90%;
+        align-self: center;
+      }
+
+      #example-scanning-overlay .inner .scanline {
+        position: absolute;
+        width: 100%;
+        height: 10px;
+        background: white;
+        animation: move 2s linear infinite;
+      }
+      @keyframes move {
+        0%,
+        100% {
+          top: 0%;
+        }
+        50% {
+          top: calc(100% - 10px);
+        }
       }
     </style>
   </head>

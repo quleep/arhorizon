@@ -1,94 +1,389 @@
+<!DOCTYPE html>
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap"
+      rel="stylesheet" />
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const sceneEl = document.querySelector("a-scene");
-        let arSystem;
-        sceneEl.addEventListener("loaded", function () {
-          arSystem = sceneEl.systems["mindar-image-system"];
-        });
-        const exampleTarget = document.querySelector("#example-target");
-        const examplePlane = document.querySelector("#example-plane");
-        const startButton = document.querySelector("#example-start-button");
-        const stopButton = document.querySelector("#example-stop-button");
-        const pauseButton = document.querySelector("#example-pause-button");
-        const pauseKeepVideoButton = document.querySelector(
-          "#example-pause-keep-video-button"
-        );
-        const unpauseButton = document.querySelector("#example-unpause-button");
-        startButton.addEventListener("click", () => {
-          console.log("start");
-          arSystem.start(); // start AR
-        });
-        stopButton.addEventListener("click", () => {
-          arSystem.stop(); // stop AR
-        });
-        pauseButton.addEventListener("click", () => {
-          arSystem.pause(); // pause AR, pause video
-        });
-        pauseKeepVideoButton.addEventListener("click", () => {
-          arSystem.pause(true); // pause AR, keep video
-        });
-        unpauseButton.addEventListener("click", () => {
-          arSystem.unpause(); // unpause AR and video
-        });
-        // arReady event triggered when ready
-        sceneEl.addEventListener("arReady", (event) => {
-          // console.log("MindAR is ready")
-        });
-        // arError event triggered when something went wrong. Mostly browser compatbility issue
-        sceneEl.addEventListener("arError", (event) => {
-          // console.log("MindAR failed to start")
-        });
-        // detect target found
-        exampleTarget.addEventListener("targetFound", (event) => {
-          console.log("target found");
-        });
-        // detect target lost
-        exampleTarget.addEventListener("targetLost", (event) => {
-          console.log("target lost");
-        });
-        // detect click event
-        examplePlane.addEventListener("click", (event) => {
-          console.log("plane click");
-        });
-      });
-    </script>
-  </head>
-  <body>
-    <div style="position: absolute; z-index: 1000">
-      <button id="example-start-button">Start</button>
-      <button id="example-pause-button">Pause</button>
-      <button id="example-pause-keep-video-button">Pause (keep video)</button>
-      <button id="example-unpause-button">UnPause</button>
-      <button id="example-stop-button">Stop</button>
-    </div>
-    <a-scene
-      mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.mind; autoStart: false;"
-      color-space="sRGB"
-      renderer="colorManagement: true, physicallyCorrectLights"
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false">
-      <a-camera
-        position="0 0 0"
-        look-controls="enabled: false"
-        cursor="fuse: false; rayOrigin: mouse;"
-        raycaster="near: 10; far: 10000; objects: .clickable"></a-camera>
+      let responseData;
 
-      <a-entity id="example-target" mindar-image-target="targetIndex: 0">
-        <a-plane
-          id="example-plane"
-          class="clickable"
-          color="blue"
-          opaciy="0.5"
+      document.addEventListener("DOMContentLoaded", async () => {
+        startTime = Date.now();
+        const urlParams = new URLSearchParams(window.location.search);
+        console.log(urlParams);
+        const id = urlParams.get("id");
+        console.log("ID:", id);
+
+        try {
+          const response = await axios.get(
+            `https://3ef9gn5kk2.execute-api.ap-south-1.amazonaws.com/arnxt_prod/ar-horizon/uploadtargetimage?id=${id}`
+          );
+          responseData = response.data;
+          console.log(responseData);
+          console.log("images", responseData.mindfile);
+          console.log("video", responseData.videofile);
+
+          renderAScene();
+
+          // Add event listener for coupon button after the scene is rendered
+          const couponButton = document.getElementById("couponButton");
+          couponButton.addEventListener("click", async () => {
+            window.open(`https://arhorizon.in/couponCode/${id}`);
+            await new Promise((resolve) =>
+              window.addEventListener("custom", resolve)
+            );
+          });
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      });
+
+      const isIOS = () =>
+        /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      let previewButtonClicked = false;
+
+      const showPortfolio = () => {
+        const portfolio = document.querySelector("#portfolio-panel");
+        const previewButton = document.querySelector("#preview-button");
+
+        portfolio.setAttribute("visible", true);
+
+        if (isIOS()) {
+          if (!previewButtonClicked) {
+            // Show only the preview button on iOS devices
+            previewButton.setAttribute("visible", true);
+            const couponButton = document.querySelector("#couponButton");
+
+            previewButton.addEventListener("click", () => {
+              previewButton.setAttribute("visible", false);
+              const videoElement = document.createElement("video");
+
+              const canPlayWebm = videoElement.canPlayType(
+                'video/webm; codecs="vp8, vorbis"'
+              );
+
+              const videoSrc = canPlayWebm ? "#video-webm" : "#video-mp4";
+              document
+                .querySelector("#video-link")
+                .setAttribute("src", videoSrc);
+              document.querySelector(videoSrc).play();
+              previewButtonClicked = true; // Set flag to true after first click
+            });
+            setTimeout(() => {
+              couponButton.style.display = "block";
+              videoPlayedForFirstTime = true; // Set the flag to true after first display
+            }, 3000);
+          } else {
+            // Show only the preview button on iOS devices
+            previewButton.setAttribute("visible", true);
+            const couponButton = document.querySelector("#couponButton");
+
+            previewButton.setAttribute("visible", false);
+            const videoElement = document.createElement("video");
+
+            const canPlayWebm = videoElement.canPlayType(
+              'video/webm; codecs="vp8, vorbis"'
+            );
+
+            const videoSrc = canPlayWebm ? "#video-webm" : "#video-mp4";
+            document.querySelector("#video-link").setAttribute("src", videoSrc);
+            document.querySelector(videoSrc).play();
+            setTimeout(() => {
+              couponButton.style.display = "block";
+              videoPlayedForFirstTime = true; // Set the flag to true after first display
+            }, 1000);
+          }
+        } else {
+          // For other devices, hide the preview button and play the video
+          previewButton.setAttribute("visible", false);
+          const videoElement = document.createElement("video");
+          const couponButton = document.querySelector("#couponButton");
+
+          const canPlayWebm = videoElement.canPlayType(
+            'video/webm; codecs="vp8, vorbis"'
+          );
+          const videoSrc = canPlayWebm ? "#video-webm" : "#video-mp4";
+          document.querySelector("#video-link").setAttribute("src", videoSrc);
+          document.querySelector(videoSrc).play();
+          setTimeout(() => {
+            couponButton.style.display = "block";
+            videoPlayedForFirstTime = true; // Set the flag to true after first display
+          }, 1000);
+        }
+      };
+      const hidePortfolio = () => {
+        const portfolio = document.querySelector("#portfolio-panel");
+        const previewButton = document.querySelector("#preview-button");
+
+        portfolio.setAttribute("visible", true);
+
+        if (isIOS()) {
+          // Show only the preview button on iOS devices
+
+          const videoElement = document.createElement("video");
+          const couponButton = document.querySelector("#couponButton");
+
+          const canPlayWebm = videoElement.canPlayType(
+            'video/webm; codecs="vp8, vorbis"'
+          );
+
+          const videoSrc = canPlayWebm ? "#video-webm" : "#video-mp4";
+          document.querySelector("#video-link").setAttribute("src", videoSrc);
+          document.querySelector(videoSrc).pause();
+          couponButton.style.display = "none"; // Hide the button when the target is lost
+        } else {
+          // For other devices, hide the preview button and play the video
+          const videoElement = document.createElement("video");
+          const couponButton = document.querySelector("#couponButton");
+
+          const canPlayWebm = videoElement.canPlayType(
+            'video/webm; codecs="vp8, vorbis"'
+          );
+          const videoSrc = canPlayWebm ? "#video-webm" : "#video-mp4";
+          document.querySelector("#video-link").setAttribute("src", videoSrc);
+          document.querySelector(videoSrc).pause();
+          couponButton.style.display = "none"; // Hide the button when the target is lost
+        }
+      };
+      AFRAME.registerComponent("mytarget", {
+        init: function () {
+          this.el.addEventListener("targetFound", () => {
+            console.log("target found");
+            showPortfolio();
+          });
+          this.el.addEventListener("targetLost", () => {
+            console.log("target lost");
+            hidePortfolio();
+          });
+        },
+      });
+      function renderAScene() {
+        if (responseData) {
+          document.body.innerHTML += `
+           <div class="example-container">
+      <div id="example-scanning-overlay" class="hidden">
+        <div class="inner">
+          <img src="${responseData.TargetImageFile}" />
+          <div class="scanline"></div>
+
+        </div>
+                    <p id="scan-instruction">SCAN THIS IMAGE</p>
+
+      </div>
+
+      <a-scene
+        mindar-image="imageTargetSrc: ${responseData.mindfile}; showStats: false; uiScanning: #example-scanning-overlay; filterMinCF:0.1; filterBeta: 10; warmupTolerance: 1;missTolerance: 1"
+        embedded
+        color-space="sRGB"
+        renderer="colorManagement: true, physicallyCorrectLights"
+        vr-mode-ui="enabled: false"
+        device-orientation-permission-ui="enabled: false">
+        <a-assets>
+          <img id="card" src="./assets/card-example/card.png" />
+          <img
+            id="preview"
+            src="./assets/card-example/portfolio/paintandquest-preview.png" />
+          <video
+            id="video-mp4"
+            autoplay="false"
+            loop="true"
+                          src="${responseData.videofile}"
+></video>
+          <video
+            id="video-webm"
+            autoplay="false"
+            loop="true"
+                          src="${responseData.videofile}"
+></video>
+        </a-assets>
+
+        <a-camera
           position="0 0 0"
-          height="0.552"
-          width="1"
-          rotation="0 0 0"></a-plane>
-      </a-entity>
-    </a-scene>
-  </body>
+          look-controls="enabled: false"
+          cursor="fuse: false; rayOrigin: mouse;"
+          raycaster="far: 10000; objects: .clickable">
+        </a-camera>
+
+        <a-entity id="mytarget" mytarget mindar-image-target="targetIndex: 0">
+          <a-entity visible="false" id="portfolio-panel" position="0 0 -0.01">
+            <a-entity id="portfolio-item0">
+              <a-video
+                id="video-link"
+                webkit-playsinline
+                playsinline
+                width="1"
+                height="0.552"
+                position="0 0 0"></a-video>
+              <a-image
+                id="preview-button"
+                class="clickable"
+                src="#preview"
+                alpha-test="0.5"
+                position="0 0 0"
+                height="0.552"
+                width="1"></a-image>
+            </a-entity>
+          </a-entity>
+        </a-entity>
+      </a-scene>
+        <button id="couponButton" class="button button1 lexend" style="display:none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);">
+            Avail Coupon!
+          </button>
+    </div>
+   
+        `;
+        }
+      }
+    </script>
+
+    <style>
+      body {
+        margin: 0;
+      }
+      .example-container {
+        overflow: hidden;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      #example-scanning-overlay {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: transparent;
+        z-index: 2;
+      }
+      @media (min-aspect-ratio: 1/1) {
+        #example-scanning-overlay .inner {
+          width: 50vh;
+          height: 50vh;
+        }
+      }
+      @media (max-aspect-ratio: 1/1) {
+        #example-scanning-overlay .inner {
+          width: 80vw;
+          height: 80vw;
+        }
+      }
+      #example-scanning-overlay .inner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        background: linear-gradient(to right, white 10px, transparent 10px) 0 0,
+          linear-gradient(to right, white 10px, transparent 10px) 0 100%,
+          linear-gradient(to left, white 10px, transparent 10px) 100% 0,
+          linear-gradient(to left, white 10px, transparent 10px) 100% 100%,
+          linear-gradient(to bottom, white 10px, transparent 10px) 0 0,
+          linear-gradient(to bottom, white 10px, transparent 10px) 100% 0,
+          linear-gradient(to top, white 10px, transparent 10px) 0 100%,
+          linear-gradient(to top, white 10px, transparent 10px) 100% 100%;
+        background-repeat: no-repeat;
+        background-size: 40px 40px;
+      }
+      #example-scanning-overlay.hidden {
+        display: none;
+      }
+      #example-scanning-overlay img {
+        opacity: 0.6;
+        width: 90%;
+        align-self: center;
+      }
+      #example-scanning-overlay .inner .scanline {
+        position: absolute;
+        width: 100%;
+        height: 10px;
+        background: white;
+        animation: move 2s linear infinite;
+      }
+      @keyframes move {
+        0%,
+        100% {
+          top: 0%;
+        }
+        50% {
+          top: calc(100% - 10px);
+        }
+      }
+      .button1 {
+        padding: 15px 20px;
+        font: 12px "Montserrat", sans-serif;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-decoration: none;
+        text-align: center;
+        margin: 1em;
+        color: black;
+        background-color: #10ffb4;
+        transition: 0.2s ease-in-out;
+        border-left: 3px transparent solid;
+        border-right: 3px solid;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        background-color: white;
+        color: black;
+        border: 3px solid #04aa6d;
+        border-radius: 2px;
+      }
+
+      .button1:hover {
+        color: #10ffb4;
+        background-color: black;
+        border-left: #10ffb4 3px solid;
+        border-right: #10ffb4 3px solid;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.2);
+      }
+
+      .btn {
+        background-color: DodgerBlue;
+        border: none;
+        color: white;
+        padding: 12px 16px;
+        font-size: 16px;
+        cursor: pointer;
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        border-radius: 5px;
+      }
+
+      .btn:hover {
+        background-color: RoyalBlue;
+      }
+      .lexend {
+        font-family: "Lexend", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 600;
+        font-style: normal;
+      }
+      #scan-instruction {
+        position: absolute;
+        bottom: 60px; /* Adjust based on your layout */
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: "Lexend", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 600;
+        font-style: normal;
+        font-size: 18px;
+        color: #ffffff; /* Adjust color as needed */
+        text-align: center;
+        width: 100%;
+      }
+    </style>
+  </head>
 </html>
