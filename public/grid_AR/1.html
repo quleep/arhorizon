@@ -14,37 +14,6 @@
     <script>
       let responseData;
 
-      document.addEventListener("DOMContentLoaded", async () => {
-        startTime = Date.now();
-        const urlParams = new URLSearchParams(window.location.search);
-        console.log(urlParams);
-        const id = urlParams.get("id");
-        console.log("ID:", id);
-
-        try {
-          const response = await axios.get(
-            `https://3ef9gn5kk2.execute-api.ap-south-1.amazonaws.com/arnxt_prod/ar-horizon/uploadtargetimage?id=${id}`
-          );
-          responseData = response.data;
-          console.log(responseData);
-          console.log("images", responseData.mindfile);
-          console.log("video", responseData.videofile);
-
-          renderAScene();
-
-          // Add event listener for coupon button after the scene is rendered
-          const couponButton = document.getElementById("couponButton");
-          couponButton.addEventListener("click", async () => {
-            window.open(`https://arhorizon.in/couponCode/${id}`);
-            await new Promise((resolve) =>
-              window.addEventListener("custom", resolve)
-            );
-          });
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      });
-
       const isIOS = () =>
         /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
       let previewButtonClicked = false;
@@ -164,83 +133,6 @@
           });
         },
       });
-      function renderAScene() {
-        if (responseData) {
-          document.body.innerHTML += `
-           <div class="example-container">
-      <div id="example-scanning-overlay" class="hidden">
-        <div class="inner">
-          <img src="${responseData.TargetImageFile}" />
-          <div class="scanline"></div>
-
-        </div>
-                    <p id="scan-instruction">SCAN THIS IMAGE</p>
-
-      </div>
-
-      <a-scene
-        mindar-image="imageTargetSrc: ${responseData.mindfile}; showStats: false; uiScanning: #example-scanning-overlay; filterMinCF:0.1; filterBeta: 10; warmupTolerance: 1;missTolerance: 1"
-        embedded
-        color-space="sRGB"
-        renderer="colorManagement: true, physicallyCorrectLights"
-        vr-mode-ui="enabled: false"
-        device-orientation-permission-ui="enabled: false">
-        <a-assets>
-          <img id="card" src="./assets/card-example/card.png" />
-          <img
-            id="preview"
-            src="https://res.cloudinary.com/dd3c4j1sm/image/upload/v1721734827/video-player_lukfrh.png" />
-          <video
-            id="video-mp4"
-            autoplay="false"
-            loop="true"
-                          src="${responseData.videofile}"
-></video>
-          <video
-            id="video-webm"
-            autoplay="false"
-            loop="true"
-                          src="${responseData.videofile}"
-></video>
-        </a-assets>
-
-        <a-camera
-          position="0 0 0"
-          look-controls="enabled: false"
-          cursor="fuse: false; rayOrigin: mouse;"
-          raycaster="far: 10000; objects: .clickable">
-        </a-camera>
-
-        <a-entity id="mytarget" mytarget mindar-image-target="targetIndex: 0">
-          <a-entity visible="false" id="portfolio-panel" position="0 0 -0.01">
-            <a-entity id="portfolio-item0">
-              <a-video
-                id="video-link"
-                webkit-playsinline
-                playsinline
-                width="1"
-                height="0.552"
-                position="0 0 0"></a-video>
-              <a-image
-                id="preview-button"
-                class="clickable"
-                src="#preview"
-                alpha-test="0.5"
-                position="0 0 0.1"
-                height="0.3"
-                width="0.3"></a-image>
-            </a-entity>
-          </a-entity>
-        </a-entity>
-      </a-scene>
-        <button id="couponButton" class="button button1 lexend" style="display:none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);">
-            Avail Coupon!
-          </button>
-    </div>
-   
-        `;
-        }
-      }
     </script>
 
     <style>
@@ -386,4 +278,82 @@
       }
     </style>
   </head>
+  <body>
+    <div class="example-container">
+      <div id="example-scanning-overlay" class="hidden">
+        <div class="inner">
+          <img
+            src="https://jobpostingbucket.s3.ap-south-1.amazonaws.com/UO4q0rl6GpI-HD+(2).jpg" />
+          <div class="scanline"></div>
+        </div>
+        <p id="scan-instruction">SCAN THIS IMAGE</p>
+      </div>
+
+      <a-scene
+        mindar-image="imageTargetSrc: https://jobpostingbucket.s3.ap-south-1.amazonaws.com/targetsM3M_QR.mind; showStats: false; uiScanning: #example-scanning-overlay; filterMinCF:0.1; filterBeta: 10; warmupTolerance: 1;missTolerance: 1"
+        embedded
+        color-space="sRGB"
+        renderer="colorManagement: true, physicallyCorrectLights"
+        vr-mode-ui="enabled: false"
+        device-orientation-permission-ui="enabled: false">
+        <a-assets>
+          <img id="card" src="./assets/card-example/card.png" />
+          <img
+            id="preview"
+            src="https://res.cloudinary.com/dd3c4j1sm/image/upload/v1721734827/video-player_lukfrh.png" />
+          <video
+            id="video-mp4"
+            autoplay="false"
+            loop="true"
+            src="https://arhorizon.s3.ap-south-1.amazonaws.com/1720785578618_Y2meta.app-Experience%20Luxury%20Living%20at%20M3M%20Mansion-%28720p%29.mp4"></video>
+          <video
+            id="video-webm"
+            autoplay="false"
+            loop="true"
+            src="https://arhorizon.s3.ap-south-1.amazonaws.com/1720785578618_Y2meta.app-Experience%20Luxury%20Living%20at%20M3M%20Mansion-%28720p%29.mp4"></video>
+        </a-assets>
+
+        <a-camera
+          position="0 0 0"
+          look-controls="enabled: false"
+          cursor="fuse: false; rayOrigin: mouse;"
+          raycaster="far: 10000; objects: .clickable">
+        </a-camera>
+
+        <a-entity id="mytarget" mytarget mindar-image-target="targetIndex: 0">
+          <a-entity visible="false" id="portfolio-panel" position="0 0 -0.01">
+            <a-entity id="portfolio-item0">
+              <a-video
+                id="video-link"
+                webkit-playsinline
+                playsinline
+                width="1"
+                height="0.552"
+                position="0 0 0"></a-video>
+              <a-image
+                id="preview-button"
+                class="clickable"
+                src="#preview"
+                alpha-test="0.5"
+                position="0 0 0.1"
+                height="0.3"
+                width="0.3"></a-image>
+            </a-entity>
+          </a-entity>
+        </a-entity>
+      </a-scene>
+      <button
+        id="couponButton"
+        class="button button1 lexend"
+        style="
+          display: none;
+          position: fixed;
+          bottom: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+        ">
+        Avail Coupon!
+      </button>
+    </div>
+  </body>
 </html>

@@ -75,9 +75,7 @@ const Experience = () => {
                     </div>
                   }>
                   <div>
-                    <div
-                      className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-                      onClick={() => handleClick(data.AR_Link)}>
+                    <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                       <QRCode
                         size={256}
                         style={{
@@ -132,9 +130,7 @@ const Experience = () => {
                     </div>
                   }>
                   <div>
-                    <div
-                      className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-                      onClick={() => handleClick(data.AR_Link)}>
+                    <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                       <QRCode
                         size={256}
                         style={{
@@ -232,9 +228,7 @@ const Experience = () => {
                     </div>
                   }>
                   <div>
-                    <div
-                      className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-                      onClick={() => handleClick(data.AR_Link)}>
+                    <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                       <div className="flex justify-center items-center w-full h-full">
                         <img
                           src={data.TargetImageFile}
