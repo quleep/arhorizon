@@ -79,11 +79,12 @@ const Works = () => {
   }, []);
   return (
     <>
-      <motion.div variants={textVariant()}>
-        <h2 className={"text-white font-black text-[40px] md:text-[50px]"}>
-          Products
-        </h2>
-      </motion.div>
+      <div
+        className={
+          "text-gray-50 text-[40px] md:text-[50px] font-extrabold px-4"
+        }>
+        Products
+      </div>
 
       <div className="mt-20 flex flex-wrap gap-7 justify-center px-7 md:px-0">
         {data?.map((project, index) => (
@@ -95,6 +96,29 @@ const Works = () => {
             uniquecolor={project?.tapToPlace ? "green" : "yellow"}
           />
         ))}
+      </div>
+      <div
+        className={
+          "text-gray-50 text-[40px] md:text-[50px] font-extrabold px-4 pt-20 pb-1 "
+        }>
+        Beta stage{" "}
+      </div>
+
+      <div className="py-5 px-4">
+        <a
+          className="text-white underline"
+          href="https://arhorizon.in/grid_AR/index.html"
+          target="_blank">
+          Interactive AR Images
+        </a>
+      </div>
+      <div className=" px-4">
+        <a
+          className="text-white underline"
+          href="https://arhorizon.in/grid_AR/2.html"
+          target="_blank">
+          Multi AR Videos
+        </a>
       </div>
     </>
   );
