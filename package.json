@@ -17,6 +17,7 @@
     "gsap": "^3.12.5",
     "leaflet": "^1.9.3",
     "react": "^18.2.0",
+    "react-div-100vh": "^0.7.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
     "react-icons": "^4.12.0",

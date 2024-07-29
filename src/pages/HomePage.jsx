@@ -93,7 +93,7 @@ function HomePage() {
               </p>
             </div>
           </div>
-          <div className=" flex justify-center items-center py-3 md:w-1/2 w-full">
+          <div className="flex justify-center items-center py-3 md:w-1/2 w-full">
             <div className="relative flex-center">
               <div className="overflow-hidden">
                 <img
