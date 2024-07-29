@@ -260,9 +260,7 @@ function VideoUploadQR() {
         videofile: videores.item,
         campaignName: formdata.brandname,
         mindfile: mindfile,
-        AR_Link: `https://arhorizon.in/arvideo/index.html?id=${now
-          .getTime()
-          .toString()}`,
+        AR_Link: `https://arhorizon.in/arvideo/${now.getTime().toString()}`,
         regtime: new Date().getTime(),
         qr_image: "yes",
       };

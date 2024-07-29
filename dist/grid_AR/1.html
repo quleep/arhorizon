@@ -17,7 +17,11 @@
       const isIOS = () =>
         /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
       let previewButtonClicked = false;
-
+      document
+        .getElementById("couponButton")
+        .addEventListener("click", function () {
+          window.parent.postMessage("openPopup", "*");
+        });
       const showPortfolio = () => {
         const portfolio = document.querySelector("#portfolio-panel");
         const previewButton = document.querySelector("#preview-button");
@@ -346,7 +350,6 @@
         id="couponButton"
         class="button button1 lexend"
         style="
-          display: none;
           position: fixed;
           bottom: 20px;
           left: 50%;

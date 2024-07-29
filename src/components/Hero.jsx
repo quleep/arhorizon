@@ -1,10 +1,3 @@
-import { motion } from "framer-motion";
-
-import { styles } from "../styles";
-import { ComputersCanvas } from "./canvas";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { animateWithGsap } from "../utils/animations";
 const Hero = () => {
   return (
     <section

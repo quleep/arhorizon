@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -11,10 +11,8 @@ import {
   setUserSession,
   verifyToken,
 } from "../service/Authservice";
-import Loader from "../components/Loader";
 import Alert from "../components/Alert";
 import Loading from "../components/Loading";
-import { Navbar } from "../components";
 
 const Register = () => {
   const [state, setState] = useState();
