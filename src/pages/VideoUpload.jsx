@@ -1,52 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { TbAugmentedReality } from "react-icons/tb";
-import { FaVideo } from "react-icons/fa";
-import { MdAudiotrack } from "react-icons/md";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Navbar } from "../components";
 
 function VideoUpload() {
-  const data = [
-    {
-      label: "3D Model",
-      value: "model",
-      icon: TbAugmentedReality,
-      desc: `It really matters and then like it really doesn't matter.
-      What matters is the people who are sparked by it. And the people
-      who are like offended by it, it doesn't matter.`,
-    },
-    {
-      label: "Video",
-      value: "video",
-      icon: FaVideo,
-      desc: `Because it's about motivating the doers. Because I'm here
-      to follow my dreams and inspire other people to follow their dreams, too.`,
-    },
-    {
-      label: "Audio",
-      value: "audio",
-      icon: MdAudiotrack,
-      desc: `We're not always in the position that we want to be at.
-      We're constantly growing. We're constantly making mistakes. We're
-      constantly trying to express ourselves and actualize our dreams.`,
-    },
-  ];
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [selectedModel, setSelectedModel] = useState(null);
-  const [open, setOpen] = useState(false);
-  const [open1, setOpen1] = useState(false);
-  const [open2, setOpen2] = useState(false);
-  const [open3, setOpen3] = useState(false);
+
   const [model, setModel] = useState(null);
-  const [selectedId, setSelectedId] = useState(null);
-  const [campaignName, setCampaignName] = useState("");
-  const [pattFile, setPattFile] = useState(null);
-  const [selectedGlb, setSelectedGlb] = useState(null);
-  const [couponCode, setCouponCode] = useState("");
-  const [discount, setDiscount] = useState("");
-  const [qrcode, setQRCode] = useState("");
+
   const videouploadurl =
     "https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/arhorizonvideocontentupload";
   const imageuploadurl =
@@ -103,23 +64,7 @@ function VideoUpload() {
     }
   };
 
-  const handleDiscountChange = (e) => {
-    let inputDiscount = e.target.value;
-
-    if (inputDiscount === "" || isNaN(inputDiscount)) {
-      setDiscount("");
-    } else {
-      const clampedDiscount = Math.min(parseFloat(inputDiscount), 100);
-      setDiscount(clampedDiscount);
-    }
-  };
-
   const now = new Date();
-
-  const handleOpen = () => setOpen(!open);
-  const handleOpen1 = () => setOpen1(!open1);
-  const handleOpen2 = () => setOpen2(!open2);
-  const handleOpen3 = () => setOpen3(!open3);
 
   useEffect(() => {
     const userInfo = localStorage.getItem("user");
@@ -142,45 +87,6 @@ function VideoUpload() {
 
     fetchData();
   }, []);
-
-  const handleCampaignNameChange = (event) => {
-    setCampaignName(event.target.value);
-  };
-
-  const publish = async () => {
-    if (!campaignName) return alert("Please, add Campaign Name.");
-    if (!selectedGlb) return alert("Please, Select 3D Model.");
-    const user = localStorage.getItem("user");
-    setLoading(true);
-
-    try {
-      const newApplicant = {
-        Id: now.getTime().toString(),
-        AR_Link: `https://arhorizon.in/tap_to_place/index.html?id=${now
-          .getTime()
-          .toString()}`,
-        TargetGlbFile: selectedGlb,
-        couponCode: couponCode,
-        discountPercentage: discount,
-        campaignName: campaignName,
-        email: user,
-        TargetImageFile: selectedModel.animationimage,
-        tapToPlace: "yes",
-      };
-      const applicantResponse = await axios.post(
-        "https://3ef9gn5kk2.execute-api.ap-south-1.amazonaws.com/arnxt_prod/ar-horizon/uploadtargetimage",
-        newApplicant
-      );
-      setQRCode(
-        `https://arhorizon.in/tap_to_place/index.html?id=${applicantResponse.data.Item.Id}`
-      );
-    } catch (error) {
-      console.error("An error occurred:", error);
-    } finally {
-      setLoading(false);
-    }
-    handleOpen3();
-  };
 
   const handleuploadvideofile = (e) => {
     let files = Array.from(e.target.files);
