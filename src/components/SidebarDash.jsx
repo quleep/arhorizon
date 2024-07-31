@@ -63,9 +63,12 @@ function SidebarDash() {
               setSelectedItem(Menu.route);
             }}>
             <img src={Menu.src} />
-            <span className={`${!open && "hidden"} origin-left duration-200`}>
+            <div
+              className={`${
+                !open && "hidden"
+              } origin-left duration-200 text-xs`}>
               {Menu.title}
-            </span>
+            </div>
           </li>
         ))}
       </ul>

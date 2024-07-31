@@ -193,6 +193,8 @@ function VideoUpload() {
     const imageres = await handlesubmitimagefile();
     const videores = await handlesubmitvideo();
     const mindfile = await handleSubmitMindFile();
+    const user = localStorage.getItem("user");
+
     console.log(mindfile);
     if (imageres.res && videores.res) {
       const body = {
@@ -204,6 +206,7 @@ function VideoUpload() {
         AR_Link: `https://arhorizon.in/arvideo/${now.getTime().toString()}`,
         regtime: new Date().getTime(),
         qr_code: "yes",
+        email: user,
       };
 
       try {

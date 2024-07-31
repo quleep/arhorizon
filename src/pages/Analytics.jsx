@@ -17,11 +17,11 @@ const Analytics = () => {
     navigate(`/${route}`);
   };
   return (
-    <div className="bg-lightdark">
+    <div className=" h-full bg-lightdark">
       <Navbar />
       <div className="flex mt-20 ">
         <SidebarDash />
-        <div className="h-screen flex-1 p-7 flex justify-end">
+        <div className=" w-full">
           <About />
         </div>
       </div>
