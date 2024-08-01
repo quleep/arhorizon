@@ -39,14 +39,7 @@ function SidebarDash() {
            } transition hover:scale-105 ease-in-out duration-300`}
         onClick={() => setOpen(!open)}
       />
-      <div className="flex gap-x-4 items-center">
-        <h1
-          className={`text-white origin-left font-medium text-xl duration-200 ${
-            !open && "scale-0"
-          }`}>
-          AR Horizon
-        </h1>
-      </div>
+
       <ul className="pt-6">
         {Menus.map((Menu, index) => (
           <li

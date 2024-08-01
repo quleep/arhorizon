@@ -10,6 +10,8 @@ import { Navbar } from "../components";
 import osm from "../service/osm-providers";
 
 import { Map as LeafletMap, TileLayer, Marker, Popup } from "react-leaflet";
+import BigChartBox from "../components/bigChartBox/BigChartBox";
+import PieChartBox from "../components/pieCartBox/PieChartBox";
 
 const Stats = () => {
   const [data, setData] = useState(null);
@@ -107,7 +109,7 @@ const Stats = () => {
       <Navbar />
       <div className="flex mt-20">
         <SidebarDash />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full px-16 mt-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full px-16 mt-10">
           <div className="w-full h-full">
             <div className="text-gray-100 font-semibold text-lg w-full text-center py-3">
               User by location (Heatmap)
@@ -116,7 +118,7 @@ const Stats = () => {
             <LeafletMap
               center={state.position}
               zoom={state.zoom}
-              style={{ height: "70vh", width: "100%", zIndex: 10 }}>
+              style={{ height: "80vh", width: "100%", zIndex: 10 }}>
               <HeatmapLayer
                 points={geojson.features}
                 longitudeExtractor={(m) => m.geometry.coordinates[0]}
@@ -133,25 +135,30 @@ const Stats = () => {
               />
             </LeafletMap>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full p-10">
-            <div className="xs:w-[250px] w-full">
-              <div className="w-full green-pink-gradient p-[1px] rounded-[20px] shadow-card">
-                <div className="bg-tertiary rounded-[20px] py-5 px-12 min-h-[200px] flex justify-evenly items-center flex-col">
-                  <p class="text-xl font-medium tracking-wide text-white ">
-                    Total users:
-                  </p>
-                  <div class="flex items-center justify-center">
-                    <p class="mr-2 text-5xl font-semibold text-white lg:text-6xl">
-                      {count}
+          <div className="flex-col">
+            <div className="flex w-full gap-4 h-fit">
+              <div className="xs:w-[250px] w-1/2 flex justify-center items-center">
+                <div className="w-full green-pink-gradient p-[1px] rounded-[20px] shadow-card">
+                  <div className="bg-tertiary rounded-[20px] min-h-[200px] flex justify-evenly items-center flex-col">
+                    <p class="text-xl font-medium tracking-wide text-white ">
+                      Total users:
                     </p>
-                    <p class="text-base text-gray-500">users</p>
+                    <div class="flex items-center justify-center">
+                      <p class="mr-2 text-5xl font-semibold text-white lg:text-6xl">
+                        {count}
+                      </p>
+                      <p class="text-base text-gray-500">users</p>
+                    </div>
                   </div>
                 </div>
               </div>
+              <div className="">
+                <PieChartBox />
+              </div>
             </div>
-            <div></div>
-            <div></div>
-            <div></div>
+            <div className=" w-full h-80">
+              <BigChartBox />
+            </div>
           </div>
         </div>
       </div>
