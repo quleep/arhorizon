@@ -3,16 +3,13 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SidebarDash from "../components/SidebarDash";
-import Tilt from "react-tilt";
 import "leaflet/dist/leaflet.css";
 import HeatmapLayer from "react-leaflet-heatmap-layer";
 import { Navbar } from "../components";
-import osm from "../service/osm-providers";
 
-import { Map as LeafletMap, TileLayer, Marker, Popup } from "react-leaflet";
+import { Map as LeafletMap, TileLayer } from "react-leaflet";
 import BigChartBox from "../components/bigChartBox/BigChartBox";
 import PieChartBox from "../components/pieCartBox/PieChartBox";
-import SignInwithGoogle from "../components/signInWIthGoogle";
 
 const Stats = () => {
   const [data, setData] = useState(null);
