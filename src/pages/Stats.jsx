@@ -12,6 +12,7 @@ import osm from "../service/osm-providers";
 import { Map as LeafletMap, TileLayer, Marker, Popup } from "react-leaflet";
 import BigChartBox from "../components/bigChartBox/BigChartBox";
 import PieChartBox from "../components/pieCartBox/PieChartBox";
+import SignInwithGoogle from "../components/signInWIthGoogle";
 
 const Stats = () => {
   const [data, setData] = useState(null);
@@ -159,6 +160,7 @@ const Stats = () => {
             <div className=" w-full h-80">
               <BigChartBox />
             </div>
+            {/* <SignInwithGoogle /> */}
           </div>
         </div>
       </div>

@@ -1,26 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Div100vh from "react-div-100vh";
-import {
-  Button,
-  Dialog,
-  DialogHeader,
-  DialogBody,
-  DialogFooter,
-  Spinner,
-} from "@material-tailwind/react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useStateContext } from "../contexts/ContextProvider";
-import { Logo } from "../assets/index";
+import { Dialog, DialogBody } from "@material-tailwind/react";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "../components/firebase";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useParams } from "react-router-dom";
+import { useStateContext } from "../contexts/ContextProvider";
+import axios from "axios"; // Make sure axios is imported
 
 function AR_Video() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const param = useParams();
+  const { setProductId } = useStateContext();
 
   useEffect(() => {
     const handleMessage = (event) => {
-      // Ensure the message is from a trusted source
-      if (event.origin !== "https://arhorizon.in") return;
-
+      if (event.origin !== "https://192.168.0.108:5173") return;
       if (event.data === "openPopup") {
         setOpen(true);
       } else if (event.data === "closePopup") {
@@ -35,128 +32,109 @@ function AR_Video() {
     };
   }, []);
 
-  const handleOpen = () => setOpen(!open);
-
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const apiUrl =
-    "https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/sendotparhorizon";
-  const [loading, setLoading] = useState(false);
-  const param = useParams();
-  const { user, productId, setProductId } = useStateContext();
-
-  const navigate = useNavigate();
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const requestData = {
-      phoneno: phoneNumber,
-    };
-    setLoading(true);
-
-    axios
-      .post(apiUrl, requestData)
-      .then((response) => {
-        console.log("Response:", response.data);
-
-        navigate(`/couponCodeOTP/${phoneNumber}`);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        if (error.response && error.response.status === 401) {
-          // Handle 401 Unauthorized error
-          toast.error(`${error.response.data}`, {
-            position: toast.POSITION.BOTTOM_CENTER,
-          });
-        } else {
-          // Handle other errors
-          toast.error("An error occurred. Please try again.");
-        }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
   useEffect(() => {
-    var markerStatus = localStorage.getItem("ArUserDetected");
-
+    const markerStatus = localStorage.getItem("ArUserDetected");
     if (markerStatus === "found") {
-      handleOpen();
-    } else {
+      setOpen(true);
     }
   }, []);
 
   useEffect(() => {
     setProductId(param.id);
-  }, [param]);
+  }, [param, setProductId]);
+
+  const googleLogin = () => {
+    const provider = new GoogleAuthProvider();
+    setLoading(true);
+    signInWithPopup(auth, provider)
+      .then(async (result) => {
+        const requestData = {
+          Id: result.user.email,
+        };
+        axios
+          .post(
+            "https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/sendotparhorizon",
+            requestData
+          )
+          .then((response) => {
+            toast.success("Logged in successfully!", {
+              position: toast.POSITION.BOTTOM_CENTER,
+            });
+            setOpen(false);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            toast.error(
+              "Verification failed. Please check your OTP and phone number.",
+              {
+                position: toast.POSITION.BOTTOM_CENTER,
+              }
+            );
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        toast.error("Login failed. Please try again.", {
+          position: toast.POSITION.BOTTOM_CENTER,
+        });
+        setLoading(false);
+      });
+  };
+
+  const handleOpen = () => setOpen(!open);
 
   return (
     <>
       <Div100vh>
-        {/* {open && <Popup onClose={closePopup} />} */}
         <Dialog open={open} handler={handleOpen}>
           <DialogBody>
-            <div className="flex justify-end text-black cursor-pointer p-1">
+            <div className="flex justify-end p-1">
               <button
                 type="button"
-                class="bg-blue-gray-50 rounded-md p-2 inline-flex items-center justify-center text-gray-500 hover:text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                className="bg-blue-gray-50 rounded-md p-2 inline-flex items-center justify-center text-gray-500 hover:text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
                 onClick={handleOpen}>
-                <span class="sr-only">Close menu</span>
+                <span className="sr-only">Close menu</span>
                 <svg
-                  class="h-6 w-6"
+                  className="h-6 w-6"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                   aria-hidden="true">
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
               </button>
             </div>
-            <div class="sm:mx-auto sm:w-full sm:max-w-sm ">
-              <img class="mx-auto h-20 w-auto" src={Logo} alt="Your Company" />
-              <h2 class="py-2 text-center text-lg font-bold text-gray-900">
-                Enter Your Phone Number to Avail Coupon
-              </h2>
-            </div>
-            <div class="py-7 sm:mx-auto sm:w-full sm:max-w-sm">
-              <form className="space-y-6" onSubmit={handleSubmit}>
-                <div class="w-full inline-flex">
-                  <div class="flex justify-center items-center px-2 bg-gray-100 rounded-sm">
-                    <div className="text-gray-500">+91</div>
-                  </div>
-                  <input
-                    id="phone"
-                    required
-                    type="text"
-                    pattern="[0-9]{10}"
-                    maxLength="10"
-                    inputMode="numeric"
-                    className="text-base flex-1 px-4 py-3 focus:ring-blue-500 focus:border-blue-500 rounded-r-md w-full  rounded-md shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset"
-                    placeholder="Phone number"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
+            <div className="sm:mx-auto sm:w-full sm:max-w-sm p-8">
+              <button
+                className="group h-12 w-full px-6 border-2 border-gray-300 rounded-md transition duration-300 hover:border-blue-400 focus:bg-blue-50 active:bg-blue-100"
+                onClick={googleLogin}
+                disabled={loading}>
+                <div className="relative flex items-center space-x-4 justify-center">
+                  <img
+                    src="https://tailus.io/sources/blocks/social/preview/images/google.svg"
+                    className="absolute left-0 w-5"
+                    alt="google logo"
                   />
+                  <span className="block w-max font-semibold tracking-wide text-gray-700 text-sm transition duration-300 group-hover:text-blue-600 sm:text-base">
+                    {loading ? "Processing..." : "Continue with Google"}
+                  </span>
                 </div>
-
-                <div>
-                  <button
-                    type="submit"
-                    class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-4 mt-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                    {loading ? <Spinner /> : "Verify OTP"}
-                  </button>
-                </div>
-              </form>
+              </button>
             </div>
           </DialogBody>
         </Dialog>
         <iframe
           id="myIframe"
-          src={`https://arhorizon.in/arvideo/1.html?id=${param.id}`}
+          src={`https://192.168.0.108:5173/arvideo/1.html?id=${param.id}`}
           style={{ height: "100%", width: "100%" }}
           title="Iframe Example"></iframe>
       </Div100vh>
