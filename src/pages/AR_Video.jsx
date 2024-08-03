@@ -221,7 +221,8 @@ function AR_Video() {
         </Dialog>
         <iframe
           id="myIframe"
-          src={`https://localhost:5173/arvideo/1.html?id=${param.id}`}
+          // src={`https://localhost:5173/arvideo/1.html?id=${param.id}`}
+          src={`https://arhorizon.in/arvideo/index.html?id=${param.id}`}
           style={{ height: "100%", width: "100%" }}
           title="Iframe Example"></iframe>
       </Div100vh>

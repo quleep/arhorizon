@@ -49,8 +49,7 @@ const DataTable = () => {
     };
 
     fetchData();
-  }, []);
-
+  }, [param.id]);
   return (
     <div className="dataTable">
       <Toaster />

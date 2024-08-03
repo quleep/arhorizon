@@ -43,6 +43,49 @@
         } catch (error) {
           console.error("Error fetching data:", error);
         }
+
+        try {
+          const res = await axios.get("https://geolocation.microlink.io/");
+          if (res) {
+            try {
+              // Function to detect the device type
+              const getDeviceType = () => {
+                const userAgent =
+                  navigator.userAgent || navigator.vendor || window.opera;
+                if (/android/i.test(userAgent)) {
+                  return "Android";
+                }
+                if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                  return "iPhone";
+                }
+                return "Unknown";
+              };
+
+              // Create the body object with device type
+              const body = {
+                Id: new Date().getTime().toString(),
+                ipaddress: res.data.ip.address,
+                city: res.data.city.name,
+                product_id: id,
+                coordinates: {
+                  latitude: res.data.coordinates.latitude,
+                  longitude: res.data.coordinates.longitude,
+                },
+                date: new Date().toISOString(),
+                deviceType: getDeviceType(), // Add device type to the body
+              };
+
+              const newres = await axios.post(
+                "https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/addgeodataarhorizon",
+                body
+              );
+            } catch (err) {
+              console.log(err);
+            }
+          }
+        } catch (error) {
+          console.log(error);
+        }
       });
 
       const isIOS = () =>
@@ -159,16 +202,29 @@
       };
       AFRAME.registerComponent("mytarget", {
         init: function () {
+          let targetFoundTime;
+          let totalTimeFound = 0;
+
           this.el.addEventListener("targetFound", () => {
             console.log("target found");
+            targetFoundTime = Date.now();
             showPortfolio();
           });
+
           this.el.addEventListener("targetLost", () => {
             console.log("target lost");
+            const targetLostTime = Date.now();
+            const timeDifference = (targetLostTime - targetFoundTime) / 1000; // in seconds
+            totalTimeFound += timeDifference;
+            console.log(`Target was found for ${timeDifference} seconds`);
+            console.log(
+              `Total time target was found: ${totalTimeFound} seconds`
+            );
             hidePortfolio();
           });
         },
       });
+
       function renderAScene() {
         if (responseData) {
           document.body.innerHTML += `

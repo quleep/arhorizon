@@ -138,7 +138,7 @@ const Stats = () => {
             <div className="flex w-full gap-4 h-fit">
               <div className="xs:w-[250px] w-1/2 flex justify-center items-center">
                 <div className="w-full rounded-[20px] border border-slate-300 outline-slate-100">
-                  <div className="bg-tertiary rounded-[20px] min-h-[200px] flex justify-evenly items-center flex-col">
+                  <div className="bg-tertiary rounded-[20px] min-h-[250px] flex justify-evenly items-center flex-col">
                     <p class="text-xl font-medium tracking-wide text-white ">
                       Total users:
                     </p>

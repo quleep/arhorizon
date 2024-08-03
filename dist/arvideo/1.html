@@ -37,7 +37,6 @@
           couponButton.addEventListener("click", async () => {
             // window.open(`https://arhorizon.in/couponCode/${id}`);
             window.parent.postMessage("openPopup", "*");
-            console.log("first");
             await new Promise((resolve) =>
               window.addEventListener("custom", resolve)
             );

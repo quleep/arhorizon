@@ -48,6 +48,20 @@
           const res = await axios.get("https://geolocation.microlink.io/");
           if (res) {
             try {
+              // Function to detect the device type
+              const getDeviceType = () => {
+                const userAgent =
+                  navigator.userAgent || navigator.vendor || window.opera;
+                if (/android/i.test(userAgent)) {
+                  return "Android";
+                }
+                if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                  return "iPhone";
+                }
+                return "Unknown";
+              };
+
+              // Create the body object with device type
               const body = {
                 Id: new Date().getTime().toString(),
                 ipaddress: res.data.ip.address,
@@ -58,6 +72,7 @@
                   longitude: res.data.coordinates.longitude,
                 },
                 date: new Date().toISOString(),
+                deviceType: getDeviceType(), // Add device type to the body
               };
 
               const newres = await axios.post(
