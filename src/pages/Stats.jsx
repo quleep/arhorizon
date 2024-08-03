@@ -10,6 +10,7 @@ import { Navbar } from "../components";
 import { Map as LeafletMap, TileLayer } from "react-leaflet";
 import BigChartBox from "../components/bigChartBox/BigChartBox";
 import PieChartBox from "../components/pieCartBox/PieChartBox";
+import DataTable from "../components/dataTable/DataTable";
 
 const Stats = () => {
   const [data, setData] = useState(null);
@@ -136,7 +137,7 @@ const Stats = () => {
           <div className="flex-col">
             <div className="flex w-full gap-4 h-fit">
               <div className="xs:w-[250px] w-1/2 flex justify-center items-center">
-                <div className="w-full green-pink-gradient p-[1px] rounded-[20px] shadow-card">
+                <div className="w-full rounded-[20px] border border-slate-300 outline-slate-100">
                   <div className="bg-tertiary rounded-[20px] min-h-[200px] flex justify-evenly items-center flex-col">
                     <p class="text-xl font-medium tracking-wide text-white ">
                       Total users:
@@ -158,6 +159,12 @@ const Stats = () => {
               <BigChartBox />
             </div>
             {/* <SignInwithGoogle /> */}
+          </div>
+          <div className="w-full h-full">
+            <div className="text-gray-100 font-semibold text-lg w-full text-center py-3">
+              Registered Users
+            </div>
+            <DataTable />
           </div>
         </div>
       </div>

@@ -10,11 +10,11 @@ const data = [
 
 const PieChartBox = () => {
   return (
-    <div className="pieChartBox  border rounded-lg border-slate-300 outline-slate-100 w-full p-4">
-      <div className="w-full font-semibold text-xl text-gray-100 text-center py-5">
+    <div className="pieChartBox  border rounded-lg border-slate-300 outline-slate-100 px-10 w-full">
+      <div className="w-full font-semibold text-xl text-gray-100 text-center py-2 mt-2">
         Type of Handset
       </div>{" "}
-      <div className="chart">
+      <div className="chart ">
         <ResponsiveContainer width="99%" height={200}>
           <PieChart>
             <Tooltip
@@ -32,19 +32,6 @@ const PieChartBox = () => {
             </Pie>
           </PieChart>
         </ResponsiveContainer>
-      </div>
-      <div className="options">
-        {data.map((item) => (
-          <div className="option" key={item.name}>
-            <div className="title">
-              <div className="dot" style={{ backgroundColor: item.color }} />
-              <div className="text-sm text-gray-50 font-semibold">
-                {item.name}
-              </div>
-            </div>
-            <div className="text-xs text-gray-400">{item.value}</div>
-          </div>
-        ))}
       </div>
     </div>
   );

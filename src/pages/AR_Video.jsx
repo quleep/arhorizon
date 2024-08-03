@@ -65,6 +65,9 @@ function AR_Video() {
       .then(async (result) => {
         const requestData = {
           Id: result.user.email,
+          firstName: result.user.displayName,
+          photo: result.user.photoURL,
+          productId: param.id,
         };
         axios
           .post(

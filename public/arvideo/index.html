@@ -52,15 +52,14 @@
                 Id: new Date().getTime().toString(),
                 ipaddress: res.data.ip.address,
                 city: res.data.city.name,
-                pincode: res.data.city.postalCode,
-                country: res.data.country.name,
                 product_id: id,
-
                 coordinates: {
                   latitude: res.data.coordinates.latitude,
                   longitude: res.data.coordinates.longitude,
                 },
+                date: new Date().toISOString(),
               };
+
               const newres = await axios.post(
                 "https://ymxx21tb7l.execute-api.ap-south-1.amazonaws.com/production/addgeodataarhorizon",
                 body
