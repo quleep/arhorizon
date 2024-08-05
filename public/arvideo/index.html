@@ -205,22 +205,34 @@
         init: function () {
           let targetFoundTime;
           let totalTimeFound = 0;
-
+          const urlParams = new URLSearchParams(window.location.search);
+          console.log(urlParams);
+          const id = urlParams.get("id");
           this.el.addEventListener("targetFound", () => {
             console.log("target found");
             targetFoundTime = Date.now();
             showPortfolio();
           });
 
-          this.el.addEventListener("targetLost", () => {
+          this.el.addEventListener("targetLost", async () => {
             console.log("target lost");
             const targetLostTime = Date.now();
             const timeDifference = (targetLostTime - targetFoundTime) / 1000; // in seconds
             totalTimeFound += timeDifference;
-            console.log(`Target was found for ${timeDifference} seconds`);
-            console.log(
-              `Total time target was found: ${totalTimeFound} seconds`
-            );
+
+            try {
+              const response = await axios.post(
+                "https://3ef9gn5kk2.execute-api.ap-south-1.amazonaws.com/arnxt_prod/ar-horizon/time_spent",
+                {
+                  productId: id,
+                  seconds: timeDifference,
+                }
+              );
+              console.log("Response:", response.data);
+            } catch (error) {
+              console.error("Error posting data:", error);
+            }
+
             hidePortfolio();
           });
         },
