@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
 import { useParams } from "react-router-dom";
+import { Spinner } from "@material-tailwind/react"; // Import Spinner component
 
 const columns = [
   { field: "Id", headerName: "Id", width: 240 },
@@ -28,6 +29,7 @@ const columns = [
 
 const DataTable = () => {
   const [registeredUsers, setRegisteredUsers] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
   const param = useParams();
 
   useEffect(() => {
@@ -45,40 +47,49 @@ const DataTable = () => {
       } catch (error) {
         console.log("Error fetching registered users:", error);
         toast.error("Error fetching registered users");
+      } finally {
+        setLoading(false); // Set loading to false after data is fetched
       }
     };
 
     fetchData();
   }, [param.id]);
+
   return (
     <div className="dataTable">
       <Toaster />
-      <DataGrid
-        className="dataGrid"
-        rows={registeredUsers}
-        columns={columns}
-        getRowId={(row) => row.Id}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 10,
+      {loading ? ( // Show spinner while loading
+        <div className="flex justify-center items-center h-full">
+          <Spinner color="blue" size="xl" />
+        </div>
+      ) : (
+        <DataGrid
+          className="dataGrid"
+          rows={registeredUsers}
+          columns={columns}
+          getRowId={(row) => row.Id}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 10,
+              },
             },
-          },
-        }}
-        slots={{ toolbar: GridToolbar }}
-        slotProps={{
-          toolbar: {
-            showQuickFilter: true,
-            quickFilterProps: { debounceMs: 500 },
-          },
-        }}
-        pageSizeOptions={[5]}
-        checkboxSelection
-        disableRowSelectionOnClick
-        disableColumnFilter
-        disableDensitySelector
-        disableColumnSelector
-      />
+          }}
+          slots={{ toolbar: GridToolbar }}
+          slotProps={{
+            toolbar: {
+              showQuickFilter: true,
+              quickFilterProps: { debounceMs: 500 },
+            },
+          }}
+          pageSizeOptions={[5]}
+          checkboxSelection
+          disableRowSelectionOnClick
+          disableColumnFilter
+          disableDensitySelector
+          disableColumnSelector
+        />
+      )}
     </div>
   );
 };

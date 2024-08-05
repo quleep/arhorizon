@@ -32,10 +32,8 @@
 
           renderAScene();
 
-          // Add event listener for coupon button after the scene is rendered
           const couponButton = document.getElementById("couponButton");
           couponButton.addEventListener("click", async () => {
-            // window.open(`https://arhorizon.in/couponCode/${id}`);
             window.parent.postMessage("openPopup", "*");
             await new Promise((resolve) =>
               window.addEventListener("custom", resolve)
