@@ -10,6 +10,7 @@ import BigChartBox from "../components/bigChartBox/BigChartBox";
 import PieChartBox from "../components/pieCartBox/PieChartBox";
 import DataTable from "../components/dataTable/DataTable";
 import { Spinner } from "@material-tailwind/react"; // Import Spinner component
+import BigChartBoxTime from "../components/bigChartBoxTime/bigChartBoxTime";
 
 const Stats = () => {
   const [data, setData] = useState(null);
@@ -190,47 +191,47 @@ const Stats = () => {
             </div>
             <DataTable />
           </div>
-          <div className="flex w-full gap-4 h-full">
-            <div className=" w-full flex justify-center items-center">
-              <div className="w-full rounded-[20px] border border-slate-300 outline-slate-100">
-                <div className="bg-tertiary rounded-[20px] min-h-[250px] flex justify-evenly items-center flex-col">
-                  <p className="text-xl font-medium tracking-wide text-white">
-                    Total Video Play Time:
-                  </p>
-                  {loadingUsers ? (
-                    <Spinner color="blue" size="xl" />
-                  ) : (
-                    <div className="flex items-center justify-center">
-                      {(() => {
-                        const totalSeconds = Math.floor(productData?.timespend);
-                        const minutes = Math.floor(totalSeconds / 60);
-                        const seconds = totalSeconds % 60;
-                        return (
-                          <div className="flex items-center">
-                            {minutes > 0 && (
-                              <div className="flex items-center mr-2">
-                                <p className="text-5xl font-semibold text-white lg:text-6xl">
-                                  {minutes}
-                                </p>
-                                <p className="text-base text-gray-500 ml-1">
-                                  min
-                                </p>
-                              </div>
-                            )}
-                            <div className="flex items-center">
-                              <p className="text-5xl font-semibold text-white lg:text-6xl">
-                                {seconds}
+          <div className="flex w-full h-full py-2">
+            <div className="bg-tertiary rounded-[20px] min-h-[250px] flex justify-evenly items-center flex-col w-full border border-slate-300 outline-slate-100">
+              <div className="flex items-center w-full gap-5 justify-center py-2 ">
+                <p className="text-lg font-normal tracking-wide text-gray-100">
+                  Total Video Play Time:
+                </p>
+                {loadingUsers ? (
+                  <Spinner color="blue" size="xl" />
+                ) : (
+                  <div className="flex items-center justify-center">
+                    {(() => {
+                      const totalSeconds = Math.floor(productData?.timespend);
+                      const minutes = Math.floor(totalSeconds / 60);
+                      const seconds = totalSeconds % 60;
+                      return (
+                        <div className="flex items-center">
+                          {minutes > 0 && (
+                            <div className="flex items-center mr-2">
+                              <p className="text-4xl font-semibold text-white">
+                                {minutes}
                               </p>
                               <p className="text-base text-gray-500 ml-1">
-                                sec
+                                min
                               </p>
                             </div>
+                          )}
+                          <div className="flex items-center">
+                            <p className="text-4xl font-semibold text-white">
+                              {seconds}
+                            </p>
+                            <p className="text-base text-gray-500 ml-1">sec</p>
                           </div>
-                        );
-                      })()}
-                    </div>
-                  )}
-                </div>
+                        </div>
+                      );
+                    })()}
+                  </div>
+                )}
+              </div>
+
+              <div className="w-full h-72">
+                <BigChartBoxTime />
               </div>
             </div>
             <div className=""></div>

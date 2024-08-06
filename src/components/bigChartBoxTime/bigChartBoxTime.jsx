@@ -13,37 +13,29 @@ import { useParams } from "react-router-dom";
 import { Spinner } from "@material-tailwind/react";
 import { toast } from "react-hot-toast";
 
-const BigChartBox = () => {
+const bigChartBoxTime = () => {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
   const param = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.post(
-          "https://3ef9gn5kk2.execute-api.ap-south-1.amazonaws.com/arnxt_prod/ar-horizon/view_count_week",
-          {
-            productId: param.id,
-          }
+        const response = await axios.get(
+          `https://3ef9gn5kk2.execute-api.ap-south-1.amazonaws.com/arnxt_prod/ar-horizon/uploadtargetimage?id=${param.id}`
         );
-        const fetchedData = res.data.data;
+        const fetchedData = response.data.timespentByWeek;
 
-        const rearrangedData = [...fetchedData];
-        const currentDayIndex = new Date().getDay();
+        const transformedData = Object.entries(fetchedData).map(
+          ([day, { time }]) => ({
+            name: day,
+            time,
+          })
+        );
 
-        const reorderData = (rearrangedData, currentDayIndex) => {
-          const orderedData = [
-            ...rearrangedData.slice(currentDayIndex + 1),
-            ...rearrangedData.slice(0, currentDayIndex + 1),
-          ];
-          return orderedData;
-        };
+        console.log("fetch", transformedData);
 
-        const reorderedData = reorderData(rearrangedData, currentDayIndex);
-
-        console.log(reorderedData);
-        setData(reorderedData);
+        setData(transformedData);
       } catch (error) {
         console.log("Error fetching view count data:", error);
         toast.error("Error fetching view count data. Please try again.");
@@ -56,10 +48,7 @@ const BigChartBox = () => {
   }, [param.id]);
 
   return (
-    <div className="bigChartBox border rounded-lg border-slate-300 outline-slate-100 mt-9">
-      <div className="w-full font-semibold text-xl text-gray-100 text-center py-5">
-        View Count per Week
-      </div>
+    <div className="bigChartBox">
       <div className="chart">
         {loading ? ( // Show spinner while loading
           <div className="flex justify-center items-center h-full">
@@ -80,7 +69,7 @@ const BigChartBox = () => {
               <Tooltip />
               <Area
                 type="monotone"
-                dataKey="Views"
+                dataKey="time"
                 stackId="1"
                 stroke="#8884d8"
                 fill="#8884d8"
@@ -93,4 +82,4 @@ const BigChartBox = () => {
   );
 };
 
-export default BigChartBox;
+export default bigChartBoxTime;
